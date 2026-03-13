@@ -16,7 +16,6 @@ CPNSPath
 
 <p className="text-2xl text-gray-400 mt-6 max-w-2xl">
 Platform belajar CPNS modern untuk menaklukkan TWK, TIU, dan TKP.
-Belajar dengan sistem terstruktur seperti platform global.
 </p>
 
 <div className="flex gap-6 mt-10">
