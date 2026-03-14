@@ -1,6 +1,6 @@
 "use client"
 
-export default function TKP(){
+export default function TIU(){
 
   return(
 
@@ -15,9 +15,9 @@ export default function TKP(){
       fontFamily:"Arial"
     }}>
 
-      <h1>Tryout TKP</h1>
+      <h1>Tryout TIU</h1>
 
-      <p>Halaman TKP sedang dibuat</p>
+      <p>Halaman TIU sedang dibuat</p>
 
       <a href="/tryout">
         <button style={{
@@ -29,7 +29,7 @@ export default function TKP(){
           color:"white",
           cursor:"pointer"
         }}>
-          Kembali
+          Kembali ke Tryout
         </button>
       </a>
 
