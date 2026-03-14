@@ -1,26 +1,24 @@
-export default function Navbar() {
-  return (
+export default function Navbar(){
 
-    <nav style={{
-      display:"flex",
-      justifyContent:"space-between",
-      alignItems:"center",
-      padding:"20px",
-      background:"#1e3a8a",
-      color:"white"
-    }}>
+return(
 
-      <h2>CPNSPath</h2>
+<nav className="flex justify-between items-center px-8 py-5 border-b border-gray-800">
 
-      <div style={{display:"flex", gap:"20px"}}>
+<h1 className="font-bold text-xl">
+CPNSPath
+</h1>
 
-        <a href="/" style={{color:"white"}}>Home</a>
-        <a href="/Class" style={{color:"white"}}>Kelas</a>
-        <a href="/login" style={{color:"white"}}>Login</a>
+<div className="flex gap-6 text-sm">
 
-      </div>
+<a href="/">Home</a>
+<a href="/tryout">Tryout</a>
+<a href="/leaderboard">Leaderboard</a>
+<a href="/pricing">Pricing</a>
 
-    </nav>
+</div>
 
-  )
+</nav>
+
+)
+
 }
