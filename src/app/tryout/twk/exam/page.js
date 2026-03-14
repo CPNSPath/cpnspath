@@ -5,441 +5,467 @@ import { useState,useEffect } from "react"
 const questions = [
 
 {
-question:"Pembukaan UUD 1945 dalam kaitannya dengan HAM adalah ...",
+question:"Pancasila sebagai dasar negara ditetapkan pada tanggal?",
 options:[
-"Piagam HAM Indonesia",
-"Sumber HAM Indonesia",
-"Pedoman pelaksanaan jaminan HAM Indonesia",
-"Penjelasan pelaksanaan HAM Indonesia",
-"Rumusan pelaksanaan HAM"
+"1 Juni 1945",
+"18 Agustus 1945",
+"17 Agustus 1945",
+"22 Juni 1945",
+"20 Mei 1908"
 ],
-answer:0,
-explanation:"Pembukaan UUD 1945 disebut Piagam HAM Indonesia."
+answer:1
 },
 
 {
-question:"Yang menjadi causal final dari Pancasila adalah ...",
+question:"Semboyan negara Indonesia adalah?",
 options:[
-"Piagam Jakarta",
-"Bangsa Indonesia",
-"Warga Negara Indonesia",
-"BPUPKI",
-"PPKI"
+"Tut Wuri Handayani",
+"Bhinneka Tunggal Ika",
+"Garuda Pancasila",
+"Satyameva Jayate",
+"NKRI Harga Mati"
 ],
-answer:0,
-explanation:"Causal final Pancasila tercantum dalam Piagam Jakarta."
+answer:1
 },
 
 {
-question:"Yang bukan prinsip dasar negara yang diusulkan Soekarno 1 Juni 1945 adalah ...",
+question:"UUD 1945 disahkan pada tanggal?",
 options:[
-"Demokrasi",
-"Kekeluargaan",
-"Perikemanusiaan",
-"Kesejahteraan sosial",
-"Kebangsaan"
+"17 Agustus 1945",
+"18 Agustus 1945",
+"1 Juni 1945",
+"22 Juni 1945",
+"20 Mei 1908"
 ],
-answer:1,
-explanation:"Prinsip Soekarno tidak memasukkan kekeluargaan."
+answer:1
 },
 
 {
-question:"Berdasarkan TAP MPRS No XX/MPRS/1966 Pancasila adalah ...",
+question:"Lambang negara Indonesia adalah?",
 options:[
-"Dokumen sejarah",
-"Alat pemersatu",
-"Nilai nenek moyang",
-"Landasan perjuangan",
-"Dasar negara"
+"Bintang",
+"Garuda Pancasila",
+"Rajawali",
+"Elang",
+"Merpati"
 ],
-answer:4,
-explanation:"Pancasila merupakan dasar negara dan pandangan hidup bangsa."
+answer:1
 },
 
 {
-question:"Yang diatur hukum dasar negara adalah ...",
+question:"Sila pertama Pancasila adalah?",
 options:[
-"Susunan organisasi negara",
-"Membatasi kekuasaan negara",
-"Hubungan antar lembaga negara",
-"Hubungan vertikal horizontal",
-"Semua benar"
+"Kemanusiaan yang adil dan beradab",
+"Ketuhanan Yang Maha Esa",
+"Persatuan Indonesia",
+"Kerakyatan yang dipimpin hikmat",
+"Keadilan sosial"
 ],
-answer:4,
-explanation:"Hukum dasar negara mengatur seluruh struktur negara."
+answer:1
 },
 
 {
-question:"Yang bukan dampak Dekrit Presiden 5 Juli 1959 adalah ...",
+question:"Sila kedua Pancasila berbunyi?",
 options:[
-"Konstituante dibubarkan",
-"UUDS tidak berlaku",
-"Kembali ke UUD 1945",
-"Dibentuk DPRS",
-"Dibentuk DPAS"
+"Ketuhanan Yang Maha Esa",
+"Kemanusiaan yang adil dan beradab",
+"Persatuan Indonesia",
+"Kerakyatan yang dipimpin hikmat",
+"Keadilan sosial"
 ],
-answer:3,
-explanation:"DPRS bukan dampak langsung Dekrit Presiden."
+answer:1
 },
 
 {
-question:"Yang bukan alat perlengkapan MPR adalah ...",
+question:"Dasar hukum tertinggi di Indonesia adalah?",
 options:[
-"Pimpinan MPR",
-"Badan pekerja MPR",
-"Pembantu MPR",
-"Komisi MPR",
-"Panitia Ad Hoc"
+"Pancasila",
+"UUD 1945",
+"UU",
+"Perpres",
+"Perda"
 ],
-answer:2,
-explanation:"Alat MPR hanya pimpinan, badan pekerja, komisi, dan panitia ad hoc."
+answer:1
 },
 
 {
-question:"Menteri negara adalah pembantu presiden diatur dalam pasal ...",
+question:"Indonesia adalah negara?",
 options:[
-"Pasal 18",
-"Pasal 19",
-"Pasal 17",
-"Pasal 16",
-"Pasal 12"
+"Kerajaan",
+"Serikat",
+"Kesatuan",
+"Federasi",
+"Koloni"
 ],
-answer:2,
-explanation:"Pasal 17 UUD 1945 menyatakan menteri adalah pembantu presiden."
+answer:2
 },
 
 {
-question:"TAP MPR No IV/MPR/1983 mengatur tentang ...",
+question:"Bentuk negara Indonesia adalah?",
 options:[
-"Interpelasi",
-"Budget",
-"Referendum",
-"Mosi tidak percaya",
-"Angket"
+"Republik",
+"Monarki",
+"Kerajaan",
+"Imperium",
+"Kesultanan"
 ],
-answer:2,
-explanation:"TAP tersebut mengatur referendum."
+answer:0
 },
 
 {
-question:"Penyebab utama Jepang menyerah kepada Sekutu adalah ...",
+question:"Bendera Indonesia berwarna?",
 options:[
-"Tidak mendapat dukungan rakyat Indonesia",
-"Kehabisan tentara",
-"Kaisar Jepang menyerah",
-"Pemimpin Jepang gugur",
-"Hiroshima dan Nagasaki dibom"
+"Merah putih",
+"Biru putih",
+"Merah biru",
+"Putih biru",
+"Merah kuning"
 ],
-answer:4,
-explanation:"Bom atom Hiroshima dan Nagasaki menyebabkan Jepang menyerah."
+answer:0
 },
 
 {
-question:"Sidang pertama PPKI menghasilkan ...",
+question:"Ibukota Indonesia saat ini adalah?",
 options:[
-"Mengesahkan UUD 1945",
-"Menetapkan presiden dan wakil presiden",
-"Presiden dibantu Komite Nasional",
-"Dibentuk DPR",
-"A,B,C benar"
+"Bandung",
+"Jakarta",
+"Surabaya",
+"Yogyakarta",
+"Medan"
 ],
-answer:4,
-explanation:"Sidang 18 Agustus menghasilkan tiga keputusan utama tersebut."
+answer:1
 },
 
 {
-question:"Buku Max Havelaar ditulis oleh ...",
+question:"Bahasa nasional Indonesia adalah?",
 options:[
-"Van den Bosch",
-"Douwes Dekker",
-"Raffles",
-"Daendels",
-"JP Coen"
+"Jawa",
+"Melayu",
+"Indonesia",
+"Sunda",
+"Batak"
 ],
-answer:1,
-explanation:"Ditulis oleh Multatuli (Douwes Dekker)."
+answer:2
 },
 
 {
-question:"Deklarasi Djuanda bertujuan ...",
+question:"Hari kemerdekaan Indonesia adalah?",
 options:[
-"Mempertahankan NKRI",
-"Menciptakan kawasan damai",
-"Melindungi kekayaan laut",
-"Memudahkan penindakan laut",
-"Melindungi wilayah kepulauan"
+"1 Juni 1945",
+"17 Agustus 1945",
+"18 Agustus 1945",
+"20 Mei 1908",
+"28 Oktober 1928"
 ],
-answer:2,
-explanation:"Deklarasi Djuanda menegaskan kedaulatan laut Indonesia."
+answer:1
 },
 
 {
-question:"Pengadilan Tinggi dan Mahkamah Agung berfungsi sebagai ...",
+question:"Peristiwa Sumpah Pemuda terjadi pada tahun?",
 options:[
-"Peradilan banding dan kasasi",
-"Peradilan istimewa",
-"Peradilan KKN",
-"Perkara berat",
-"Peradilan khusus"
+"1908",
+"1928",
+"1945",
+"1930",
+"1950"
 ],
-answer:0,
-explanation:"PT sebagai banding dan MA sebagai kasasi."
+answer:1
 },
 
 {
-question:"Mahkamah Agung tidak dapat menguji ...",
+question:"BPUPKI dibentuk oleh Jepang pada tahun?",
 options:[
-"Peraturan Pemerintah",
-"Keputusan Presiden",
-"Keputusan Menteri",
-"Peraturan Daerah",
-"Undang-undang"
+"1942",
+"1943",
+"1944",
+"1945",
+"1946"
 ],
-answer:4,
-explanation:"UU diuji oleh Mahkamah Konstitusi."
+answer:3
 },
 
 {
-question:"Yang tidak pernah berubah dalam dinamika ketatanegaraan Indonesia adalah ...",
+question:"Ketua BPUPKI adalah?",
 options:[
-"Bentuk negara",
-"Bentuk pemerintahan",
-"Corak pemerintahan",
-"Lembaga negara",
-"Sistem demokrasi"
+"Soekarno",
+"Hatta",
+"Radjiman Wedyodiningrat",
+"Supomo",
+"Moh Yamin"
 ],
-answer:0,
-explanation:"Indonesia selalu berbentuk negara kesatuan."
+answer:2
 },
 
 {
-question:"Kabinet presidensial ditandai oleh ...",
+question:"Tokoh yang merumuskan Pancasila 1 Juni 1945 adalah?",
 options:[
-"Kepala negara presiden",
-"Presiden kepala pemerintahan",
-"Kabinet sederajat dengan parlemen",
-"Presiden kekuasaan tertinggi",
-"Ada wakil presiden"
+"Soekarno",
+"Hatta",
+"Supomo",
+"Moh Yamin",
+"Radjiman"
 ],
-answer:1,
-explanation:"Presiden memegang kekuasaan eksekutif."
+answer:0
 },
 
 {
-question:"Demokrasi yang menonjolkan kebebasan individu adalah ...",
+question:"Pembukaan UUD 1945 terdiri dari berapa alinea?",
 options:[
-"Demokrasi langsung",
-"Demokrasi tidak langsung",
-"Demokrasi terpimpin",
-"Demokrasi liberal",
-"Demokrasi Pancasila"
+"2",
+"3",
+"4",
+"5",
+"6"
 ],
-answer:3,
-explanation:"Demokrasi liberal menonjolkan kebebasan individu."
+answer:2
 },
 
 {
-question:"Hukum administrasi negara adalah ...",
+question:"Pasal dalam UUD 1945 sebelum amandemen berjumlah?",
 options:[
-"Peraturan mengikat badan negara",
-"Pelanggaran pegawai",
-"Pemberhentian pegawai",
-"Pengangkatan pegawai",
-"Tugas pegawai"
+"27",
+"37",
+"45",
+"50",
+"65"
 ],
-answer:0,
-explanation:"HAN adalah hukum yang mengatur tindakan administrasi negara."
+answer:1
 },
 
 {
-question:"Tahap II pembuatan ketetapan MPR adalah ...",
+question:"Indonesia menganut sistem pemerintahan?",
 options:[
-"Penjelasan rapat",
-"Keputusan paripurna",
-"Pembahasan badan pekerja",
-"Pembahasan komisi",
-"Pengambilan keputusan"
+"Parlementer",
+"Presidensial",
+"Monarki",
+"Kerajaan",
+"Kolonial"
 ],
-answer:2,
-explanation:"Tahap II dilakukan oleh badan pekerja."
-},
-
-// soal 21–35 diringkas tetapi tetap sesuai sumber
-
-{
-question:"Fatahillah mengganti nama Sunda Kelapa menjadi ...",
-options:["Batavia","Jakarta","Jayakarta","Betawi","Jawa Barat"],
-answer:2,
-explanation:"Jayakarta berarti kota kemenangan."
+answer:1
 },
 
 {
-question:"Islam berkembang di pesisir karena ...",
-options:["Udara sejuk","Penduduk padat","Perdagangan laut","Penduduk bodoh","Pusat kerajaan"],
-answer:2,
-explanation:"Islam disebarkan melalui jalur perdagangan."
-},
-
-{
-question:"Konferensi Meja Bundar dilaksanakan di ...",
-options:["Amsterdam","Den Haag","Belgia","Kolombo","New York"],
-answer:1,
-explanation:"KMB berlangsung di Den Haag Belanda."
-},
-
-{
-question:"Finalis 7 keajaiban dunia dari Spanyol adalah ...",
-options:["Machu Picchu","Acropolis","Stonehenge","Alhambra","Timbuktu"],
-answer:3,
-explanation:"Alhambra berada di Granada Spanyol."
-},
-
-{
-question:"Yang bukan negara bagian Amerika Serikat adalah ...",
-options:["Idaho","Wyoming","Roskilde","Delaware","Colorado"],
-answer:2,
-explanation:"Roskilde berada di Denmark."
-},
-
-{
-question:"Lagu Potong Bebek Angsa berasal dari ...",
-options:["NTB","NTT","Maluku","Papua","Kalbar"],
-answer:1,
-explanation:"Lagu daerah Nusa Tenggara Timur."
-},
-
-{
-question:"Perang Dunia I berakhir tahun ...",
-options:["1914","1916","1918","1921","1924"],
-answer:2,
-explanation:"PD I berlangsung 1914–1918."
-},
-
-{
-question:"PBI adalah organisasi olahraga ...",
-options:["Bowling","Bridge","Bulutangkis","Baseball","Berkuda"],
-answer:0,
-explanation:"PBI = Persatuan Bowling Indonesia."
-},
-
-{
-question:"Sriwijaya menjadi kerajaan maritim karena ...",
+question:"Presiden pertama Indonesia adalah?",
 options:[
-"Armada laut kuat",
-"Hubungan dagang",
-"Pusat perdagangan",
-"Letak strategis",
-"Raja berkuasa"
+"Soekarno",
+"Soeharto",
+"Habibie",
+"Gus Dur",
+"Megawati"
 ],
-answer:0,
-explanation:"Sriwijaya menguasai jalur laut perdagangan."
+answer:0
 },
 
 {
-question:"Tujuan Konferensi Asia Afrika adalah ...",
+question:"Wakil presiden pertama Indonesia adalah?",
 options:[
-"Mengawasi perdamaian",
-"Mempererat persatuan",
-"Kerja sama Asia Afrika",
-"Semua benar",
-"Meredakan blok barat timur"
+"Ahmad Yani",
+"Moh Hatta",
+"Sutan Sjahrir",
+"Agus Salim",
+"Ki Hajar Dewantara"
 ],
-answer:3,
-explanation:"KAA bertujuan kerja sama dan perdamaian."
+answer:1
 },
 
 {
-question:"Blok Barat pada Perang Dingin dipimpin oleh ...",
+question:"Garuda Pancasila diresmikan pada tahun?",
 options:[
-"Inggris",
-"Perancis",
-"Amerika Serikat",
-"Kanada",
-"Belanda"
+"1945",
+"1950",
+"1951",
+"1955",
+"1960"
 ],
-answer:2,
-explanation:"Blok Barat dipimpin Amerika Serikat."
+answer:1
 },
 
 {
-question:"Unsur 'what' pada teks naskah Lampung adalah ...",
+question:"Jumlah provinsi Indonesia saat ini sekitar?",
 options:[
-"Keprihatinan naskah kuno",
-"Museum Lampung",
-"Naskah Lampung di luar negeri",
-"Naskah bahasa asing",
-"Penyesalan"
+"34",
+"35",
+"36",
+"37",
+"38"
 ],
-answer:2,
-explanation:"Teks menjelaskan naskah Lampung tersimpan di luar negeri."
+answer:4
 },
 
 {
-question:"Kalimat tidak baku adalah ...",
+question:"Sistem demokrasi Indonesia berdasarkan?",
 options:[
-"Data Pemprov Lampung",
-"Naskah di Leiden",
-"Anggaran Rp 40-70 juta per tahun",
-"Penambahan koleksi museum",
-"Mencontohkan uang aku"
+"Pancasila",
+"Kerajaan",
+"Kolonial",
+"Militer",
+"Federasi"
 ],
-answer:2,
-explanation:"Penulisan 'per tahun' seharusnya 'pertahun'."
+answer:0
 },
 
 {
-question:"Reduplikasi bermakna kualitas adalah ...",
+question:"Bhinneka Tunggal Ika artinya?",
 options:[
-"anak-anak",
-"malam-malam",
-"pintar-pintar",
-"lauk pauk",
-"bermanja-manja"
+"Bersatu kita teguh",
+"Berbeda beda tetapi tetap satu",
+"Indonesia merdeka",
+"Gotong royong",
+"Satu bangsa"
 ],
-answer:2,
-explanation:"'Pintar-pintar' menunjukkan kualitas."
+answer:1
 },
 
 {
-question:"Penulisan nama dan gelar yang benar adalah ...",
+question:"Hari Kebangkitan Nasional diperingati setiap?",
 options:[
-"Sutinah Pertiwi, S.H.",
-"Moh Indrawan M.Pd",
-"Hj Rusti Sariringsih",
-"Dr. Laila Sari Devi",
-"Rusli Hadiningrat, S.S"
+"20 Mei",
+"1 Juni",
+"17 Agustus",
+"28 Oktober",
+"10 November"
 ],
-answer:3,
-explanation:"Penulisan gelar yang benar: Dr. Laila Sari Devi."
+answer:0
+},
+
+{
+question:"Hari Sumpah Pemuda diperingati?",
+options:[
+"20 Mei",
+"1 Juni",
+"17 Agustus",
+"28 Oktober",
+"10 November"
+],
+answer:3
+},
+
+{
+question:"Hari Pahlawan diperingati?",
+options:[
+"20 Mei",
+"1 Juni",
+"17 Agustus",
+"28 Oktober",
+"10 November"
+],
+answer:4
+},
+
+{
+question:"Negara Indonesia berdasar atas hukum terdapat dalam UUD 1945 pasal?",
+options:[
+"1 ayat 3",
+"2 ayat 1",
+"3 ayat 1",
+"4 ayat 1",
+"5 ayat 1"
+],
+answer:0
+},
+
+{
+question:"Kedaulatan berada di tangan rakyat terdapat pada pasal?",
+options:[
+"1 ayat 2",
+"2 ayat 1",
+"3 ayat 2",
+"4 ayat 1",
+"5 ayat 1"
+],
+answer:0
+},
+
+{
+question:"Presiden memegang kekuasaan pemerintahan menurut pasal?",
+options:[
+"4 ayat 1",
+"3 ayat 1",
+"2 ayat 1",
+"1 ayat 1",
+"5 ayat 1"
+],
+answer:0
+},
+
+{
+question:"Lembaga pembentuk undang-undang adalah?",
+options:[
+"MPR",
+"DPR",
+"Presiden",
+"MA",
+"BPK"
+],
+answer:1
+},
+
+{
+question:"Mahkamah Konstitusi berfungsi untuk?",
+options:[
+"Mengadili sengketa konstitusi",
+"Membuat UU",
+"Mengawasi presiden",
+"Mengatur pajak",
+"Mengatur daerah"
+],
+answer:0
+},
+
+{
+question:"Indonesia merdeka pada tahun?",
+options:[
+"1942",
+"1943",
+"1944",
+"1945",
+"1946"
+],
+answer:3
 }
 
 ]
 
 export default function TWKExam(){
 
-const [current,setCurrent] = useState(0)
-const [answers,setAnswers] = useState({})
-const [time,setTime] = useState(90*60)
-const [showExplain,setShowExplain] = useState(false)
+const [current,setCurrent]=useState(0)
+const [answers,setAnswers]=useState({})
+const [doubts,setDoubts]=useState({})
+const [time,setTime]=useState(30*60)
 
 useEffect(()=>{
 
-const timer = setInterval(()=>{
+const timer=setInterval(()=>{
 
 setTime(prev=>{
+
 if(prev<=1){
+
 clearInterval(timer)
-setShowExplain(true)
+submitExam()
+
 return 0
+
 }
+
 return prev-1
+
 })
 
 },1000)
 
-return ()=>clearInterval(timer)
+return()=>clearInterval(timer)
 
 },[])
+
+function formatTime(){
+
+const m=Math.floor(time/60)
+const s=time%60
+
+return m+":"+(s<10?"0"+s:s)
+
+}
 
 function selectAnswer(i){
 
@@ -447,56 +473,79 @@ setAnswers({...answers,[current]:i})
 
 }
 
+function toggleDoubt(){
+
+setDoubts({
+...doubts,
+[current]:!doubts[current]
+})
+
+}
+
 function next(){
+
 if(current<questions.length-1){
 setCurrent(current+1)
 }
+
 }
 
 function prev(){
+
 if(current>0){
 setCurrent(current-1)
 }
-}
-
-function formatTime(){
-
-const m = Math.floor(time/60)
-const s = time%60
-
-return m+":"+(s<10?"0"+s:s)
 
 }
 
-function score(){
+function submitExam(){
 
-let total = 0
+let score=0
 
 questions.forEach((q,i)=>{
+
 if(answers[i]===q.answer){
-total++
+score++
 }
+
 })
 
-alert("Skor TWK: "+total+" / "+questions.length)
-
-setShowExplain(true)
+alert("Skor TWK: "+score+" / "+questions.length)
 
 }
 
 return(
 
-<div style={{display:"flex",height:"100vh",background:"#070d1a",color:"white"}}>
+<div style={{
+display:"flex",
+height:"100vh",
+background:"#0f172a",
+color:"white",
+fontFamily:"Arial"
+}}>
 
-<div style={{width:"220px",background:"#111827",padding:"20px"}}>
+{/* NAVIGATOR */}
 
-<h3>Soal</h3>
+<div style={{
+width:"260px",
+background:"#111827",
+padding:"20px"
+}}>
 
-<div style={{display:"grid",gridTemplateColumns:"repeat(5,1fr)",gap:"8px"}}>
+<h3 style={{marginBottom:"10px"}}>Daftar Soal</h3>
+
+<div style={{
+display:"grid",
+gridTemplateColumns:"repeat(5,1fr)",
+gap:"8px"
+}}>
 
 {questions.map((q,i)=>{
 
-const answered = answers[i]!=null
+let color="#374151"
+
+if(doubts[i]) color="#eab308"
+else if(answers[i]!=null) color="#16a34a"
 
 return(
 
@@ -505,9 +554,11 @@ key={i}
 onClick={()=>setCurrent(i)}
 style={{
 padding:"10px",
-background:answered?"#16a34a":"#374151",
+background:color,
 border:"none",
-color:"white"
+borderRadius:"6px",
+color:"white",
+fontWeight:"bold"
 }}
 >
 {i+1}
@@ -519,30 +570,61 @@ color:"white"
 
 </div>
 
-<div style={{marginTop:"20px"}}>
-<b>Timer</b>
-<div style={{fontSize:"22px"}}>{formatTime()}</div>
+{/* TIMER */}
+
+<div style={{marginTop:"25px"}}>
+
+<div style={{fontSize:"14px",opacity:0.7}}>
+Waktu Tersisa
+</div>
+
+<div style={{
+fontSize:"28px",
+fontWeight:"bold",
+marginTop:"5px"
+}}>
+{formatTime()}
 </div>
 
 </div>
 
-<div style={{flex:1,padding:"40px"}}>
+</div>
 
-<h2>Soal {current+1}</h2>
+{/* AREA SOAL */}
 
-<p style={{marginTop:"20px"}}>
+<div style={{
+flex:1,
+padding:"40px"
+}}>
 
+<div style={{
+display:"flex",
+justifyContent:"space-between",
+marginBottom:"20px"
+}}>
+
+<h2>Soal {current+1} / {questions.length}</h2>
+
+</div>
+
+<div style={{
+background:"#1e293b",
+padding:"25px",
+borderRadius:"10px"
+}}>
+
+<p style={{
+fontSize:"18px",
+marginBottom:"20px"
+}}>
 {questions[current].question}
-
 </p>
-
-<div style={{marginTop:"20px"}}>
 
 {questions[current].options.map((opt,i)=>(
 
-<div key={i} style={{marginBottom:"10px"}}>
+<div key={i} style={{marginBottom:"12px"}}>
 
-<label>
+<label style={{cursor:"pointer"}}>
 
 <input
 type="radio"
@@ -550,7 +632,11 @@ checked={answers[current]===i}
 onChange={()=>selectAnswer(i)}
 />
 
-{" "+opt}
+<span style={{marginLeft:"10px"}}>
+
+{opt}
+
+</span>
 
 </label>
 
@@ -560,25 +646,65 @@ onChange={()=>selectAnswer(i)}
 
 </div>
 
-{showExplain && (
+{/* BUTTONS */}
 
-<div style={{marginTop:"20px",background:"#111827",padding:"15px"}}>
+<div style={{
+marginTop:"30px",
+display:"flex",
+gap:"10px"
+}}>
 
-<b>Pembahasan:</b><br/>
+<button
+onClick={prev}
+style={{
+padding:"10px 20px",
+background:"#374151",
+border:"none",
+borderRadius:"6px",
+color:"white"
+}}
+>
+Previous
+</button>
 
-{questions[current].explanation}
+<button
+onClick={next}
+style={{
+padding:"10px 20px",
+background:"#2563eb",
+border:"none",
+borderRadius:"6px",
+color:"white"
+}}
+>
+Next
+</button>
 
-</div>
+<button
+onClick={toggleDoubt}
+style={{
+padding:"10px 20px",
+background:"#eab308",
+border:"none",
+borderRadius:"6px",
+color:"black"
+}}
+>
+Ragu-ragu
+</button>
 
-)}
-
-<div style={{marginTop:"40px",display:"flex",gap:"10px"}}>
-
-<button onClick={prev}>Previous</button>
-
-<button onClick={next}>Next</button>
-
-<button onClick={score}>Submit</button>
+<button
+onClick={submitExam}
+style={{
+padding:"10px 20px",
+background:"#16a34a",
+border:"none",
+borderRadius:"6px",
+color:"white"
+}}
+>
+Submit
+</button>
 
 </div>
 
