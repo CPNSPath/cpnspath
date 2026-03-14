@@ -1,52 +1,40 @@
 "use client"
 
-import { useRouter } from "next/navigation"
+export default function TKP(){
 
-export default function Page() {
+  return(
 
-  const router = useRouter()
-
-  return (
     <div style={{
-      minHeight: "100vh",
-      background: "#070d1a",
-      color: "white",
-      fontFamily: "Arial",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center"
+      minHeight:"100vh",
+      background:"#070d1a",
+      color:"white",
+      display:"flex",
+      justifyContent:"center",
+      alignItems:"center",
+      flexDirection:"column",
+      fontFamily:"Arial"
     }}>
 
-      <div style={{
-        background: "#111827",
-        padding: "40px",
-        borderRadius: "12px",
-        textAlign: "center"
-      }}>
+      <h1>Tryout TKP</h1>
 
-        <h1>TIU Tryout</h1>
+      <p>Halaman TKP sedang dibuat</p>
 
-        <p style={{ opacity: 0.7 }}>
-          Tes Intelegensi Umum
-        </p>
-
-        <button
-          onClick={() => router.push("/tryout/tiu/exam")}
-          style={{
-            marginTop: "20px",
-            padding: "12px 30px",
-            background: "#2563eb",
-            border: "none",
-            borderRadius: "8px",
-            color: "white",
-            cursor: "pointer"
-          }}
-        >
-          Mulai Ujian
+      <a href="/tryout">
+        <button style={{
+          padding:"10px 20px",
+          marginTop:"20px",
+          background:"#2563eb",
+          border:"none",
+          borderRadius:"8px",
+          color:"white",
+          cursor:"pointer"
+        }}>
+          Kembali
         </button>
-
-      </div>
+      </a>
 
     </div>
+
   )
+
 }
