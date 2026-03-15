@@ -5,421 +5,421 @@ import { useState,useEffect } from "react"
 const questions = [
 
 {
-question:"Pancasila sebagai dasar negara ditetapkan pada tanggal?",
+question:"Pembukaan UUD 1945 dalam kaitannya dengan HAM adalah ...",
 options:[
-"1 Juni 1945",
-"18 Agustus 1945",
-"17 Agustus 1945",
-"22 Juni 1945",
-"20 Mei 1908"
+"Piagam HAM Indonesia",
+"Sumber HAM Indonesia",
+"Pedoman pelaksanaan jaminan HAM Indonesia",
+"Penjelasan pelaksanaan HAM Indonesia",
+"Rumusan pelaksanaan HAM"
+],
+answer:0
+},
+
+{
+question:"Yang menjadi causal final dari Pancasila adalah ...",
+options:[
+"Piagam Jakarta",
+"Bangsa Indonesia",
+"Warga Negara Indonesia",
+"BPUPKI",
+"PPKI"
+],
+answer:0
+},
+
+{
+question:"Yang bukan termasuk prinsip dasar negara yang diusulkan oleh Soekarno pada tanggal 1 Juni 1945 adalah ...",
+options:[
+"Demokrasi",
+"Kekeluargaan",
+"Perikemanusiaan",
+"Kesejahteraan sosial",
+"Kebangsaan"
 ],
 answer:1
 },
 
 {
-question:"Semboyan negara Indonesia adalah?",
+question:"Berdasarkan TAP MPRS No. XX/MPRS/1966, Pancasila menempati tempat tertinggi sebagai hukum dasar negara RI, karena Pancasila merupakan ...",
 options:[
-"Tut Wuri Handayani",
-"Bhinneka Tunggal Ika",
-"Garuda Pancasila",
-"Satyameva Jayate",
-"NKRI Harga Mati"
+"Dokumen historis",
+"Alat pemersatu bangsa",
+"Nilai luhur dari nenek moyang",
+"Landasan perjuangan bangsa",
+"Dasar negara dan pandangan hidup bangsa Indonesia"
 ],
-answer:1
+answer:4
 },
 
 {
-question:"UUD 1945 disahkan pada tanggal?",
+question:"Yang diatur oleh hukum dasar negara adalah ...",
 options:[
-"17 Agustus 1945",
-"18 Agustus 1945",
-"1 Juni 1945",
-"22 Juni 1945",
-"20 Mei 1908"
+"Susunan organisasi suatu negara",
+"Membatasi tugas dan wewenang badan-badan negara",
+"Menjaga/mengatur hubungan vertikal antara badan-badan negara",
+"Menjaga/mengatur hubungan horizontal antar badan-badan negara",
+"Semua jawaban benar"
 ],
-answer:1
+answer:4
 },
 
 {
-question:"Lambang negara Indonesia adalah?",
+question:"Yang bukan merupakan dampak/akibat dari Dekrit Presiden 5 Juli 1959 adalah ...",
 options:[
-"Bintang",
-"Garuda Pancasila",
-"Rajawali",
-"Elang",
-"Merpati"
+"Konstituante dibubarkan",
+"UUD tidak berlaku",
+"Kembali ke UUD 1945",
+"Dibentuk DPRS",
+"Dibentuk DPAS"
 ],
-answer:1
+answer:3
 },
 
 {
-question:"Sila pertama Pancasila adalah?",
+question:"Yang bukan merupakan alat-alat perlengkapan MPR adalah ...",
 options:[
-"Kemanusiaan yang adil dan beradab",
-"Ketuhanan Yang Maha Esa",
-"Persatuan Indonesia",
-"Kerakyatan yang dipimpin hikmat",
-"Keadilan sosial"
-],
-answer:1
-},
-
-{
-question:"Sila kedua Pancasila berbunyi?",
-options:[
-"Ketuhanan Yang Maha Esa",
-"Kemanusiaan yang adil dan beradab",
-"Persatuan Indonesia",
-"Kerakyatan yang dipimpin hikmat",
-"Keadilan sosial"
-],
-answer:1
-},
-
-{
-question:"Dasar hukum tertinggi di Indonesia adalah?",
-options:[
-"Pancasila",
-"UUD 1945",
-"UU",
-"Perpres",
-"Perda"
-],
-answer:1
-},
-
-{
-question:"Indonesia adalah negara?",
-options:[
-"Kerajaan",
-"Serikat",
-"Kesatuan",
-"Federasi",
-"Koloni"
+"Pimpinan MPR",
+"Badan pekerja MPR",
+"Pembantu MPR",
+"Komisi MPR",
+"Panitia Ad Hoc MPR"
 ],
 answer:2
 },
 
 {
-question:"Bentuk negara Indonesia adalah?",
+question:"Menteri-menteri negara adalah pembantu presiden. Hal tersebut diatur dalam UUD 1945, yaitu ...",
 options:[
-"Republik",
-"Monarki",
-"Kerajaan",
-"Imperium",
-"Kesultanan"
+"Pasal 18",
+"Pasal 19",
+"Pasal 17",
+"Pasal 16",
+"Pasal 15"
+],
+answer:2
+},
+
+{
+question:"Berkenaan dengan perubahan isi dari UUD 1945 sebenarnya telah diatur oleh TAP MPR No. IV/MPR/1983 tentang ...",
+options:[
+"Interpelasi",
+"Budget",
+"Referendum",
+"Mosi tidak percaya",
+"Angket"
+],
+answer:2
+},
+
+{
+question:"Penyebab utama menyerahnya Jepang kepada Sekutu adalah ...",
+options:[
+"Jepang tidak mendapat dukungan rakyat Indonesia",
+"Jepang kehabisan bala tentara",
+"Kaisar Jepang tidak lagi menginginkan perang",
+"Pemimpin Jepang banyak gugur",
+"Kota Hiroshima dan Nagasaki dibom atom oleh Amerika Serikat"
+],
+answer:4
+},
+
+{
+question:"Sehari setelah proklamasi, PPKI mengadakan sidang pertama, hasil sidang tersebut adalah ...",
+options:[
+"Mengesahkan UUD menjadi UUD 1945",
+"Menetapkan Soekarno dan Hatta sebagai presiden dan wakil presiden",
+"Presiden sementara dibantu Komite Nasional",
+"Dibentuknya DPR dan MPR",
+"A,B, dan C benar"
+],
+answer:4
+},
+
+{
+question:"Buku Max Havelaar dikarang oleh ...",
+options:[
+"Van den Bosch",
+"Douwes Dekker",
+"Raffles",
+"Daendels",
+"J.P. Coen"
+],
+answer:1
+},
+
+{
+question:"Alasan dikeluarkannya Deklarasi Djuanda adalah ...",
+options:[
+"Mempertahankan NKRI",
+"Menciptakan kawasan damai dalam gagasan Wawasan Nusantara",
+"Melindungi kekayaan negara Indonesia",
+"Memberikan kenyamanan pemerintah untuk menindak pelanggaran laut",
+"Melindungi wilayah kepulauan RI"
+],
+answer:2
+},
+
+{
+question:"Untuk mendapatkan keadilan pertama bagi rakyat adalah pada tingkat pengadilan negeri, sedangkan Pengadilan Tinggi dan Mahkamah Agung berfungsi sebagai ...",
+options:[
+"Peradilan banding dan kasasi",
+"Peradilan istimewa",
+"Peradilan KKN",
+"Peradilan perkara berat",
+"Peradilan khusus"
 ],
 answer:0
 },
 
 {
-question:"Bendera Indonesia berwarna?",
+question:"Mahkamah Agung mempunyai hak untuk menguji terhadap peraturan perundangan yang berlaku, kecuali ...",
 options:[
-"Merah putih",
-"Biru putih",
-"Merah biru",
-"Putih biru",
-"Merah kuning"
+"Peraturan Pemerintah",
+"Keputusan Presiden",
+"Keputusan Menteri",
+"Peraturan Daerah",
+"Undang-undang buatan DPR"
+],
+answer:3
+},
+
+{
+question:"Dalam dinamika ketatanegaraan Indonesia berlangsung yang tidak pernah mengalami perubahan adalah ...",
+options:[
+"Bentuk negara",
+"Bentuk pemerintahan",
+"Corak pemerintahan",
+"Lembaga negara",
+"Sistem demokrasi"
+],
+answer:4
+},
+
+{
+question:"Sistem pemerintahan kabinet presidensil ditandai oleh ...",
+options:[
+"Kepala negara seorang presiden",
+"Presiden merupakan kepala pemerintahan",
+"Kedudukan kabinet sejajar dengan parlemen",
+"Presiden memegang kekuasaan tertinggi",
+"Adanya wakil presiden"
+],
+answer:1
+},
+
+{
+question:"Ada bermacam istilah demokrasi, demokrasi yang menonjolkan kebebasan individu adalah ...",
+options:[
+"Demokrasi langsung",
+"Demokrasi tidak langsung",
+"Demokrasi terpimpin",
+"Demokrasi liberal",
+"Demokrasi Pancasila"
+],
+answer:3
+},
+
+{
+question:"Hukum administrasi negara merupakan bagian dari hukum tata negara dalam arti luas, karena hukum administrasi negara adalah ...",
+options:[
+"Sekumpulan peraturan hukum yang mengikat badan negara",
+"Peraturan pelanggaran pegawai negeri",
+"Peraturan pemberhentian pegawai negeri",
+"Peraturan pengangkatan pegawai negeri",
+"Peraturan mengenai tugas pegawai negeri"
 ],
 answer:0
 },
 
 {
-question:"Ibukota Indonesia saat ini adalah?",
+question:"Proses pembuatan ketetapan MPR tahap II adalah ...",
 options:[
-"Bandung",
+"Pembahasan rapat paripurna Majelis",
+"Pembahasan keputusan rapat paripurna Majelis",
+"Pembahasan oleh Badan Pekerja Majelis",
+"Pembahasan komisi/panitia Ad Hoc",
+"Pengambilan keputusan rapat paripurna"
+],
+answer:2
+},
+
+{
+question:"Karena berhasil mengalahkan Portugis, Fatahillah mengganti nama Sunda Kelapa menjadi ...",
+options:[
+"Batavia",
 "Jakarta",
-"Surabaya",
-"Yogyakarta",
-"Medan"
-],
-answer:1
-},
-
-{
-question:"Bahasa nasional Indonesia adalah?",
-options:[
-"Jawa",
-"Melayu",
-"Indonesia",
-"Sunda",
-"Batak"
+"Jayakarta",
+"Betawi",
+"Jawa Barat"
 ],
 answer:2
 },
 
 {
-question:"Hari kemerdekaan Indonesia adalah?",
+question:"Agama Islam di Indonesia berkembang di daerah pesisir Sumatra dan Jawa karena ...",
 options:[
-"1 Juni 1945",
-"17 Agustus 1945",
-"18 Agustus 1945",
-"20 Mei 1908",
-"28 Oktober 1928"
+"Pesisir udaranya sejuk",
+"Daerah pesisir padat penduduk",
+"Disebarkan melalui perdagangan laut",
+"Penduduk pesisir masih bodoh",
+"Merupakan pusat kerajaan"
+],
+answer:2
+},
+
+{
+question:"Konferensi Meja Bundar diselenggarakan di kota ...",
+options:[
+"Amsterdam",
+"Den Haag",
+"Belgium",
+"Kolombo",
+"New York"
 ],
 answer:1
 },
 
 {
-question:"Peristiwa Sumpah Pemuda terjadi pada tahun?",
+question:"Finalis Tujuh Keajaiban Dunia berikut yang berasal dari negara Spanyol adalah ...",
 options:[
-"1908",
-"1928",
-"1945",
-"1930",
-"1950"
-],
-answer:1
-},
-
-{
-question:"BPUPKI dibentuk oleh Jepang pada tahun?",
-options:[
-"1942",
-"1943",
-"1944",
-"1945",
-"1946"
+"Machu Picchu",
+"Acropolis",
+"Stonehenge",
+"Alhambra",
+"Timbuktu"
 ],
 answer:3
 },
 
 {
-question:"Ketua BPUPKI adalah?",
+question:"Yang bukan merupakan negara bagian Amerika Serikat adalah ...",
 options:[
-"Soekarno",
-"Hatta",
-"Radjiman Wedyodiningrat",
-"Supomo",
-"Moh Yamin"
+"Idaho",
+"Wyoming",
+"Roskilde",
+"Delaware",
+"Colorado"
 ],
 answer:2
 },
 
 {
-question:"Tokoh yang merumuskan Pancasila 1 Juni 1945 adalah?",
+question:"Lagu daerah Potong Bebek Angsa berasal dari provinsi ...",
 options:[
-"Soekarno",
-"Hatta",
-"Supomo",
-"Moh Yamin",
-"Radjiman"
+"Nusa Tenggara Barat",
+"Nusa Tenggara Timur",
+"Maluku",
+"Papua",
+"Kalimantan Barat"
 ],
-answer:0
+answer:1
 },
 
 {
-question:"Pembukaan UUD 1945 terdiri dari berapa alinea?",
+question:"Perang Dunia I berakhir pada tahun ...",
 options:[
-"2",
-"3",
-"4",
-"5",
-"6"
+"1914",
+"1916",
+"1918",
+"1921",
+"1924"
 ],
 answer:2
 },
 
 {
-question:"Pasal dalam UUD 1945 sebelum amandemen berjumlah?",
+question:"PBI adalah organisasi nasional untuk olahraga ...",
 options:[
-"27",
-"37",
-"45",
-"50",
-"65"
+"Bowling",
+"Bridge",
+"Bulu tangkis",
+"Baseball",
+"Berkuda"
+],
+answer:0
+},
+
+{
+question:"Kerajaan Sriwijaya terkenal sebagai kerajaan maritim karena ...",
+options:[
+"Mempunyai armada laut kuat",
+"Mengadakan hubungan dagang",
+"Menjadi pusat perdagangan Asia Tenggara",
+"Letak persimpangan perdagangan",
+"Memiliki raja berkuasa"
+],
+answer:0
+},
+
+{
+question:"Tujuan diselenggarakannya Konferensi Asia Afrika di antaranya ...",
+options:[
+"Ikut mengawasi perdamaian dunia",
+"Mempererat persatuan Asia",
+"Mempersatukan kerja sama Asia",
+"Mempererat persatuan dan mengawasi perdamaian dunia",
+"Meredakan ketegangan blok Barat dan Timur"
+],
+answer:2
+},
+
+{
+question:"Setelah Perang Dunia II berakhir muncul dua kekuatan yaitu Blok Barat dan Blok Timur. Blok Barat dipimpin oleh ...",
+options:[
+"Inggris",
+"Perancis",
+"Amerika Serikat",
+"Kanada",
+"Belanda"
+],
+answer:2
+},
+
+{
+question:"Sebagian naskah kuno dari Provinsi Lampung diketahui tersimpan di lembaga luar negeri. Unsur what pada teks tersebut adalah ...",
+options:[
+"Keprihatinan terhadap naskah kuno Lampung",
+"Museum Negeri Lampung menyimpan naskah kuno",
+"Naskah kuno Lampung sebagian tersimpan di luar negeri",
+"Naskah kuno Lampung memakai bahasa kuno",
+"Penyesalan karena naskah kuno Lampung ada di luar negeri"
+],
+answer:2
+},
+
+{
+question:"Kalimat berikut ini adalah baku, kecuali ...",
+options:[
+"Berdasarkan data Pemprov Lampung naskah kuno tersebar di Belanda Denmark Inggris dan Jerman",
+"Di Leiden setidaknya ada 5 naskah kuno",
+"Anggaran pengadaan koleksi baru benda bersejarah di museum hanya Rp 40-70 juta setahun",
+"Penambahan koleksi benda bersejarah di museum negeri Lampung terkendala dana",
+"Ia mencontohkan suatu ketika pernah membeli uang kuno eks Karasidenan Lampung"
+],
+answer:2
+},
+
+{
+question:"Akar tanaman bakau melengkung besar-besar. Kata reduplikasi yang bermakna sama adalah ...",
+options:[
+"Program KB membatasi jumlah anak-anak dalam keluarga",
+"Lulusan Perguruan Tinggi dalam negeri tidak kalah pintar",
+"Aku tidak menerima telepon malam-malam",
+"Pada jam istirahat kami makan-makan",
+"Bila ada uang adik kecil itu berbelanja"
 ],
 answer:1
 },
 
 {
-question:"Indonesia menganut sistem pemerintahan?",
+question:"Penulisan nama dan gelar yang benar adalah ...",
 options:[
-"Parlementer",
-"Presidensial",
-"Monarki",
-"Kerajaan",
-"Kolonial"
-],
-answer:1
-},
-
-{
-question:"Presiden pertama Indonesia adalah?",
-options:[
-"Soekarno",
-"Soeharto",
-"Habibie",
-"Gus Dur",
-"Megawati"
-],
-answer:0
-},
-
-{
-question:"Wakil presiden pertama Indonesia adalah?",
-options:[
-"Ahmad Yani",
-"Moh Hatta",
-"Sutan Sjahrir",
-"Agus Salim",
-"Ki Hajar Dewantara"
-],
-answer:1
-},
-
-{
-question:"Garuda Pancasila diresmikan pada tahun?",
-options:[
-"1945",
-"1950",
-"1951",
-"1955",
-"1960"
-],
-answer:1
-},
-
-{
-question:"Jumlah provinsi Indonesia saat ini sekitar?",
-options:[
-"34",
-"35",
-"36",
-"37",
-"38"
-],
-answer:4
-},
-
-{
-question:"Sistem demokrasi Indonesia berdasarkan?",
-options:[
-"Pancasila",
-"Kerajaan",
-"Kolonial",
-"Militer",
-"Federasi"
-],
-answer:0
-},
-
-{
-question:"Bhinneka Tunggal Ika artinya?",
-options:[
-"Bersatu kita teguh",
-"Berbeda beda tetapi tetap satu",
-"Indonesia merdeka",
-"Gotong royong",
-"Satu bangsa"
-],
-answer:1
-},
-
-{
-question:"Hari Kebangkitan Nasional diperingati setiap?",
-options:[
-"20 Mei",
-"1 Juni",
-"17 Agustus",
-"28 Oktober",
-"10 November"
-],
-answer:0
-},
-
-{
-question:"Hari Sumpah Pemuda diperingati?",
-options:[
-"20 Mei",
-"1 Juni",
-"17 Agustus",
-"28 Oktober",
-"10 November"
-],
-answer:3
-},
-
-{
-question:"Hari Pahlawan diperingati?",
-options:[
-"20 Mei",
-"1 Juni",
-"17 Agustus",
-"28 Oktober",
-"10 November"
-],
-answer:4
-},
-
-{
-question:"Negara Indonesia berdasar atas hukum terdapat dalam UUD 1945 pasal?",
-options:[
-"1 ayat 3",
-"2 ayat 1",
-"3 ayat 1",
-"4 ayat 1",
-"5 ayat 1"
-],
-answer:0
-},
-
-{
-question:"Kedaulatan berada di tangan rakyat terdapat pada pasal?",
-options:[
-"1 ayat 2",
-"2 ayat 1",
-"3 ayat 2",
-"4 ayat 1",
-"5 ayat 1"
-],
-answer:0
-},
-
-{
-question:"Presiden memegang kekuasaan pemerintahan menurut pasal?",
-options:[
-"4 ayat 1",
-"3 ayat 1",
-"2 ayat 1",
-"1 ayat 1",
-"5 ayat 1"
-],
-answer:0
-},
-
-{
-question:"Lembaga pembentuk undang-undang adalah?",
-options:[
-"MPR",
-"DPR",
-"Presiden",
-"MA",
-"BPK"
-],
-answer:1
-},
-
-{
-question:"Mahkamah Konstitusi berfungsi untuk?",
-options:[
-"Mengadili sengketa konstitusi",
-"Membuat UU",
-"Mengawasi presiden",
-"Mengatur pajak",
-"Mengatur daerah"
-],
-answer:0
-},
-
-{
-question:"Indonesia merdeka pada tahun?",
-options:[
-"1942",
-"1943",
-"1944",
-"1945",
-"1946"
+"Sutinah Pertiwi, S.E",
+"Moh Indrawan Setyo Hadi M.Pd",
+"Hj Rusti Saringsih",
+"Dr Laila Sari Devi",
+"Rusti Hadiningrat, S.S"
 ],
 answer:3
 }
