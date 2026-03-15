@@ -1,6 +1,7 @@
 "use client"
 
 import { useState,useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 const shuffledQuestions = [
 
@@ -259,9 +260,10 @@ answer:0
 ]
 
 export default function TIUExam(){
-
+const router = useRouter()
 const [current,setCurrent]=useState(0)
 const [answers,setAnswers]=useState({})
+
 useEffect(()=>{
 
 try{
@@ -280,11 +282,11 @@ localStorage.removeItem("tiu_answers")
 }
 
 },[])
+
 useEffect(()=>{
-
 localStorage.setItem("tiu_answers",JSON.stringify(answers))
-
 },[answers])
+
 const [doubts,setDoubts]=useState({})
 const [time,setTime]=useState(30*60)
 
@@ -303,9 +305,7 @@ if(prev<=1){
 
 clearInterval(timer)
 
-localStorage.setItem("tiu_answers",JSON.stringify(answers))
-
-submitExam()
+submitExam(true)
 
 return 0
 
@@ -319,7 +319,7 @@ return prev-1
 
 return()=>clearInterval(timer)
 
-},[])
+},[answers])
 
 function formatTime(){
 
@@ -331,9 +331,7 @@ return m+":"+(s<10?"0"+s:s)
 }
 
 function selectAnswer(i){
-
 setAnswers({...answers,[current]:i})
-
 }
 
 function toggleDoubt(){
@@ -361,21 +359,45 @@ setCurrent(current-1)
 
 }
 
-function submitExam(){
+function submitExam(force=false){
 
+if(!force){
 if(!confirm("Apakah Anda yakin ingin mengakhiri ujian?")) return
+}
 
 let score=0
+let correct=0
+let wrong=0
+let empty=0
 
 shuffledQuestions.forEach((q,i)=>{
 
-if(answers[i]===q.answer){
+if(answers[i]===undefined){
+empty++
+}
+else if(answers[i]===q.answer){
 score += 5
+correct++
+}
+else{
+wrong++
 }
 
 })
 
-alert("Skor TIU: "+score+" / "+shuffledQuestions.length)
+const resultData={
+score,
+correct,
+wrong,
+empty,
+total:shuffledQuestions.length,
+answers,
+questions:shuffledQuestions
+}
+
+localStorage.setItem("tiu_result",JSON.stringify(resultData))
+
+router.push("/tryout/tiu/result")
 
 }
 
@@ -553,7 +575,7 @@ Ragu-ragu
 </button>
 
 <button
-onClick={submitExam}
+onClick={()=>submitExam(false)}
 style={{
 padding:"10px 22px",
 background:"#16a34a",
@@ -569,7 +591,6 @@ Submit
 </div>
 
 </div>
-
 
 {/* NAVIGATOR SIDEBAR */}
 
@@ -630,7 +651,6 @@ cursor:"pointer"
 
 </div>
 
-
 {/* TIMER */}
 
 <div style={{
@@ -657,7 +677,6 @@ marginTop:"4px"
 </div>
 
 </div>
-
 
 {/* STATISTIK */}
 
