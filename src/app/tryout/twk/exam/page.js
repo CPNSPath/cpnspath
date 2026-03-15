@@ -472,8 +472,6 @@ if(prev<=1){
 
 clearInterval(timer)
 
-localStorage.setItem("twk_answers",JSON.stringify(answers))
-
 submitExam(true)
 
 return 0
@@ -488,7 +486,7 @@ return prev-1
 
 return()=>clearInterval(timer)
 
-},[])
+},[answers])
 
 function formatTime(){
 
