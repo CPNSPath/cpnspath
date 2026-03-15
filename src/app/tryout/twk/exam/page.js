@@ -744,7 +744,7 @@ Ragu-ragu
 </button>
 
 <button
-onClick={submitExam}
+onClick={()=>submitExam(false)}
 style={{
 padding:"10px 22px",
 background:"#16a34a",
