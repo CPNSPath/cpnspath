@@ -474,7 +474,7 @@ clearInterval(timer)
 
 localStorage.setItem("twk_answers",JSON.stringify(answers))
 
-submitExam()
+submitExam(true)
 
 return 0
 
@@ -530,9 +530,11 @@ setCurrent(current-1)
 
 }
 
-function submitExam(){
+function submitExam(force=false){
 
+if(!force){
 if(!confirm("Apakah Anda yakin ingin mengakhiri ujian?")) return
+}
 
 let score=0
 let correct=0
@@ -544,12 +546,10 @@ shuffledQuestions.forEach((q,i)=>{
 if(answers[i]===undefined){
 empty++
 }
-
 else if(answers[i]===q.answer){
 score += 5
 correct++
 }
-
 else{
 wrong++
 }
