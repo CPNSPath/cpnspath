@@ -39,7 +39,7 @@ border:"none",
 borderRadius:"6px",
 color:"white"
 }}>
-Sikat!
+Mulai
 </button>
 
 </Link>

@@ -1,8 +1,177 @@
 "use client"
 
-import Link from "next/link"
+import { useState, useEffect } from "react"
+import { supabase } from "@/lib/supabase"
 
-export default function Tryout(){
+const questions = [
+{
+id:1,
+question:"Pancasila sebagai dasar negara ditetapkan pada tanggal?",
+options:[
+"1 Juni 1945",
+"18 Agustus 1945",
+"17 Agustus 1945",
+"22 Juni 1945",
+"20 Mei 1908"
+],
+answer:"18 Agustus 1945"
+},
+{
+id:2,
+question:"Semboyan negara Indonesia adalah?",
+options:[
+"Tut Wuri Handayani",
+"Bhinneka Tunggal Ika",
+"Garuda Pancasila",
+"Satyameva Jayate",
+"NKRI Harga Mati"
+],
+answer:"Bhinneka Tunggal Ika"
+},
+{
+id:3,
+question:"Tujuan negara menurut Pembukaan UUD 1945 adalah?",
+options:[
+"Melindungi segenap bangsa Indonesia",
+"Meningkatkan ekonomi negara",
+"Memperkuat militer",
+"Menguasai SDA",
+"Memperluas wilayah"
+],
+answer:"Melindungi segenap bangsa Indonesia"
+},
+{
+id:4,
+question:"Lambang negara Indonesia adalah?",
+options:[
+"Bintang",
+"Garuda Pancasila",
+"Burung Rajawali",
+"Elang Jawa",
+"Burung Merpati"
+],
+answer:"Garuda Pancasila"
+},
+{
+id:5,
+question:"UUD 1945 disahkan pada tanggal?",
+options:[
+"17 Agustus 1945",
+"18 Agustus 1945",
+"1 Juni 1945",
+"22 Juni 1945",
+"20 Mei 1908"
+],
+answer:"18 Agustus 1945"
+}
+]
+
+export default function TWK(){
+
+const [current,setCurrent] = useState(0)
+const [answers,setAnswers] = useState({})
+const [doubt,setDoubt] = useState({})
+const [time,setTime] = useState(1800)
+
+const question = questions[current]
+
+function selectAnswer(opt){
+
+setAnswers({
+...answers,
+[question.id]:opt
+})
+
+}
+
+function toggleDoubt(){
+
+setDoubt({
+...doubt,
+[question.id]:!doubt[question.id]
+})
+
+}
+
+function next(){
+if(current < questions.length-1){
+setCurrent(current+1)
+}
+}
+
+function prev(){
+if(current > 0){
+setCurrent(current-1)
+}
+}
+
+useEffect(()=>{
+
+const timer = setInterval(()=>{
+
+setTime(prev=>{
+
+if(prev<=1){
+clearInterval(timer)
+alert("Waktu habis")
+return 0
+}
+
+return prev-1
+
+})
+
+},1000)
+
+return ()=>clearInterval(timer)
+
+},[])
+
+function calculateScore(){
+
+let correct = 0
+
+questions.forEach(q=>{
+if(answers[q.id] === q.answer){
+correct++
+}
+})
+
+return correct
+
+}
+
+async function submitExam(){
+
+const score = calculateScore()
+
+const name = prompt("Masukkan nama kamu")
+
+if(!name) return
+
+const {error} = await supabase
+.from("results")
+.insert([
+{
+name:name,
+score:score
+}
+])
+
+if(error){
+alert("Gagal menyimpan skor")
+return
+}
+
+alert("Skor kamu: "+score)
+
+}
+
+const minutes = Math.floor(time/60)
+const seconds = time % 60
+
+const answeredCount = Object.keys(answers).length
+const progress = (answeredCount/questions.length)*100
 
 return(
 
@@ -11,131 +180,221 @@ minHeight:"100vh",
 background:"#070d1a",
 color:"white",
 fontFamily:"Arial",
+padding:"40px"
+}}>
+
+<div style={{maxWidth:"1200px",margin:"auto"}}>
+
+<div style={{
 display:"flex",
-justifyContent:"center",
-alignItems:"center"
+justifyContent:"space-between",
+marginBottom:"20px"
 }}>
 
-<div style={{maxWidth:"900px",width:"100%"}}>
+<h2>TWK Tryout</h2>
 
-<h1 style={{
-fontSize:"40px",
-marginBottom:"10px",
-textAlign:"center"
+<div style={{
+background:"#111827",
+padding:"10px 20px",
+borderRadius:"8px"
 }}>
-Free Trial Tryout
-</h1>
+Sisa Waktu: {minutes}:{seconds.toString().padStart(2,"0")}
+</div>
 
-<p style={{
-opacity:0.7,
-marginBottom:"40px",
-textAlign:"center"
+</div>
+
+<div style={{
+height:"10px",
+background:"#1f2937",
+borderRadius:"6px",
+marginBottom:"30px"
 }}>
-Pilih jenis tes yang ingin kamu kerjakan.
-</p>
+
+<div style={{
+width:`${progress}%`,
+height:"10px",
+background:"#2563eb",
+borderRadius:"6px"
+}}/>
+
+</div>
 
 <div style={{
 display:"grid",
-gridTemplateColumns:"repeat(3,1fr)",
-gap:"20px"
+gridTemplateColumns:"3fr 1fr",
+gap:"30px"
 }}>
-
-{/* TWK */}
 
 <div style={{
 background:"#111827",
 padding:"30px",
-borderRadius:"10px",
-textAlign:"center"
+borderRadius:"10px"
 }}>
 
-<h2>TWK</h2>
+<div style={{marginBottom:"20px"}}>
+Soal {current+1} dari {questions.length}
+</div>
 
-<p style={{opacity:0.7}}>
-Tes Wawasan Kebangsaan
-</p>
+<h2 style={{marginBottom:"30px"}}>
+{question.question}
+</h2>
 
-<Link href="/tryout/twk">
+<div style={{
+display:"flex",
+flexDirection:"column",
+gap:"10px"
+}}>
 
-<button style={{
-marginTop:"20px",
-padding:"10px 20px",
-background:"#2563eb",
+{question.options.map((opt,i)=>{
+
+const selected = answers[question.id] === opt
+
+return(
+
+<button
+key={i}
+onClick={()=>selectAnswer(opt)}
+style={{
+padding:"12px",
+textAlign:"left",
+background:selected ? "#2563eb" : "#1f2937",
 border:"none",
 borderRadius:"6px",
 color:"white",
 cursor:"pointer"
-}}>
-Mulai Tes
+}}
+>
+
+{String.fromCharCode(65+i)}. {opt}
+
 </button>
 
-</Link>
+)
+
+})}
 
 </div>
 
-{/* TIU */}
+<button
+onClick={toggleDoubt}
+style={{
+marginTop:"20px",
+padding:"10px 20px",
+background:doubt[question.id] ? "#facc15" : "#374151",
+border:"none",
+borderRadius:"6px",
+color:"black",
+cursor:"pointer"
+}}
+>
+{doubt[question.id] ? "Ragu ✓" : "Tandai Ragu"}
+</button>
 
 <div style={{
-background:"#111827",
-padding:"30px",
-borderRadius:"10px",
-textAlign:"center"
+display:"flex",
+justifyContent:"space-between",
+marginTop:"30px"
 }}>
 
-<h2>TIU</h2>
+<button
+onClick={prev}
+style={{
+padding:"10px 20px",
+background:"#374151",
+border:"none",
+borderRadius:"6px",
+color:"white"
+}}
+>
+Prev
+</button>
 
-<p style={{opacity:0.7}}>
-Tes Intelegensi Umum
-</p>
-
-<Link href="/tryout/tiu">
-
-<button style={{
-marginTop:"20px",
+<button
+onClick={next}
+style={{
 padding:"10px 20px",
 background:"#2563eb",
 border:"none",
 borderRadius:"6px",
-color:"white",
-cursor:"pointer"
-}}>
-Mulai Tes
+color:"white"
+}}
+>
+Next
 </button>
-
-</Link>
 
 </div>
 
-{/* TKP */}
+<button
+onClick={submitExam}
+style={{
+marginTop:"20px",
+width:"100%",
+padding:"12px",
+background:"#22c55e",
+border:"none",
+borderRadius:"6px",
+color:"white",
+fontSize:"16px",
+cursor:"pointer"
+}}
+>
+Submit Ujian
+</button>
+
+</div>
 
 <div style={{
 background:"#111827",
-padding:"30px",
-borderRadius:"10px",
-textAlign:"center"
+padding:"20px",
+borderRadius:"10px"
 }}>
 
-<h2>TKP</h2>
+<h3 style={{marginBottom:"20px"}}>
+Daftar Soal
+</h3>
 
-<p style={{opacity:0.7}}>
-Tes Karakteristik Pribadi
-</p>
+<div style={{
+display:"grid",
+gridTemplateColumns:"repeat(5,1fr)",
+gap:"10px"
+}}>
 
-<Link href="/tryout/tkp">
+{questions.map((q,index)=>{
 
-<button style={{
-marginTop:"20px",
-padding:"10px 20px",
-background:"#2563eb",
+const answered = answers[q.id]
+const ragu = doubt[q.id]
+const active = index === current
+
+let color = "#1f2937"
+
+if(answered) color = "#06dc5b"
+if(ragu) color = "#facc15"
+if(active) color = "#ff0a0a"
+
+return(
+
+<button
+key={q.id}
+onClick={()=>setCurrent(index)}
+style={{
+height:"40px",
+background:color,
 border:"none",
 borderRadius:"6px",
 color:"white",
 cursor:"pointer"
-}}>
-Mulai Tes
+}}
+>
+
+{index+1}
+
 </button>
 
-</Link>
+)
+
+})}
+
+</div>
 
 </div>
 

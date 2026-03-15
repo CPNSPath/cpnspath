@@ -70,7 +70,7 @@ color:"white",
 fontSize:"16px",
 cursor:"pointer"
 }}>
-Lihat Paket Tryout
+Beli Paket
 </button>
 
 </Link>
