@@ -84,27 +84,37 @@ Untuk mempersiapkan ujian SKD, BKN rutin menyelenggarakan simulasi
 CAT yang memungkinkan peserta berlatih langsung mengerjakan soal
 TWK, TIU, dan TKP menggunakan komputer.
 </p>
+</div>
 
-<br/>
-
+{/* CARD 5 */}
+<div className="info-card">
+<h3>Materi TWK</h3>
 <p>
-<b>Materi TWK</b> – 30 soal, menguji nasionalisme, integritas,
-bela negara, serta pemahaman terhadap Pancasila, UUD 1945,
-NKRI, dan Bhinneka Tunggal Ika.
+TWK mengukur pemahaman peserta terhadap nilai nasionalisme,
+integritas, bela negara, serta pemahaman terhadap
+Pancasila, UUD 1945, NKRI, dan Bhinneka Tunggal Ika.
 </p>
+</div>
 
+{/* CARD 6 */}
+<div className="info-card">
+<h3>Materi TIU</h3>
 <p>
-<b>Materi TIU</b> – 35 soal, menguji kemampuan nalar verbal,
-numerik, serta figural seperti soal logika, perhitungan,
-dan pola.
+TIU menguji kemampuan berpikir logis dan analitis
+melalui soal verbal, numerik, serta figural
+seperti pola, perhitungan, dan analisis logika.
 </p>
+</div>
 
+{/* CARD 7 */}
+<div className="info-card">
+<h3>Materi TKP</h3>
 <p>
-<b>Materi TKP</b> – 45 soal, menilai kompetensi sikap pelayanan
-publik, jejaring kerja, adaptasi sosial budaya, profesionalisme,
-dan penguasaan teknologi informasi.
+TKP menilai karakteristik pribadi peserta
+seperti kemampuan pelayanan publik,
+kerja sama tim, adaptasi sosial budaya,
+serta profesionalisme dalam bekerja.
 </p>
-
 </div>
 
 </div>
