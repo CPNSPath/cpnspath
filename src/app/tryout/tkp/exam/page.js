@@ -5,63 +5,423 @@ import { useState,useEffect } from "react"
 const shuffledQuestions = [
 
 {
-question:"Anda melihat rekan kerja melakukan kesalahan dalam laporan yang akan segera dikirim ke atasan. Apa yang Anda lakukan?",
+question:"Ketika saya mengalami kegagalan, saya cenderung ...",
 options:[
-"Membiarkan saja karena itu bukan tugas saya",
-"Langsung melaporkan ke atasan",
-"Mengingatkan rekan tersebut secara baik-baik agar diperbaiki",
-"Mengoreksi sendiri tanpa memberitahu",
-"Menunggu jika ada yang menyadari kesalahan tersebut"
+"Merasa bodoh dan putus asa",
+"Merasa sedih dan marah",
+"Mencari sumber kegagalan saya",
+"Biasa saja seperti tidak terjadi apa-apa",
+"Melupakan kegagalan dan menatap ke depan"
 ],
-answer:2
+score:[2,3,5,4,1]
 },
 
 {
-question:"Anda diberi tugas tambahan oleh atasan padahal pekerjaan Anda sendiri belum selesai. Sikap Anda adalah...",
+question:"Teman-teman senang menceritakan masalah mereka kepada saya karena menurut mereka saya ...",
 options:[
-"Menolak karena pekerjaan saya sudah banyak",
-"Mengerjakan tugas tambahan setelah pekerjaan utama selesai",
-"Mengerjakan keduanya dengan mengatur prioritas",
-"Menyerahkan tugas tambahan ke rekan kerja",
-"Mengerjakan yang lebih mudah saja"
+"Mampu menjaga rahasia",
+"Pendengar yang baik",
+"Memberikan solusi terbaik",
+"Bisa melihat masalah dari berbagai sudut pandang",
+"Mampu menumbuhkan semangat mereka"
 ],
-answer:2
+score:[4,5,3,2,1]
 },
 
 {
-question:"Di kantor terjadi perbedaan pendapat yang cukup keras dalam tim. Apa yang Anda lakukan?",
+question:"Di kantor saya ditugaskan di bagian pelayanan dan ada tamu yang sangat rewel. Saya akan ...",
 options:[
-"Membiarkan mereka berdebat sampai selesai",
-"Memihak salah satu pihak",
-"Mencoba menengahi dan mencari solusi terbaik",
-"Meninggalkan diskusi tersebut",
-"Melaporkan semua kepada pimpinan"
+"Melayani dengan malas-malasan",
+"Meminta teman lain melayaninya",
+"Melayani dengan sabar dan memberi yang terbaik",
+"Melaporkan kepada atasan",
+"Melayani sebisanya saja"
 ],
-answer:2
+score:[1,2,5,4,3]
 },
 
 {
-question:"Anda menemukan ide baru yang dapat meningkatkan efisiensi pekerjaan. Apa yang Anda lakukan?",
+question:"Saya sudah bekerja lama tetapi belum mendapat promosi jabatan. Sikap saya ...",
 options:[
-"Menyimpannya sendiri",
-"Menyampaikan ide tersebut kepada atasan",
-"Mengabaikannya karena belum tentu diterima",
-"Menyuruh orang lain menyampaikan ide tersebut",
-"Menggunakan ide itu hanya untuk pekerjaan pribadi"
+"Menganggap ada ketidakadilan",
+"Menunggu kesempatan datang",
+"Meningkatkan kinerja agar mendapat kesempatan",
+"Bekerja seperti biasa",
+"Memutuskan keluar"
 ],
-answer:1
+score:[1,3,5,4,2]
 },
 
 {
-question:"Seorang rekan kerja sering datang terlambat sehingga mempengaruhi kinerja tim. Sikap Anda adalah...",
+question:"Saya sangat senang dengan atasan yang ...",
 options:[
-"Membiarkan saja",
-"Menggosipkan kepada rekan lain",
-"Mengingatkan secara baik-baik",
-"Melaporkan langsung ke pimpinan tanpa bicara dengannya",
-"Menghindari bekerja dengannya"
+"Dekat dengan bawahan",
+"Disiplin dan mempunyai etos kerja tinggi",
+"Bertanggung jawab",
+"Mau mendengarkan masukan bawahan",
+"Memberi arahan yang jelas"
 ],
-answer:2
+score:[3,5,4,2,1]
+},
+
+{
+question:"Saat hari libur atasan menghubungi saya terkait pekerjaan penting. Saya akan ...",
+options:[
+"Mengabaikan telepon",
+"Mengangkat telepon jika penting",
+"Mengangkat telepon dan membantu",
+"Menunda membalas",
+"Menyuruh orang lain menjawab"
+],
+score:[1,3,5,2,4]
+},
+
+{
+question:"Ketika suasana hati saya sedang tidak baik biasanya saya ...",
+options:[
+"Mudah marah",
+"Menjadi malas bekerja",
+"Tetap bekerja sebaik mungkin",
+"Sering melamun",
+"Bercerita kepada teman"
+],
+score:[1,2,5,3,4]
+},
+
+{
+question:"Orang tua menyarankan saya pindah kerja karena gaji lebih besar. Saya akan ...",
+options:[
+"Mencari pekerjaan lain",
+"Mempertimbangkan saran",
+"Tetap bekerja dan memberi penjelasan",
+"Meminta saran teman",
+"Meminta pertimbangan atasan"
+],
+score:[4,3,5,2,1]
+},
+
+{
+question:"Teman saya mengingkari janji untuk mengembalikan uang yang dipinjam. Saya akan ...",
+options:[
+"Memarahinya",
+"Mengingatkannya dengan baik",
+"Tidak meminjamkan lagi",
+"Tidak berteman lagi",
+"Mencari penjelasan"
+],
+score:[1,4,3,2,5]
+},
+
+{
+question:"Di kantor saya termasuk orang yang ...",
+options:[
+"Supel dan mudah akrab",
+"Disiplin dan pekerja keras",
+"Ulet dan pantang menyerah",
+"Pintar dan cepat bekerja",
+"Bertanggung jawab"
+],
+score:[3,5,4,2,1]
+},
+
+{
+question:"Saya sangat membutuhkan buku mahal untuk pekerjaan saya. Saya akan ...",
+options:[
+"Menabung untuk membelinya",
+"Meminta kantor membelikan",
+"Menunggu sampai ada uang",
+"Meminjam uang teman",
+"Mencari pekerjaan tambahan"
+],
+score:[5,4,2,3,1]
+},
+
+{
+question:"Sahabat lama datang ingin menginap di rumah saya yang sederhana. Saya akan ...",
+options:[
+"Menolak dengan alasan rumah kecil",
+"Mengizinkan sebentar",
+"Menjelaskan kondisi rumah",
+"Menyarankan hotel",
+"Menerima dengan apa adanya"
+],
+score:[1,3,4,2,5]
+},
+
+{
+question:"Saat ada pekerjaan kelompok biasanya ...",
+options:[
+"Semua anggota aktif",
+"Tidak semua bekerja",
+"Saya yang menyelesaikan",
+"Saling mengandalkan",
+"Pekerjaan selesai jika ada yang mulai"
+],
+score:[5,2,4,1,3]
+},
+
+{
+question:"Saat menerima pekerjaan besar saya ...",
+options:[
+"Berusaha menyelesaikan sebaik mungkin",
+"Merasa malas",
+"Takut tidak selesai",
+"Meminta bantuan teman",
+"Menganggap biasa"
+],
+score:[5,1,2,4,3]
+},
+
+{
+question:"Saat presentasi saya mendapat kabar anak sakit. Saya akan ...",
+options:[
+"Tetap melanjutkan presentasi",
+"Mencari tahu kondisi anak",
+"Menghentikan presentasi",
+"Menyerahkan pada rekan",
+"Menelepon keluarga"
+],
+score:[4,5,1,3,2]
+},
+
+{
+question:"Atasan memberi informasi rahasia. Saya akan ...",
+options:[
+"Menceritakan ke teman",
+"Memberi tahu tanpa isi informasi",
+"Menyimpannya",
+"Menghindari membicarakan",
+"Memberi tahu sebagian"
+],
+score:[1,3,5,4,2]
+},
+
+{
+question:"Cara mencapai sukses dalam pekerjaan adalah ...",
+options:[
+"Bekerja dengan sepenuh hati",
+"Mematuhi perintah atasan",
+"Bekerja dengan giat",
+"Menyingkirkan pesaing",
+"Bekerja tanpa mengenal waktu"
+],
+score:[5,4,3,1,2]
+},
+
+{
+question:"Jika terjadi perombakan direksi perusahaan saya ...",
+options:[
+"Tidak peduli",
+"Cuma pegawai biasa",
+"Percaya keputusan direksi",
+"Bekerja lebih giat",
+"Mendukung kemajuan perusahaan"
+],
+score:[2,1,4,3,5]
+},
+
+{
+question:"Atasan memindahkan saya ke bagian lain. Saya ...",
+options:[
+"Mengerjakan tugas saja",
+"Menolak pindah",
+"Menerima tapi kecewa",
+"Mengenal rekan baru",
+"Menerima dengan baik"
+],
+score:[3,1,2,4,5]
+},
+
+{
+question:"Menurut saya orang baik adalah ...",
+options:[
+"Menepati janji",
+"Menolong orang",
+"Memaafkan kesalahan",
+"Tidak berbuat jahat",
+"Mengemban amanah"
+],
+score:[3,4,2,1,5]
+},
+
+{
+question:"Pimpinan kantor sangat mendikte karyawan. Saya ...",
+options:[
+"Mengajak demonstrasi",
+"Bukan urusan saya",
+"Menyurati pimpinan",
+"Berdiskusi dengan pimpinan",
+"Mengajak melawan"
+],
+score:[1,2,3,5,4]
+},
+
+{
+question:"Dalam pekerjaan saya biasanya ...",
+options:[
+"Menunggu perintah",
+"Mengambil keputusan sendiri",
+"Bertanggung jawab",
+"Mendengar saran",
+"Mengambil keputusan tepat"
+],
+score:[2,3,5,4,1]
+},
+
+{
+question:"Saat rapat ada teman yang membuat gaduh. Saya ...",
+options:[
+"Marah",
+"Mengingatkan",
+"Menghentikan rapat",
+"Menunda rapat",
+"Melanjutkan rapat"
+],
+score:[1,5,2,3,4]
+},
+
+{
+question:"Teman baru memiliki bayi dan saya tidak punya uang membeli kado. Saya ...",
+options:[
+"Tidak memberi kado",
+"Mengunjungi tanpa kado",
+"Memberi kado nanti",
+"Tidak mengunjungi",
+"Meminjam uang"
+],
+score:[3,5,4,1,2]
+},
+
+{
+question:"Tempat kerja saya mengalami pergantian kepala kantor. Saya ...",
+options:[
+"Mendukung kepala kantor baru",
+"Tidak peduli",
+"Kurang semangat",
+"Menyesuaikan diri",
+"Tidak mempermasalahkan"
+],
+score:[5,2,1,4,3]
+},
+
+{
+question:"Dalam bekerja saya sangat senang jika ...",
+options:[
+"Tempat kerja nyaman",
+"Mendapat penghargaan",
+"Rekan kerja kompak",
+"Pimpinan memahami bawahan",
+"Gaji besar"
+],
+score:[4,3,5,2,1]
+},
+
+{
+question:"Atasan memberi pekerjaan berat. Saya ...",
+options:[
+"Menolak",
+"Menerima terpaksa",
+"Minta dipertimbangkan",
+"Tertarik menyelesaikan",
+"Mendelegasikan"
+],
+score:[1,2,3,5,4]
+},
+
+{
+question:"Saya mendapatkan keberhasilan karena ...",
+options:[
+"Tidak menyerah",
+"Bernasib baik",
+"Berani mengambil risiko",
+"Lingkungan mendukung",
+"Berusaha keras"
+],
+score:[4,1,3,2,5]
+},
+
+{
+question:"Ketika menghadapi masalah saya ...",
+options:[
+"Tidak bersemangat",
+"Mudah marah",
+"Bercerita pada teman",
+"Bingung",
+"Tetap tenang"
+],
+score:[2,1,3,4,5]
+},
+
+{
+question:"Atasan meminta lembur saat saya ada janji pribadi. Saya ...",
+options:[
+"Menolak",
+"Menerima dan membatalkan janji",
+"Menyarankan orang lain",
+"Menerima dan meminta bantuan",
+"Menyelesaikan urusan dulu lalu kembali"
+],
+score:[1,3,2,4,5]
+},
+
+{
+question:"Saya mendapat penghargaan kerja. Saya ...",
+options:[
+"Memamerkannya",
+"Bekerja seperti biasa",
+"Meningkatkan kinerja",
+"Memotivasi rekan kerja",
+"Menjaga kepercayaan"
+],
+score:[1,3,4,5,2]
+},
+
+{
+question:"Saya bekerja dalam tim yang anggotanya berbeda pendapat. Saya ...",
+options:[
+"Mengalah",
+"Mencari solusi bersama",
+"Diam saja",
+"Membela pendapat saya",
+"Mengikuti mayoritas"
+],
+score:[2,5,1,3,4]
+},
+
+{
+question:"Ketika tugas menumpuk saya ...",
+options:[
+"Panik",
+"Mengeluh",
+"Menyusun prioritas",
+"Menunda",
+"Mengerjakan sedikit"
+],
+score:[1,2,5,3,4]
+},
+
+{
+question:"Jika rekan kerja kesulitan pekerjaan saya ...",
+options:[
+"Membantu jika sempat",
+"Membiarkan",
+"Membantu sampai selesai",
+"Menyarankan solusi",
+"Menyuruhnya belajar sendiri"
+],
+score:[3,1,5,4,2]
+},
+
+{
+question:"Jika target kerja sulit dicapai saya ...",
+options:[
+"Menyerah",
+"Mencari alasan",
+"Berusaha lebih keras",
+"Mencari bantuan",
+"Mengerjakan seadanya"
+],
+score:[1,2,5,4,3]
 }
 
 ]
@@ -177,13 +537,13 @@ let score=0
 
 shuffledQuestions.forEach((q,i)=>{
 
-if(answers[i]===q.answer){
-score++
+if(answers[i]!=null){
+score += q.score[answers[i]]
 }
 
 })
 
-alert("Skor TKP: "+score+" / "+shuffledQuestions.length)
+alert("Skor TKP: "+score)
 
 }
 
