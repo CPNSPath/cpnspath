@@ -16,7 +16,7 @@ alignItems:"center"
 <div>
 
 <h1 style={{
-fontSize:"36px",
+fontSize:"32px",
 fontWeight:"bold"
 }}>
 Simulator CAT CPNS
