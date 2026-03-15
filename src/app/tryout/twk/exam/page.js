@@ -431,18 +431,28 @@ export default function TWKExam(){
 const [current,setCurrent]=useState(0)
 const [answers,setAnswers]=useState({})
 useEffect(()=>{
-    useEffect(()=>{
 
-localStorage.setItem("twk_answers",JSON.stringify(answers))
+try{
 
-},[answers])
 const savedAnswers = localStorage.getItem("twk_answers")
 
 if(savedAnswers){
 setAnswers(JSON.parse(savedAnswers))
 }
 
+}catch(err){
+
+console.error(err)
+localStorage.removeItem("twk_answers")
+
+}
+
 },[])
+useEffect(()=>{
+
+localStorage.setItem("twk_answers",JSON.stringify(answers))
+
+},[answers])
 const [doubts,setDoubts]=useState({})
 const [time,setTime]=useState(30*60)
 
