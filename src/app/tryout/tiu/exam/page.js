@@ -2,7 +2,7 @@
 
 import { useState,useEffect } from "react"
 
-const questions = [
+const shuffledQuestions = [
 
 {
 question:"GETIR = ...",
