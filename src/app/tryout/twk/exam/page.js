@@ -538,7 +538,7 @@ let score=0
 shuffledQuestions.forEach((q,i)=>{
 
 if(answers[i]===q.answer){
-score++
+score += 5
 }
 
 })
