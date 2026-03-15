@@ -25,7 +25,7 @@ textAlign:"center"
 
 <h1>TWK Tryout</h1>
 
-<p>Jumlah soal : 30</p>
+<p>Jumlah soal : 35</p>
 <p>Waktu : 30 menit</p>
 
 <Link href="/tryout/twk/exam">
@@ -39,7 +39,7 @@ border:"none",
 borderRadius:"6px",
 color:"white"
 }}>
-Mulai Ujian
+Sikat!
 </button>
 
 </Link>
