@@ -8,7 +8,6 @@ box-sizing:border-box;
 
 html,body{
 height:100%;
-font-family:Arial, Helvetica, sans-serif;
 }
 
 
@@ -26,6 +25,8 @@ font-family:Arial, Helvetica, sans-serif;
 
 --text-light:#f1f5f9;
 --text-muted:#9ca3af;
+--font-poppins:'Poppins',sans-serif;
+--font-inter:'Inter',sans-serif;
 
 }
 
@@ -283,4 +284,16 @@ grid-column:1 / span 3;
 
 .info-wide p{
 width:100%;
+}
+
+/* FONT SYSTEM */
+
+h1,h2,h3,.logo{
+font-family:var(--font-poppins);
+font-weight:600;
+letter-spacing:0.3px;
+}
+
+p,span,a,button{
+font-family:var(--font-inter);
 }
