@@ -220,6 +220,7 @@ width:2200px;
 margin:auto;
 display:flex;
 align-items:center;
+padding:0 40px;
 }
 
 .nav-center{
