@@ -101,7 +101,7 @@ marginTop:"20px",
 fontSize:"14px",
 opacity:"0.5"
 }}>
-35 soal • 30 menit
+30 soal • 30 menit
 </p>
 
 </div>
@@ -131,7 +131,7 @@ marginTop:"20px",
 fontSize:"14px",
 opacity:"0.5"
 }}>
-45 soal • 35 menit
+35 soal • 30 menit
 </p>
 
 </div>
