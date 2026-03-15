@@ -1,6 +1,7 @@
 "use client"
 
 import { useState,useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 const shuffledQuestions = [
 
@@ -427,7 +428,7 @@ answer:3
 ]
 
 export default function TWKExam(){
-
+const router = useRouter()
 const [current,setCurrent]=useState(0)
 const [answers,setAnswers]=useState({})
 useEffect(()=>{
@@ -534,16 +535,40 @@ function submitExam(){
 if(!confirm("Apakah Anda yakin ingin mengakhiri ujian?")) return
 
 let score=0
+let correct=0
+let wrong=0
+let empty=0
 
 shuffledQuestions.forEach((q,i)=>{
 
-if(answers[i]===q.answer){
+if(answers[i]===undefined){
+empty++
+}
+
+else if(answers[i]===q.answer){
 score += 5
+correct++
+}
+
+else{
+wrong++
 }
 
 })
 
-alert("Skor TWK: "+score+" / "+shuffledQuestions.length)
+const resultData={
+score,
+correct,
+wrong,
+empty,
+total:shuffledQuestions.length,
+answers,
+questions:shuffledQuestions
+}
+
+localStorage.setItem("twk_result",JSON.stringify(resultData))
+
+router.push("/tryout/twk/result")
 
 }
 
