@@ -56,7 +56,7 @@ borderRadius:"8px"
 <p style={{opacity:"0.6",fontSize:"14px"}}>
 Jumlah Soal
 </p>
-<h3>45 Soal</h3>
+<h3>35 Soal</h3>
 </div>
 
 <div style={{
@@ -67,7 +67,7 @@ borderRadius:"8px"
 <p style={{opacity:"0.6",fontSize:"14px"}}>
 Durasi
 </p>
-<h3>35 Menit</h3>
+<h3>30 Menit</h3>
 </div>
 
 <div style={{
