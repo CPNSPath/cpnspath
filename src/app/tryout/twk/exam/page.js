@@ -2,7 +2,7 @@
 
 import { useState,useEffect } from "react"
 
-const questions = [
+const shuffledQuestions = [
 
 {
 question:"Pembukaan UUD 1945 dalam kaitannya dengan HAM adalah ...",
@@ -430,8 +430,26 @@ export default function TWKExam(){
 
 const [current,setCurrent]=useState(0)
 const [answers,setAnswers]=useState({})
+useEffect(()=>{
+    useEffect(()=>{
+
+localStorage.setItem("twk_answers",JSON.stringify(answers))
+
+},[answers])
+const savedAnswers = localStorage.getItem("twk_answers")
+
+if(savedAnswers){
+setAnswers(JSON.parse(savedAnswers))
+}
+
+},[])
 const [doubts,setDoubts]=useState({})
 const [time,setTime]=useState(30*60)
+
+const answeredCount = Object.keys(answers).length
+const doubtCount = Object.keys(doubts).length
+const emptyCount = shuffledQuestions.length - answeredCount
+const progressPercent = Math.round((answeredCount/shuffledQuestions.length)*100)
 
 useEffect(()=>{
 
@@ -442,6 +460,9 @@ setTime(prev=>{
 if(prev<=1){
 
 clearInterval(timer)
+
+localStorage.setItem("twk_answers",JSON.stringify(answers))
+
 submitExam()
 
 return 0
@@ -484,7 +505,7 @@ setDoubts({
 
 function next(){
 
-if(current<questions.length-1){
+if(current<shuffledQuestions.length-1){
 setCurrent(current+1)
 }
 
@@ -500,9 +521,11 @@ setCurrent(current-1)
 
 function submitExam(){
 
+if(!confirm("Apakah Anda yakin ingin mengakhiri ujian?")) return
+
 let score=0
 
-questions.forEach((q,i)=>{
+shuffledQuestions.forEach((q,i)=>{
 
 if(answers[i]===q.answer){
 score++
@@ -510,7 +533,7 @@ score++
 
 })
 
-alert("Skor TWK: "+score+" / "+questions.length)
+alert("Skor TWK: "+score+" / "+shuffledQuestions.length)
 
 }
 
@@ -521,30 +544,224 @@ display:"flex",
 height:"100vh",
 background:"#0f172a",
 color:"white",
-fontFamily:"Arial"
+fontFamily:"Arial",
+overflow:"hidden"
 }}>
 
-{/* NAVIGATOR */}
+{/* AREA SOAL */}
 
 <div style={{
-width:"260px",
-background:"#111827",
-padding:"20px"
+flex:1,
+padding:"40px 50px",
+display:"flex",
+flexDirection:"column",
+borderRight:"1px solid #1f2937",
+overflowY:"auto"
 }}>
 
-<h3 style={{marginBottom:"10px"}}>Daftar Soal</h3>
+<div style={{
+display:"flex",
+justifyContent:"space-between",
+alignItems:"center",
+marginBottom:"25px",
+borderBottom:"1px solid #1f2937",
+paddingBottom:"15px"
+}}>
+
+<h2 style={{fontSize:"22px"}}>
+Soal {current+1} / {shuffledQuestions.length}
+</h2>
+
+</div>
+
+{/* PROGRESS BAR */}
+
+<div style={{
+marginBottom:"30px",
+border:"1px solid #1f2937",
+padding:"12px 16px",
+borderRadius:"8px",
+background:"#020617"
+}}>
+
+<div style={{
+fontSize:"14px",
+marginBottom:"8px",
+opacity:"0.8"
+}}>
+Progress {progressPercent}%
+</div>
+
+<div style={{
+height:"10px",
+background:"#1f2937",
+borderRadius:"6px",
+overflow:"hidden"
+}}>
+
+<div style={{
+width:`${progressPercent}%`,
+height:"100%",
+background:"#2563eb",
+transition:"0.3s"
+}}/>
+
+</div>
+
+</div>
+
+{/* SOAL */}
+
+<div style={{
+background:"#1e293b",
+padding:"35px",
+borderRadius:"10px",
+border:"1px solid #1f2937"
+}}>
+
+<p style={{
+fontSize:"20px",
+marginBottom:"30px",
+lineHeight:"1.7"
+}}>
+{shuffledQuestions[current].question}
+</p>
+
+{shuffledQuestions[current].options.map((opt,i)=>(
+
+<div key={i} style={{marginBottom:"16px"}}>
+
+<label style={{
+cursor:"pointer",
+display:"flex",
+alignItems:"center"
+}}>
+
+<input
+type="radio"
+checked={answers[current]===i}
+onChange={()=>selectAnswer(i)}
+/>
+
+<span style={{
+marginLeft:"12px",
+fontSize:"16px"
+}}>
+{opt}
+</span>
+
+</label>
+
+</div>
+
+))}
+
+</div>
+
+{/* BUTTON */}
+
+<div style={{
+marginTop:"35px",
+display:"flex",
+gap:"12px",
+borderTop:"1px solid #1f2937",
+paddingTop:"20px"
+}}>
+
+<button
+onClick={prev}
+style={{
+padding:"10px 22px",
+background:"#374151",
+border:"1px solid #4b5563",
+borderRadius:"6px",
+color:"white",
+cursor:"pointer"
+}}
+>
+Previous
+</button>
+
+<button
+onClick={next}
+style={{
+padding:"10px 22px",
+background:"#2563eb",
+border:"1px solid #1d4ed8",
+borderRadius:"6px",
+color:"white",
+cursor:"pointer"
+}}
+>
+Next
+</button>
+
+<button
+onClick={toggleDoubt}
+style={{
+padding:"10px 22px",
+background:"#eab308",
+border:"1px solid #ca8a04",
+borderRadius:"6px",
+color:"black",
+cursor:"pointer"
+}}
+>
+Ragu-ragu
+</button>
+
+<button
+onClick={submitExam}
+style={{
+padding:"10px 22px",
+background:"#16a34a",
+border:"1px solid #15803d",
+borderRadius:"6px",
+color:"white",
+cursor:"pointer"
+}}
+>
+Submit
+</button>
+
+</div>
+
+</div>
+
+
+{/* NAVIGATOR SIDEBAR */}
+
+<div style={{
+width:"300px",
+background:"#111827",
+padding:"25px",
+borderLeft:"1px solid #1f2937",
+display:"flex",
+flexDirection:"column",
+justifyContent:"flex-start"
+}}>
+
+<h3 style={{
+marginBottom:"15px",
+borderBottom:"1px solid #1f2937",
+paddingBottom:"10px"
+}}>
+Daftar Soal
+</h3>
 
 <div style={{
 display:"grid",
 gridTemplateColumns:"repeat(5,1fr)",
-gap:"8px"
+gap:"10px",
+marginBottom:"25px"
 }}>
 
-{questions.map((q,i)=>{
+{shuffledQuestions.map((q,i)=>{
 
 let color="#374151"
 
-if(doubts[i]) color="#eab308"
+if(i===current) color="#2563eb"
+else if(doubts[i]) color="#eab308"
 else if(answers[i]!=null) color="#16a34a"
 
 return(
@@ -555,10 +772,11 @@ onClick={()=>setCurrent(i)}
 style={{
 padding:"10px",
 background:color,
-border:"none",
+border:"1px solid #1f2937",
 borderRadius:"6px",
 color:"white",
-fontWeight:"bold"
+fontWeight:"bold",
+cursor:"pointer"
 }}
 >
 {i+1}
@@ -570,141 +788,49 @@ fontWeight:"bold"
 
 </div>
 
+
 {/* TIMER */}
 
-<div style={{marginTop:"25px"}}>
+<div style={{
+border:"1px solid #1f2937",
+borderRadius:"8px",
+padding:"14px",
+marginBottom:"20px",
+background:"#020617"
+}}>
 
-<div style={{fontSize:"14px",opacity:0.7}}>
+<div style={{
+fontSize:"13px",
+opacity:"0.7"
+}}>
 Waktu Tersisa
 </div>
 
 <div style={{
-fontSize:"28px",
+fontSize:"26px",
 fontWeight:"bold",
-marginTop:"5px"
+marginTop:"4px"
 }}>
 {formatTime()}
 </div>
 
 </div>
 
-</div>
 
-{/* AREA SOAL */}
-
-<div style={{
-flex:1,
-padding:"40px"
-}}>
+{/* STATISTIK */}
 
 <div style={{
-display:"flex",
-justifyContent:"space-between",
-marginBottom:"20px"
+background:"#020617",
+padding:"15px",
+borderRadius:"8px",
+fontSize:"14px",
+lineHeight:"1.9",
+border:"1px solid #1f2937"
 }}>
 
-<h2>Soal {current+1} / {questions.length}</h2>
-
-</div>
-
-<div style={{
-background:"#1e293b",
-padding:"25px",
-borderRadius:"10px"
-}}>
-
-<p style={{
-fontSize:"18px",
-marginBottom:"20px"
-}}>
-{questions[current].question}
-</p>
-
-{questions[current].options.map((opt,i)=>(
-
-<div key={i} style={{marginBottom:"12px"}}>
-
-<label style={{cursor:"pointer"}}>
-
-<input
-type="radio"
-checked={answers[current]===i}
-onChange={()=>selectAnswer(i)}
-/>
-
-<span style={{marginLeft:"10px"}}>
-
-{opt}
-
-</span>
-
-</label>
-
-</div>
-
-))}
-
-</div>
-
-{/* BUTTONS */}
-
-<div style={{
-marginTop:"30px",
-display:"flex",
-gap:"10px"
-}}>
-
-<button
-onClick={prev}
-style={{
-padding:"10px 20px",
-background:"#374151",
-border:"none",
-borderRadius:"6px",
-color:"white"
-}}
->
-Previous
-</button>
-
-<button
-onClick={next}
-style={{
-padding:"10px 20px",
-background:"#2563eb",
-border:"none",
-borderRadius:"6px",
-color:"white"
-}}
->
-Next
-</button>
-
-<button
-onClick={toggleDoubt}
-style={{
-padding:"10px 20px",
-background:"#eab308",
-border:"none",
-borderRadius:"6px",
-color:"black"
-}}
->
-Ragu-ragu
-</button>
-
-<button
-onClick={submitExam}
-style={{
-padding:"10px 20px",
-background:"#16a34a",
-border:"none",
-borderRadius:"6px",
-color:"white"
-}}
->
-Submit
-</button>
+<div>Dijawab : {answeredCount}</div>
+<div>Ragu : {doubtCount}</div>
+<div>Kosong : {emptyCount}</div>
 
 </div>
 

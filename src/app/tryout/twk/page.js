@@ -1,48 +1,114 @@
 "use client"
 
-import Link from "next/link"
+import { useRouter } from "next/navigation"
 
-export default function TWKStart(){
+export default function TWKIntro(){
+
+const router = useRouter()
 
 return(
 
 <div style={{
 minHeight:"100vh",
-background:"#070d1a",
-color:"white",
+background:"linear-gradient(180deg,#070d1a,#020617)",
 display:"flex",
+justifyContent:"center",
 alignItems:"center",
-justifyContent:"center"
+padding:"40px",
+color:"white"
 }}>
 
 <div style={{
+width:"100%",
+maxWidth:"700px",
 background:"#111827",
-padding:"40px",
-borderRadius:"10px",
-width:"500px",
-textAlign:"center"
+borderRadius:"14px",
+padding:"50px",
+border:"1px solid #1f2937"
 }}>
 
-<h1>TWK Tryout</h1>
+<h1 style={{
+fontSize:"32px",
+marginBottom:"10px"
+}}>
+Tryout TWK
+</h1>
 
-<p>Jumlah soal : 35</p>
-<p>Waktu : 30 menit</p>
+<p style={{
+opacity:"0.6",
+marginBottom:"40px"
+}}>
+Tes Wawasan Kebangsaan
+</p>
 
-<Link href="/tryout/twk/exam">
+<div style={{
+display:"grid",
+gridTemplateColumns:"1fr 1fr",
+gap:"20px",
+marginBottom:"40px"
+}}>
 
-<button style={{
-marginTop:"20px",
-padding:"12px",
+<div style={{
+background:"#020617",
+padding:"20px",
+borderRadius:"8px"
+}}>
+<p style={{opacity:"0.6",fontSize:"14px"}}>
+Jumlah Soal
+</p>
+<h3>35 Soal</h3>
+</div>
+
+<div style={{
+background:"#020617",
+padding:"20px",
+borderRadius:"8px"
+}}>
+<p style={{opacity:"0.6",fontSize:"14px"}}>
+Durasi
+</p>
+<h3>30 Menit</h3>
+</div>
+
+<div style={{
+background:"#020617",
+padding:"20px",
+borderRadius:"8px"
+}}>
+<p style={{opacity:"0.6",fontSize:"14px"}}>
+Passing Grade
+</p>
+<h3>65</h3>
+</div>
+
+<div style={{
+background:"#020617",
+padding:"20px",
+borderRadius:"8px"
+}}>
+<p style={{opacity:"0.6",fontSize:"14px"}}>
+Tipe
+</p>
+<h3>Multiple Choice</h3>
+</div>
+
+</div>
+
+<button
+onClick={()=>router.push("/tryout/twk/exam")}
+style={{
 width:"100%",
+padding:"14px",
 background:"#2563eb",
 border:"none",
-borderRadius:"6px",
-color:"white"
-}}>
-Mulai
+borderRadius:"8px",
+fontSize:"16px",
+color:"white",
+cursor:"pointer"
+}}
+>
+Mulai Tryout
 </button>
-
-</Link>
 
 </div>
 
