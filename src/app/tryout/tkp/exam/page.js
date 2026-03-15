@@ -1,6 +1,7 @@
 "use client"
 
 import { useState,useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 const shuffledQuestions = [
 
@@ -427,7 +428,7 @@ score:[1,2,5,4,3]
 ]
 
 export default function TKPExam(){
-
+const router = useRouter()
 const [current,setCurrent]=useState(0)
 const [answers,setAnswers]=useState({})
 useEffect(()=>{
@@ -473,7 +474,7 @@ clearInterval(timer)
 
 localStorage.setItem("tkp_answers",JSON.stringify(answers))
 
-submitExam()
+submitExam(true)
 
 return 0
 
@@ -487,7 +488,7 @@ return prev-1
 
 return()=>clearInterval(timer)
 
-},[])
+},[answers])
 
 function formatTime(){
 
@@ -529,21 +530,40 @@ setCurrent(current-1)
 
 }
 
-function submitExam(){
+function submitExam(force=false){
 
+if(!force){
 if(!confirm("Apakah Anda yakin ingin mengakhiri ujian?")) return
+}
 
 let score=0
+let answered=0
+let empty=0
 
 shuffledQuestions.forEach((q,i)=>{
 
-if(answers[i]!=null){
+if(answers[i]===undefined){
+empty++
+}
+else{
 score += q.score[answers[i]]
+answered++
 }
 
 })
 
-alert("Skor TKP: "+score)
+const resultData={
+score,
+answered,
+empty,
+total:shuffledQuestions.length,
+answers,
+questions:shuffledQuestions
+}
+
+localStorage.setItem("tkp_result",JSON.stringify(resultData))
+
+router.push("/tryout/tkp/result")
 
 }
 
@@ -721,7 +741,7 @@ Ragu-ragu
 </button>
 
 <button
-onClick={submitExam}
+onClick={()=>submitExam(false)}
 style={{
 padding:"10px 22px",
 background:"#16a34a",
