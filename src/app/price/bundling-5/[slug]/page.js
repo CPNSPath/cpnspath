@@ -1,4 +1,4 @@
-import { bundling5 } from "@/lib/packages"
+import { bundling5, satuanTO } from "@/lib/packages"
 
 export default function DetailBundling5({ params }) {
 
@@ -9,6 +9,10 @@ const paket = bundling5.find(
 if (!paket) {
 return <div>Paket tidak ditemukan</div>
 }
+
+const daftarTO = satuanTO.filter(to =>
+paket.tos.includes(to.slug)
+)
 
 return (
 
@@ -25,6 +29,28 @@ return (
 <button className="buy-button">
 Beli Paket
 </button>
+
+</div>
+
+<h2>Daftar Tryout</h2>
+
+<div className="to-list">
+
+{daftarTO.map((to)=>(
+<div key={to.slug} className="card">
+
+<h3>{to.title}</h3>
+
+<p>{to.soal} soal</p>
+
+<p>{to.durasi}</p>
+
+<button className="btn-primary">
+Mulai Tryout
+</button>
+
+</div>
+))}
 
 </div>
 

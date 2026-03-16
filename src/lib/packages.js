@@ -108,140 +108,160 @@ export const bundling5 = [
 slug:"paket-1",
 title:"Bundling 1",
 price:40000,
-jumlahTO:5
+jumlahTO:5,
+tos:["to-1","to-2","to-3","to-4","to-5"]
 },
 
 {
 slug:"paket-2",
 title:"Bundling 2",
 price:40000,
-jumlahTO:5
+jumlahTO:5,
+tos:["to-6","to-7","to-8","to-9","to-10"]
 },
 
 {
 slug:"paket-3",
 title:"Bundling 3",
 price:40000,
-jumlahTO:5
+jumlahTO:5,
+tos:["to-11","to-12","to-13","to-14","to-15"]
 },
 
 {
 slug:"paket-4",
 title:"Bundling 4",
 price:40000,
-jumlahTO:5
+jumlahTO:5,
+tos:["to-16","to-17","to-18","to-19","to-20"]
 },
 
 {
 slug:"paket-5",
 title:"Bundling 5",
 price:40000,
-jumlahTO:5
+jumlahTO:5,
+tos:["to-21","to-22","to-23","to-24","to-25"]
 },
 
 {
 slug:"paket-6",
 title:"Bundling 6",
 price:40000,
-jumlahTO:5
+jumlahTO:5,
+tos:["to-26","to-27","to-28","to-29","to-30"]
 },
 
 {
 slug:"paket-7",
 title:"Bundling 7",
 price:40000,
-jumlahTO:5
+jumlahTO:5,
+tos:["to-31","to-32","to-33","to-34","to-35"]
 },
 
 {
 slug:"paket-8",
 title:"Bundling 8",
 price:40000,
-jumlahTO:5
+jumlahTO:5,
+tos:["to-36","to-37","to-38","to-39","to-40"]
 },
 
 {
 slug:"paket-9",
 title:"Bundling 9",
 price:40000,
-jumlahTO:5
+jumlahTO:5,
+tos:["to-41","to-42","to-43","to-44","to-45"]
 },
 
 {
 slug:"paket-10",
 title:"Bundling 10",
 price:40000,
-jumlahTO:5
+jumlahTO:5,
+tos:["to-46","to-47","to-48","to-49","to-50"]
 },
 
 {
 slug:"paket-11",
 title:"Bundling 11",
 price:40000,
-jumlahTO:5
+jumlahTO:5,
+tos:["to-51","to-52","to-53","to-54","to-55"]
 },
 
 {
 slug:"paket-12",
 title:"Bundling 12",
 price:40000,
-jumlahTO:5
+jumlahTO:5,
+tos:["to-56","to-57","to-58","to-59","to-60"]
 },
 
 {
 slug:"paket-13",
 title:"Bundling 13",
 price:40000,
-jumlahTO:5
+jumlahTO:5,
+tos:["to-61","to-62","to-63","to-64","to-65"]
 },
 
 {
 slug:"paket-14",
 title:"Bundling 14",
 price:40000,
-jumlahTO:5
+jumlahTO:5,
+tos:["to-66","to-67","to-68","to-69","to-70"]
 },
 
 {
 slug:"paket-15",
 title:"Bundling 15",
 price:40000,
-jumlahTO:5
+jumlahTO:5,
+tos:["to-71","to-72","to-73","to-74","to-75"]
 },
 
 {
 slug:"paket-16",
 title:"Bundling 16",
 price:40000,
-jumlahTO:5
+jumlahTO:5,
+tos:["to-76","to-77","to-78","to-79","to-80"]
 },
 
 {
 slug:"paket-17",
 title:"Bundling 17",
 price:40000,
-jumlahTO:5
+jumlahTO:5,
+tos:["to-81","to-82","to-83","to-84","to-85"]
 },
 
 {
 slug:"paket-18",
 title:"Bundling 18",
 price:40000,
-jumlahTO:5
+jumlahTO:5,
+tos:["to-86","to-87","to-88","to-89","to-90"]
 },
 
 {
 slug:"paket-19",
 title:"Bundling 19",
 price:40000,
-jumlahTO:5
+jumlahTO:5,
+tos:["to-91","to-92","to-93","to-94","to-95"]
 },
 
 {
 slug:"paket-20",
 title:"Bundling 20",
 price:40000,
-jumlahTO:5
+jumlahTO:5,
+tos:["to-96","to-97","to-98","to-99","to-100"]
 }
 
 ]
@@ -252,70 +272,80 @@ export const bundling10 = [
 slug:"paket-1",
 title:"Bundling 1",
 price:80000,
-jumlahTO:10
+jumlahTO:10,
+tos:["to-1","to-2","to-3","to-4","to-5","to-6","to-7","to-8","to-9","to-10"]
 },
 
 {
 slug:"paket-2",
 title:"Bundling 2",
 price:80000,
-jumlahTO:10
+jumlahTO:10,
+tos:["to-11","to-12","to-13","to-14","to-15","to-16","to-17","to-18","to-19","to-20"]
 },
 
 {
 slug:"paket-3",
 title:"Bundling 3",
 price:80000,
-jumlahTO:10
+jumlahTO:10,
+tos:["to-21","to-22","to-23","to-24","to-25","to-26","to-27","to-28","to-29","to-30"]
 },
 
 {
 slug:"paket-4",
 title:"Bundling 4",
 price:80000,
-jumlahTO:10
+jumlahTO:10,
+tos:["to-31","to-32","to-33","to-34","to-35","to-36","to-37","to-38","to-39","to-40"]
 },
 
 {
 slug:"paket-5",
 title:"Bundling 5",
 price:80000,
-jumlahTO:10
+jumlahTO:10,
+tos:["to-41","to-42","to-43","to-44","to-45","to-46","to-47","to-48","to-49","to-50"]
 },
 
 {
 slug:"paket-6",
 title:"Bundling 6",
 price:80000,
-jumlahTO:10
+jumlahTO:10,
+tos:["to-51","to-52","to-53","to-54","to-55","to-56","to-57","to-58","to-59","to-60"]
 },
 
 {
 slug:"paket-7",
 title:"Bundling 7",
 price:80000,
-jumlahTO:10
+jumlahTO:10,
+tos:["to-61","to-62","to-63","to-64","to-65","to-66","to-67","to-68","to-69","to-70"]
 },
 
 {
 slug:"paket-8",
 title:"Bundling 8",
 price:80000,
-jumlahTO:10
+jumlahTO:10,
+tos:["to-71","to-72","to-73","to-74","to-75","to-76","to-77","to-78","to-79","to-80"]
 },
 
 {
 slug:"paket-9",
 title:"Bundling 9",
 price:80000,
-jumlahTO:10
+jumlahTO:10,
+tos:["to-81","to-82","to-83","to-84","to-85","to-86","to-87","to-88","to-89","to-90"]
 },
 
 {
 slug:"paket-10",
 title:"Bundling 10",
 price:80000,
-jumlahTO:10
+jumlahTO:10,
+tos:["to-91","to-92","to-93","to-94","to-95","to-96","to-97","to-98","to-99","to-100"]
 }
 
 ]
