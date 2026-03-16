@@ -6,6 +6,7 @@ export async function checkTryoutAccess(packageId){
 const user = await getCurrentUser()
 
 if(!user){
+console.log("User belum login")
 return false
 }
 
@@ -16,10 +17,12 @@ const { data, error } = await supabase
 .eq("package_id",packageId)
 
 if(error){
-console.log(error)
+console.log("Access error:",error)
 return false
 }
 
-return data.length > 0
+console.log("Access result:",data)
+
+return data && data.length > 0
 
 }
