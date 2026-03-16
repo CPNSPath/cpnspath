@@ -117,11 +117,6 @@ justify-content:space-between;
 margin-top:30px;
 }
 
-body{
-background-color:#0F172A;
-background-image:url("https://www.transparenttextures.com/patterns/doodles.png");
-}
-
 /* NAVBAR */
 
 .nav-container{
@@ -130,12 +125,6 @@ margin:auto;
 display:flex;
 align-items:center;
 justify-content:space-between;
-}
-
-.logo{
-font-size:22px;
-font-weight:700;
-letter-spacing:1px;
 }
 
 .menu{
@@ -187,24 +176,6 @@ border:1px solid #e5e7eb;
 box-shadow:0 8px 30px rgba(0,0,0,0.12);
 transition:0.3s;
 min-height:300px;
-}
-
-.info-card:hover{
-transform:translateY(-4px);
-border:1px solid #3b82f6;
-}
-
-.info-card h3{
-font-size:26px;
-margin-bottom:18px;
-color:#111827;
-font-weight:600;
-}
-
-.info-card p{
-color:#374151;
-line-height:1.9;
-font-size:19px;
 }
 
 .navbar{
@@ -298,3 +269,58 @@ p,span,a,button{
 font-family:var(--font-inter);
 }
 
+/* =========================
+   PRICING SYSTEM
+========================= */
+
+.pricing-page{
+padding:80px 20px;
+text-align:center;
+}
+
+.category-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:30px;
+margin-top:50px;
+}
+
+.category-card{
+background:white;
+padding:40px;
+border-radius:14px;
+text-decoration:none;
+color:#333;
+box-shadow:0 10px 30px rgba(0,0,0,0.15);
+transition:0.25s;
+}
+
+.category-card:hover{
+transform:translateY(-6px);
+}
+
+.pricing-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:25px;
+margin-top:40px;
+}
+
+.pricing-card{
+background:white;
+padding:25px;
+border-radius:10px;
+text-decoration:none;
+color:#333;
+box-shadow:0 8px 25px rgba(0,0,0,0.15);
+}
+
+.buy-button{
+background:#22c55e;
+border:none;
+padding:12px 20px;
+border-radius:8px;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}

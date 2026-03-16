@@ -1,64 +1,38 @@
-import Navbar from "../../components/Navbar"
+import Link from "next/link"
 
-export default function Pricing(){
+export default function PricePage(){
 
 return(
 
-<div>
+<div className="pricing-page">
 
-<Navbar/>
+<h1>Pilih Paket Try Out</h1>
 
-<div className="max-w-5xl mx-auto py-20 text-center">
+<div className="category-grid">
 
-<h1 className="text-4xl font-bold">
-Pricing
-</h1>
+<Link href="/price/satuan" className="category-card">
 
-<div className="grid md:grid-cols-3 gap-8 mt-16">
+<h2>Paket Satuan</h2>
 
-<div className="border border-gray-800 p-8 rounded-xl">
+<p>Latihan tryout satuan sesuai kebutuhan</p>
 
-<h2 className="text-2xl font-bold">Free Trial</h2>
+</Link>
 
-<p className="mt-4 text-gray-400">
-1 Tryout
-</p>
+<Link href="/price/bundling-5" className="category-card">
 
-<p className="mt-6 text-3xl font-bold">
-Rp0
-</p>
+<h2>Bundling 5 TO</h2>
 
-</div>
+<p>Latihan 5 tryout dengan harga hemat</p>
 
-<div className="border border-gray-800 p-8 rounded-xl">
+</Link>
 
-<h2 className="text-2xl font-bold">TO 1</h2>
+<Link href="/price/bundling-10" className="category-card">
 
-<p className="mt-4 text-gray-400">
-Full Tryout Package
-</p>
+<h2>Bundling 10 TO</h2>
 
-<p className="mt-6 text-3xl font-bold">
-Rp29k
-</p>
+<p>Latihan maksimal dengan 10 tryout</p>
 
-</div>
-
-<div className="border border-gray-800 p-8 rounded-xl">
-
-<h2 className="text-2xl font-bold">TO Bundle</h2>
-
-<p className="mt-4 text-gray-400">
-5 Tryout
-</p>
-
-<p className="mt-6 text-3xl font-bold">
-Rp99k
-</p>
-
-</div>
-
-</div>
+</Link>
 
 </div>
 
