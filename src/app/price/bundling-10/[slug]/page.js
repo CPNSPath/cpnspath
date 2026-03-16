@@ -3,7 +3,7 @@ import { bundling10, satuanTO } from "@/lib/packages"
 export default function DetailBundling10({ params }) {
 
 const paket = bundling10.find(
-(item) => item.slug === params.slug
+(item) => item.slug === params.slug?.toString()
 )
 
 if (!paket) {
