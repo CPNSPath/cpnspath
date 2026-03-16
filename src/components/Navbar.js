@@ -40,7 +40,7 @@ setLoading(false)
 
 getUser()
 
-// auth listener agar navbar update realtime
+// listener supaya navbar update realtime
 const { data:listener } = supabase.auth.onAuthStateChange(
 (event,session)=>{
 setUser(session?.user ?? null)
@@ -89,7 +89,7 @@ background:"#0f172a"
 
 <div className="nav-left">
 
-<Link href="/" prefetch={true}>
+<Link href="/">
 <span
 className="logo"
 style={{cursor:"pointer"}}
@@ -102,21 +102,13 @@ CPNS PATH
 
 <nav className="nav-center">
 
-<Link href="/" prefetch={true}>Beranda</Link>
+<Link href="/">Beranda</Link>
 
-<Link href="/informasi" prefetch={true}>
-Informasi
-</Link>
-
-<Link href="/contact" prefetch={true}>
-Contact Person
-</Link>
-
-<Link href="/tryout" prefetch={true}>
+<Link href="/tryout">
 Free Trial TO
 </Link>
 
-<Link href="/price" prefetch={true}>
+<Link href="/price">
 Paket TO
 </Link>
 
@@ -124,7 +116,6 @@ Paket TO
 
 <div className="nav-right">
 
-{/* loading state agar tidak flicker */}
 {loading && (
 
 <button className="login-btn">
@@ -133,39 +124,28 @@ Loading...
 
 )}
 
-{/* jika belum login */}
-
 {!loading && !user && (
 
-<Link href="/login" prefetch={true}>
-<button
-className="login-btn"
-style={{cursor:"pointer"}}
->
+<Link href="/login">
+<button className="login-btn">
 Masuk
 </button>
 </Link>
 
 )}
 
-{/* jika sudah login */}
-
 {!loading && user && (
 
 <div style={{display:"flex",gap:"10px"}}>
 
-<Link href="/dashboard" prefetch={true}>
-<button
-className="login-btn"
-style={{cursor:"pointer"}}
->
+<Link href="/dashboard">
+<button className="login-btn">
 Dashboard
 </button>
 </Link>
 
 <button
 className="login-btn"
-style={{cursor:"pointer"}}
 onClick={logout}
 >
 Logout
