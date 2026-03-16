@@ -6,6 +6,8 @@ const { data,error } = await supabase
 .from("results")
 .select(`
 score,
+correct,
+user_id,
 users(
 name,
 email

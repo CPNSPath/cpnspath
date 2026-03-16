@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
 import { getMyPackages } from "@/lib/myPackages"
+import { getMyResults } from "@/lib/myResults_temp"
 
 export default function Dashboard(){
 
@@ -11,6 +12,7 @@ const router = useRouter()
 
 const [user,setUser] = useState(null)
 const [packages,setPackages] = useState([])
+const [results,setResults] = useState([])
 const [loading,setLoading] = useState(true)
 
 useEffect(()=>{
@@ -31,8 +33,10 @@ setUser(data.user)
 
 // ambil paket user
 const myPackages = await getMyPackages()
+const myResults = await getMyResults()
 
 setPackages(myPackages)
+setResults(myResults)
 
 }catch(err){
 
@@ -89,6 +93,35 @@ Logout
 )}
 
 <h2>Paket Tryout Saya</h2>
+<h2 style={{marginTop:"40px"}}>Riwayat Tryout</h2>
+
+<div className="pricing-grid">
+
+{results.length === 0 && (
+
+<div className="card">
+<p>Belum ada hasil tryout</p>
+</div>
+
+)}
+
+{results.map((r,i)=>(
+
+<div key={i} className="card">
+
+<h3>{r.to_slug}</h3>
+
+<p>Score : {r.score}</p>
+
+<p>Benar : {r.correct}</p>
+
+<p>Salah : {r.wrong}</p>
+
+</div>
+
+))}
+
+</div>
 
 <div className="pricing-grid">
 
