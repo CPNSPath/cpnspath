@@ -1,8 +1,8 @@
 import { bundling10, satuanTO } from "@/lib/packages"
 
-export default function DetailBundling10({ params }) {
+export default async function DetailBundling10({ params }) {
 
-const slug = params.slug
+const { slug } = await params
 
 const paket = bundling10.find((item) => item.slug === slug)
 
