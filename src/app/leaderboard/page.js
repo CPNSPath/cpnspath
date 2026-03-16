@@ -1,45 +1,55 @@
-import Navbar from "../../components/Navbar"
+"use client"
+
+import { useEffect,useState } from "react"
+import { getLeaderboard } from "@/lib/leaderboard"
 
 export default function Leaderboard(){
 
-const users=[
-{name:"Andi",score:260},
-{name:"Budi",score:250},
-{name:"Rina",score:240}
-]
+const [data,setData] = useState([])
+
+useEffect(()=>{
+
+const load = async ()=>{
+
+const result = await getLeaderboard()
+
+setData(result)
+
+}
+
+load()
+
+},[])
 
 return(
 
-<div>
+<div className="container">
 
-<Navbar/>
+<h1>Leaderboard Nasional</h1>
 
-<div className="max-w-xl mx-auto py-20">
+<table>
 
-<h1 className="text-4xl font-bold text-center">
-Leaderboard
-</h1>
+<thead>
+<tr>
+<th>Rank</th>
+<th>User</th>
+<th>Score</th>
+</tr>
+</thead>
 
-<div className="mt-12 space-y-4">
+<tbody>
 
-{users.map((u,i)=>(
-
-<div
-key={i}
-className="flex justify-between border border-gray-800 p-4 rounded-xl"
->
-
-<span>#{i+1} {u.name}</span>
-
-<span>{u.score}</span>
-
-</div>
-
+{data.map((item,index)=>(
+<tr key={index}>
+<td>{index+1}</td>
+<td>{item.users?.email}</td>
+<td>{item.score}</td>
+</tr>
 ))}
 
-</div>
+</tbody>
 
-</div>
+</table>
 
 </div>
 

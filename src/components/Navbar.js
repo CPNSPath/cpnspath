@@ -24,7 +24,13 @@ return(
 </nav>
 
 <div className="nav-right">
-<button className="login-btn">Masuk</button>
+
+<Link href="/login">
+<button className="login-btn">
+Masuk
+</button>
+</Link>
+
 </div>
 
 </div>

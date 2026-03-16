@@ -1,20 +1,26 @@
+"use client"
+
+import { useParams } from "next/navigation"
 import { bundling10, satuanTO } from "@/lib/packages"
+import { buyPackage } from "@/lib/purchase"
+import Link from "next/link"
 
-export default async function DetailBundling10({ params }) {
+export default function DetailBundling10(){
 
-const { slug } = await params
+const params = useParams()
+const slug = params.slug
 
-const paket = bundling10.find((item) => item.slug === slug)
+const paket = bundling10.find((item)=>item.slug===slug)
 
-if (!paket) {
+if(!paket){
 return <div>Paket tidak ditemukan: {slug}</div>
 }
 
-const daftarTO = satuanTO.filter((to) =>
+const daftarTO = satuanTO.filter((to)=>
 paket.tos.includes(to.slug)
 )
 
-return (
+return(
 
 <div className="container">
 
@@ -26,7 +32,10 @@ return (
 
 <h2>Rp {paket.price.toLocaleString()}</h2>
 
-<button className="buy-button">
+<button
+className="buy-button"
+onClick={()=>buyPackage(paket.slug)}
+>
 Beli Paket
 </button>
 
@@ -36,22 +45,20 @@ Beli Paket
 
 <div className="to-list">
 
-{daftarTO.map((to) => (
-
+{daftarTO.map((to)=>(
 <div key={to.slug} className="card">
 
 <h3>{to.title}</h3>
-
 <p>{to.soal} soal</p>
-
 <p>{to.durasi}</p>
 
+<Link href={`/tryout/${to.slug}`}>
 <button className="btn-primary">
 Mulai Tryout
 </button>
+</Link>
 
 </div>
-
 ))}
 
 </div>
@@ -59,4 +66,5 @@ Mulai Tryout
 </div>
 
 )
+
 }
