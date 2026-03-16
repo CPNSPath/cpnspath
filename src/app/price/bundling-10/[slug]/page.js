@@ -2,25 +2,25 @@ import { bundling10, satuanTO } from "@/lib/packages"
 
 export default function DetailBundling10({ params }) {
 
-const paket = bundling10.find(
-(item) => item.slug === params.slug?.toString()
-)
+const slug = params.slug
+
+const paket = bundling10.find((item) => item.slug === slug)
 
 if (!paket) {
-return <div>Paket tidak ditemukan</div>
+return <div>Paket tidak ditemukan: {slug}</div>
 }
 
-const daftarTO = satuanTO.filter(to =>
+const daftarTO = satuanTO.filter((to) =>
 paket.tos.includes(to.slug)
 )
 
 return (
 
-<div className="detail-page">
+<div className="container">
 
 <h1>{paket.title}</h1>
 
-<div className="detail-card">
+<div className="card">
 
 <p>Total Tryout : {paket.jumlahTO}</p>
 
@@ -36,7 +36,8 @@ Beli Paket
 
 <div className="to-list">
 
-{daftarTO.map((to)=>(
+{daftarTO.map((to) => (
+
 <div key={to.slug} className="card">
 
 <h3>{to.title}</h3>
@@ -50,6 +51,7 @@ Mulai Tryout
 </button>
 
 </div>
+
 ))}
 
 </div>
@@ -57,5 +59,4 @@ Mulai Tryout
 </div>
 
 )
-
 }
