@@ -1,5 +1,6 @@
 export const satuanTO = [
 
+{ slug:"to-1", title:"Try Out 1", price:10000, soal:110, durasi:"100 menit" },
 { slug:"to-2", title:"Try Out 2", price:10000, soal:110, durasi:"100 menit" },
 { slug:"to-3", title:"Try Out 3", price:10000, soal:110, durasi:"100 menit" },
 { slug:"to-4", title:"Try Out 4", price:10000, soal:110, durasi:"100 menit" },
