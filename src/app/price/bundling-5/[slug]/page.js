@@ -40,7 +40,11 @@ return(
 
 <button
 className="buy-button"
-onClick={()=>buyPackage(paket.slug)}
+onClick={()=>buyPackage({
+slug: paket.slug,
+type: "bundling",
+price: paket.price
+})}
 >
 Beli Paket
 </button>

@@ -1,7 +1,6 @@
-import { supabase } from "./supabase"
 import { getCurrentUser } from "./auth"
 
-export async function buyPackage(packageId){
+export async function buyPackage(paket){
 
 const user = await getCurrentUser()
 
@@ -10,31 +9,38 @@ alert("Silakan login terlebih dahulu")
 return
 }
 
-const { data:existing } = await supabase
-.from("purchases")
-.select("*")
-.eq("user_id",user.id)
-.eq("package_id",packageId)
+try{
 
-if(existing.length > 0){
-alert("Paket sudah dimiliki")
-return
+const res = await fetch("/api/create-transaction",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+user_id: user.id,
+item_id: paket.slug,
+type: paket.type,
+price: paket.price
+})
+})
+
+const data = await res.json()
+
+window.snap.pay(data.token,{
+onSuccess: function(){
+alert("Pembayaran berhasil! (menunggu verifikasi)")
+},
+onPending: function(){
+alert("Menunggu pembayaran")
+},
+onError: function(){
+alert("Pembayaran gagal")
 }
+})
 
-const { error } = await supabase
-.from("purchases")
-.insert([
-{
-user_id:user.id,
-package_id:packageId
+}catch(err){
+console.log(err)
+alert("Terjadi kesalahan")
 }
-])
-
-if(error){
-alert(error.message)
-return
-}
-
-alert("Paket berhasil dibeli!")
 
 }

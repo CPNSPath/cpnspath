@@ -38,7 +38,11 @@ return(
 
 <button
 className="buy-button"
-onClick={()=>buyPackage(paket.slug)}
+onClick={()=>buyPackage({
+slug: paket.slug,
+type: "satuan",
+price: paket.price
+})}
 >
 Beli Paket
 </button>
