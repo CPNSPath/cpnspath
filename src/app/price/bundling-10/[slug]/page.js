@@ -23,7 +23,7 @@ return <div>Paket tidak ditemukan</div>
 
 // ambil daftar TO
 const daftarTO = satuanTO.filter((to)=>
-paket.tos.includes(to.slug)
+paket.tos?.includes(to.slug)
 )
 
 // 🔥 MAP ACCESS
