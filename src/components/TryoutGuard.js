@@ -38,8 +38,7 @@ const access = await checkTryoutAccess(packageId)
 
 if(!access){
 
-alert("Anda belum membeli paket ini")
-router.push("/price")
+router.push(`/price?locked=${packageId}`)
 return
 
 }
@@ -66,9 +65,10 @@ if(loading){
 
 return(
 
-<div className="container">
+<div className="container" style={{textAlign:"center", marginTop:"100px"}}>
 
-<h2>Memverifikasi akses...</h2>
+<h2>🔒 Memverifikasi akses...</h2>
+<p style={{opacity:0.7}}>Sedang mengecek paket Anda...</p>
 
 </div>
 

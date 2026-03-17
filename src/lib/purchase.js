@@ -1,4 +1,6 @@
+import { supabase } from "./supabase"
 import { getCurrentUser } from "./auth"
+import { grantAccess } from "./grantAccess"
 
 export async function buyPackage(paket){
 
@@ -10,6 +12,22 @@ return
 }
 
 try{
+
+// ==============================
+// 🔥 DEV MODE (GLOBAL)
+// ==============================
+if(process.env.NEXT_PUBLIC_DEV_MODE === "true"){
+
+await grantAccess(user.id, paket.slug)
+
+alert("DEV MODE: Paket langsung terbuka 🚀")
+
+return
+}
+
+// ==============================
+// 💳 MIDTRANS
+// ==============================
 
 const res = await fetch("/api/create-transaction",{
 method:"POST",
@@ -28,7 +46,7 @@ const data = await res.json()
 
 window.snap.pay(data.token,{
 onSuccess: function(){
-alert("Pembayaran berhasil! (menunggu verifikasi)")
+alert("Pembayaran berhasil!")
 },
 onPending: function(){
 alert("Menunggu pembayaran")

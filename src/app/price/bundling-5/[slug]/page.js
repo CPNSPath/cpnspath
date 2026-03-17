@@ -4,6 +4,8 @@ import { useParams } from "next/navigation"
 import { bundling5, satuanTO } from "@/lib/packages"
 import { buyPackage } from "@/lib/purchase"
 import Link from "next/link"
+import { useEffect, useState } from "react"
+import { checkTryoutAccess } from "@/lib/checkAccess"
 
 export default function DetailBundling5(){
 
@@ -13,18 +15,38 @@ const slug = Array.isArray(params.slug)
   ? params.slug[0]
   : params.slug
 
-console.log("params:", params)
-console.log("slug:", slug)
-
 const paket = bundling5.find((item)=>item.slug===slug)
 
 if(!paket){
-return <div>Paket tidak ditemukan: {slug}</div>
+return <div>Paket tidak ditemukan</div>
 }
 
+// ambil daftar TO
 const daftarTO = satuanTO.filter((to)=>
 paket.tos.includes(to.slug)
 )
+
+// 🔥 MAP ACCESS
+const [accessMap, setAccessMap] = useState({})
+
+useEffect(()=>{
+
+const checkAccessAll = async()=>{
+
+let map = {}
+
+for(const to of daftarTO){
+const access = await checkTryoutAccess(to.slug)
+map[to.slug] = access
+}
+
+setAccessMap(map)
+
+}
+
+checkAccessAll()
+
+},[])
 
 return(
 
@@ -56,19 +78,31 @@ Beli Paket
 <div className="to-list">
 
 {daftarTO.map((to)=>(
+
 <div key={to.slug} className="card">
 
 <h3>{to.title}</h3>
 <p>{to.soal} soal</p>
 <p>{to.durasi}</p>
 
+{accessMap[to.slug] ? (
+
 <Link href={`/tryout/${to.slug}`}>
 <button className="btn-primary">
-Mulai Tryout
+▶ Mulai Tryout
 </button>
 </Link>
 
+) : (
+
+<button className="btn-locked">
+🔒 Terkunci
+</button>
+
+)}
+
 </div>
+
 ))}
 
 </div>

@@ -3,21 +3,38 @@
 import { useParams } from "next/navigation"
 import { satuanTO } from "@/lib/packages"
 import { buyPackage } from "@/lib/purchase"
+import { useEffect, useState } from "react"
+import { checkTryoutAccess } from "@/lib/checkAccess"
 
 export default function DetailSatuan(){
 
 const params = useParams()
 
+const [allowed, setAllowed] = useState(false)
+const [loading, setLoading] = useState(true)
+
 const slug = Array.isArray(params.slug)
   ? params.slug[0]
   : params.slug
 
-console.log("params:", params)
-console.log("slug:", slug)
-
 const paket = satuanTO.find(
 (item)=>item.slug===slug
 )
+
+useEffect(()=>{
+
+const check = async()=>{
+
+const access = await checkTryoutAccess(slug)
+
+setAllowed(access)
+setLoading(false)
+
+}
+
+check()
+
+},[slug])
 
 if(!paket){
 return <div>Paket tidak ditemukan</div>
@@ -36,6 +53,18 @@ return(
 
 <h2>Rp {paket.price.toLocaleString()}</h2>
 
+{loading ? (
+
+<p>Loading...</p>
+
+) : allowed ? (
+
+<button className="btn-success">
+Sudah Dimiliki ✅
+</button>
+
+) : (
+
 <button
 className="buy-button"
 onClick={()=>buyPackage({
@@ -46,6 +75,8 @@ price: paket.price
 >
 Beli Paket
 </button>
+
+)}
 
 </div>
 

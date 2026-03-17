@@ -1,28 +1,42 @@
 import { supabase } from "./supabase"
-import { getCurrentUser } from "./auth"
+import { bundling5, bundling10 } from "./packages"
 
-export async function checkTryoutAccess(packageId){
+export async function grantAccess(userId, slug){
 
-const user = await getCurrentUser()
+let tryouts = []
 
-if(!user){
-console.log("User belum login")
-return false
+// ======================
+// CEK JENIS PAKET
+// ======================
+
+// satuan
+if(slug.startsWith("to-")){
+tryouts = [slug]
 }
 
-const { data, error } = await supabase
-.from("purchases")
-.select("id")
-.eq("user_id",user.id)
-.eq("package_id",packageId)
-
-if(error){
-console.log("Access error:",error)
-return false
+// bundling 5
+const b5 = bundling5.find(p=>p.slug === slug)
+if(b5){
+tryouts = b5.tos
 }
 
-console.log("Access result:",data)
+// bundling 10
+const b10 = bundling10.find(p=>p.slug === slug)
+if(b10){
+tryouts = b10.tos
+}
 
-return data && data.length > 0
+// ======================
+// INSERT KE DB
+// ======================
+
+for(const to of tryouts){
+
+await supabase.from("user_access").insert({
+user_id: userId,
+tryout_slug: to
+})
+
+}
 
 }
