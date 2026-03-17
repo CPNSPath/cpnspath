@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
 import { getMyPackages } from "@/lib/myPackages"
-import { getMyResults } from "@/lib/myResults"
+import { getMyResults } from "@/lib/myresults"
 
 export default function Dashboard(){
 
