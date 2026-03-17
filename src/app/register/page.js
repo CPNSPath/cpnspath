@@ -10,38 +10,62 @@ const router = useRouter()
 
 const [email,setEmail] = useState("")
 const [password,setPassword] = useState("")
+const [confirmPassword,setConfirmPassword] = useState("")
 const [loading,setLoading] = useState(false)
+const [errorMsg,setErrorMsg] = useState("")
+const [successMsg,setSuccessMsg] = useState("")
 
-const handleRegister = async () => {
+const handleRegister = async (e) => {
+e.preventDefault()
+
+setErrorMsg("")
+setSuccessMsg("")
+
+// validasi
+if(!email || !password){
+setErrorMsg("Semua field wajib diisi")
+return
+}
+
+if(password.length < 6){
+setErrorMsg("Password minimal 6 karakter")
+return
+}
+
+if(password !== confirmPassword){
+setErrorMsg("Password tidak sama")
+return
+}
 
 setLoading(true)
 
 const { error } = await supabase.auth.signUp({
-email: email,
-password: password
+email,
+password
 })
 
 if(error){
-alert(error.message)
+setErrorMsg(error.message)
 setLoading(false)
 return
 }
 
-alert("Registrasi berhasil! Silakan login.")
+setSuccessMsg("Registrasi berhasil! Silakan login.")
+setLoading(false)
 
+setTimeout(()=>{
 router.push("/login")
-
+},1500)
 }
 
 return(
 
 <div className="auth-wrapper">
-
 <div className="auth-card">
 
 <h1>Register CPNSPath</h1>
 
-<div className="auth-form">
+<form className="auth-form" onSubmit={handleRegister}>
 
 <input
 className="auth-input"
@@ -59,24 +83,32 @@ value={password}
 onChange={(e)=>setPassword(e.target.value)}
 />
 
+<input
+className="auth-input"
+type="password"
+placeholder="Confirm Password"
+value={confirmPassword}
+onChange={(e)=>setConfirmPassword(e.target.value)}
+/>
+
+{errorMsg && <p className="auth-error">{errorMsg}</p>}
+{successMsg && <p className="auth-success">{successMsg}</p>}
+
 <button
 className="auth-button"
-onClick={handleRegister}
 disabled={loading}
 >
 {loading ? "Processing..." : "Register"}
 </button>
 
-</div>
+</form>
 
 <p className="auth-link">
 Sudah punya akun? <a href="/login">Login</a>
 </p>
 
 </div>
-
 </div>
 
 )
-
 }

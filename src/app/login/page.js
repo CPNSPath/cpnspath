@@ -11,35 +11,45 @@ const router = useRouter()
 const [email,setEmail] = useState("")
 const [password,setPassword] = useState("")
 const [loading,setLoading] = useState(false)
+const [errorMsg,setErrorMsg] = useState("")
 
-const handleLogin = async () => {
+const handleLogin = async (e) => {
+e.preventDefault()
+
+// reset error
+setErrorMsg("")
+
+// validasi sederhana
+if(!email || !password){
+setErrorMsg("Email dan password wajib diisi")
+return
+}
 
 setLoading(true)
 
 const { error } = await supabase.auth.signInWithPassword({
-email: email,
-password: password
+email,
+password
 })
 
 if(error){
-alert(error.message)
+setErrorMsg(error.message)
 setLoading(false)
 return
 }
 
+// sukses
 router.push("/")
-
 }
 
 return(
 
 <div className="auth-wrapper">
-
 <div className="auth-card">
 
 <h1>Login CPNSPath</h1>
 
-<div className="auth-form">
+<form className="auth-form" onSubmit={handleLogin}>
 
 <input
 className="auth-input"
@@ -57,24 +67,23 @@ value={password}
 onChange={(e)=>setPassword(e.target.value)}
 />
 
+{errorMsg && <p className="auth-error">{errorMsg}</p>}
+
 <button
 className="auth-button"
-onClick={handleLogin}
 disabled={loading}
 >
 {loading ? "Loading..." : "Login"}
 </button>
 
-</div>
+</form>
 
 <p className="auth-link">
 Belum punya akun? <a href="/register">Register</a>
 </p>
 
 </div>
-
 </div>
 
 )
-
 }
