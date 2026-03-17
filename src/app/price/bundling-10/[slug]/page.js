@@ -28,6 +28,7 @@ paket.tos.includes(to.slug)
 
 // 🔥 MAP ACCESS
 const [accessMap, setAccessMap] = useState({})
+const [loading, setLoading] = useState(true)
 
 useEffect(()=>{
 
@@ -41,12 +42,13 @@ map[to.slug] = access
 }
 
 setAccessMap(map)
+setLoading(false)
 
 }
 
 checkAccessAll()
 
-},[])
+},[slug])
 
 return(
 
@@ -85,10 +87,14 @@ Beli Paket
 <p>{to.soal} soal</p>
 <p>{to.durasi}</p>
 
-{accessMap[to.slug] ? (
+{loading ? (
+
+<p>Loading...</p>
+
+) : accessMap[to.slug] ? (
 
 <Link href={`/tryout/${to.slug}`}>
-<button className="btn-primary">
+<button className="btn-success">
 ▶ Mulai Tryout
 </button>
 </Link>

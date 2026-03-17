@@ -59,9 +59,17 @@ return(
 
 ) : allowed ? (
 
+<>
 <button className="btn-success">
 Sudah Dimiliki ✅
 </button>
+
+<a href={`/tryout/${paket.slug}`}>
+<button className="btn-primary" style={{marginTop:"10px"}}>
+Mulai Tryout
+</button>
+</a>
+</>
 
 ) : (
 
