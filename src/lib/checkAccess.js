@@ -1,13 +1,12 @@
 import { supabase } from "./supabase"
 import { bundling5, bundling10 } from "./packages"
 
+// ======================
+// 🔓 GRANT ACCESS
+// ======================
 export async function grantAccess(userId, slug){
 
 let tryouts = []
-
-// ======================
-// CEK JENIS PAKET
-// ======================
 
 // satuan
 if(slug.startsWith("to-")){
@@ -26,10 +25,7 @@ if(b10){
 tryouts = b10.tos
 }
 
-// ======================
-// INSERT KE DB
-// ======================
-
+// insert DB
 for(const to of tryouts){
 
 await supabase.from("user_access").insert({
@@ -38,5 +34,31 @@ tryout_slug: to
 })
 
 }
+
+}
+
+// ======================
+// 🔒 CHECK ACCESS (INI YANG KURANG)
+// ======================
+export async function checkTryoutAccess(slug){
+
+const { data: { user } } = await supabase.auth.getUser()
+
+if(!user){
+return false
+}
+
+const { data, error } = await supabase
+.from("user_access")
+.select("id")
+.eq("user_id", user.id)
+.eq("tryout_slug", slug)
+
+if(error){
+console.log("Access error:", error)
+return false
+}
+
+return data && data.length > 0
 
 }
