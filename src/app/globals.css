@@ -404,3 +404,15 @@ color:var(--text-muted);
 color:var(--accent);
 text-decoration:none;
 }
+
+.navbar{
+position:sticky;
+top:0;
+z-index:9999;
+background:#0f172a;
+}
+
+.navbar-inner{
+position:relative;
+z-index:9999;
+}

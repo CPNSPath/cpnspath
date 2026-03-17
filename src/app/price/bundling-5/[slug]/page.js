@@ -8,7 +8,13 @@ import Link from "next/link"
 export default function DetailBundling5(){
 
 const params = useParams()
-const slug = params.slug
+
+const slug = Array.isArray(params.slug)
+  ? params.slug[0]
+  : params.slug
+
+console.log("params:", params)
+console.log("slug:", slug)
 
 const paket = bundling5.find((item)=>item.slug===slug)
 

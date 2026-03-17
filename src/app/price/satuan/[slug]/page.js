@@ -7,7 +7,13 @@ import { buyPackage } from "@/lib/purchase"
 export default function DetailSatuan(){
 
 const params = useParams()
-const slug = params.slug
+
+const slug = Array.isArray(params.slug)
+  ? params.slug[0]
+  : params.slug
+
+console.log("params:", params)
+console.log("slug:", slug)
 
 const paket = satuanTO.find(
 (item)=>item.slug===slug
