@@ -61,7 +61,7 @@ console.log("SAVE RESULT ERROR:", error)
 
 const { error: lbError } = await supabase
 .from("leaderboard")
-.insert([
+.upsert([
 {
 user_id: user.id,
 to_slug: toSlug,
@@ -73,7 +73,9 @@ lulus_twk,
 lulus_tiu,
 lulus_tkp
 }
-])
+], {
+onConflict: "user_id,to_slug"
+})
 
 if(lbError){
 console.log("LEADERBOARD ERROR:", lbError)
