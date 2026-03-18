@@ -18,7 +18,10 @@ async function loadResults(){
 
 const {data,error} = await supabase
 .from("results")
-.select("*")
+.select(`
+  *,
+  users(name)
+`)
 .order("score",{ascending:false})
 
 if(data){
@@ -79,7 +82,7 @@ borderBottom:"1px solid #1f2937"
 >
 
 <span>
-{index+1}. {item.name}
+{index+1}. {item.users?.name || "User"}
 </span>
 
 <span>

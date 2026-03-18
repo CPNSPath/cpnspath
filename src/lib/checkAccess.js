@@ -27,18 +27,16 @@ tryouts = b10.tos
 
 // insert DB
 for(const to of tryouts){
-
 await supabase.from("user_access").insert({
 user_id: userId,
 tryout_slug: to
 })
-
 }
 
 }
 
 // ======================
-// 🔒 CHECK ACCESS (INI YANG KURANG)
+// 🔒 CHECK ACCESS
 // ======================
 export async function checkTryoutAccess(slug){
 
@@ -50,15 +48,59 @@ return false
 
 const { data, error } = await supabase
 .from("user_access")
-.select("id")
+.select("*")
 .eq("user_id", user.id)
 .eq("tryout_slug", slug)
+.single()
 
-if(error){
-console.log("Access error:", error)
+if(error || !data){
 return false
 }
 
-return data && data.length > 0
+// 🚨 CEK LIMIT
+if(data.used_attempt >= data.max_attempt){
+return false
+}
+
+return true
+
+}
+
+// ======================
+// 🎯 USE ATTEMPT
+// ======================
+export async function useAttempt(slug){
+
+const { data: { user } } = await supabase.auth.getUser()
+
+if(!user){
+return false
+}
+
+const { data } = await supabase
+.from("user_access")
+.select("*")
+.eq("user_id", user.id)
+.eq("tryout_slug", slug)
+.single()
+
+if(!data){
+return false
+}
+
+// 🚨 CEK LIMIT
+if(data.used_attempt >= data.max_attempt){
+return false
+}
+
+// 🚀 UPDATE
+await supabase
+.from("user_access")
+.update({
+used_attempt: data.used_attempt + 1
+})
+.eq("id", data.id)
+
+return true
 
 }

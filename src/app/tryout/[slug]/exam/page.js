@@ -3,6 +3,8 @@
 import { useState,useEffect } from "react"
 import { useRouter,useParams } from "next/navigation"
 import { getQuestions } from "@/lib/questions"
+import { useAttempt } from "@/lib/checkAccess"
+import { saveTryoutResult } from "@/lib/saveResult"
 
 export default function TryoutExam(){
 
@@ -17,12 +19,16 @@ const [current,setCurrent]=useState(0)
 const [answers,setAnswers]=useState({})
 const [doubts,setDoubts]=useState({})
 const [time,setTime]=useState(100*60) // 100 menit
+const [allowed,setAllowed] = useState(false)
+const [submitted,setSubmitted] = useState(false)
 
 // ==========================
 // LOAD QUESTIONS FROM DB
 // ==========================
 
 useEffect(()=>{
+
+if(!allowed) return // ⬅️ INI KUNCI
 
 async function load(){
 
@@ -47,11 +53,50 @@ setLoading(false)
 
 load()
 
+},[slug, allowed])
+
+// ==========================
+// 🔥 USE ATTEMPT (VERSI BENAR)
+// ==========================
+
+useEffect(()=>{
+
+const startAttempt = async()=>{
+
+const ok = await useAttempt(slug)
+
+if(!ok){
+alert("Jatah tryout sudah habis!")
+router.replace("/dashboard")
+return
+}
+
+setAllowed(true)
+
+}
+
+startAttempt()
+
 },[slug])
 
 // ==========================
 // LOCAL STORAGE SAVE
 // ==========================
+
+useEffect(()=>{
+
+const handleBeforeUnload = (e)=>{
+e.preventDefault()
+e.returnValue = ""
+}
+
+window.addEventListener("beforeunload", handleBeforeUnload)
+
+return ()=>{
+window.removeEventListener("beforeunload", handleBeforeUnload)
+}
+
+},[])
 
 useEffect(()=>{
 
@@ -82,18 +127,18 @@ localStorage.setItem(slug+"_answers",JSON.stringify(answers))
 
 useEffect(()=>{
 
-if(!shuffledQuestions.length) return
+if(!shuffledQuestions.length || submitted) return
 
 const timer=setInterval(()=>{
 
 setTime(prev=>{
 
 if(prev<=1){
-
-clearInterval(timer)
+if(!submitted){
 submitExam(true)
+}
+clearInterval(timer)
 return 0
-
 }
 
 return prev-1
@@ -104,7 +149,7 @@ return prev-1
 
 return()=>clearInterval(timer)
 
-},[answers,shuffledQuestions])
+},[shuffledQuestions, submitted])
 
 // ==========================
 // HELPER
@@ -120,7 +165,10 @@ return m+":"+(s<10?"0"+s:s)
 }
 
 function selectAnswer(i){
-setAnswers({...answers,[current]:i})
+setAnswers(prev=>({
+...prev,
+[current]:i
+}))
 }
 
 function toggleDoubt(){
@@ -143,60 +191,126 @@ setCurrent(current-1)
 // SUBMIT
 // ==========================
 
-function submitExam(force=false){
+async function submitExam(force=false){
+
+// 🚨 BLOCK DOUBLE SUBMIT
+if(submitted) return
 
 if(!force){
 if(!confirm("Apakah Anda yakin ingin mengakhiri ujian?")) return
 }
 
-let score=0
-let correct=0
-let wrong=0
-let empty=0
+setSubmitted(true)
+
+let twk = 0
+let tiu = 0
+let tkp = 0
+
+let correct = 0
+let wrong = 0
+let empty = 0
 
 shuffledQuestions.forEach((q,i)=>{
 
-if(answers[i]===undefined){
+const userAnswer = answers[i]
+
+// kosong
+if(userAnswer === undefined){
 empty++
+return
 }
-else if(answers[i]===q.answer){
-score += 5
+
+// ======================
+// TWK (0–29)
+// ======================
+if(i < 30){
+if(userAnswer === q.answer){
+twk += 5
 correct++
-}
-else{
+}else{
 wrong++
+}
+}
+
+// ======================
+// TIU (30–64)
+// ======================
+else if(i < 65){
+if(userAnswer === q.answer){
+tiu += 5
+correct++
+}else{
+wrong++
+}
+}
+
+// ======================
+// TKP (65–109)
+// ======================
+else{
+
+// 🔥 PENTING
+// diasumsikan q.answer = nilai (1–5)
+tkp += q.answer
+
+correct++ // TKP selalu "benar" (ga ada salah)
 }
 
 })
 
+const lulus_twk = twk >= 65
+const lulus_tiu = tiu >= 80
+const lulus_tkp = tkp >= 166
+
+const total = twk + tiu + tkp
+
 const resultData={
-score,
-correct,
-wrong,
-empty,
-total:shuffledQuestions.length,
-answers,
-questions:shuffledQuestions
+  total, // nilai total
+  twk,
+  tiu,
+  tkp,
+  correct,
+  wrong,
+  empty,
+  lulus_twk,
+  lulus_tiu,
+  lulus_tkp
 }
 
 localStorage.setItem(slug+"_result",JSON.stringify(resultData))
 
-router.push(`/tryout/${slug}/result`)
+try{
 
+await saveTryoutResult({
+toSlug: slug,
+score: total,
+correct,
+wrong,
+twk,
+tiu,
+tkp,
+lulus_twk,
+lulus_tiu,
+lulus_tkp
+})
+
+}catch(err){
+console.log("Save error:", err)
+}
+
+router.push(`/tryout/${slug}/result`)
 }
 
 // ==========================
 // LOADING
 // ==========================
 
-if(loading){
-
+if(loading || !allowed){
 return(
 <div style={{color:"white",padding:"40px"}}>
-Loading soal...
+Memuat soal...
 </div>
 )
-
 }
 
 // ==========================
@@ -360,13 +474,20 @@ borderRadius:"6px",
 color:"black"
 }}>Ragu-ragu</button>
 
-<button onClick={()=>submitExam(false)} style={{
+<button
+onClick={()=>submitExam(false)}
+disabled={submitted} // ⬅️ TAMBAH DI SINI
+style={{
 padding:"10px 22px",
-background:"#16a34a",
+background: submitted ? "#6b7280" : "#16a34a",
 border:"1px solid #15803d",
 borderRadius:"6px",
-color:"white"
-}}>Submit</button>
+color:"white",
+opacity: submitted ? 0.6 : 1, // ⬅️ opsional biar keliatan disable
+cursor: submitted ? "not-allowed" : "pointer"
+}}>
+Submit
+</button>
 
 </div>
 
