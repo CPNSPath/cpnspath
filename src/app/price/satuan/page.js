@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import { satuanTO } from "@/lib/packages"
 
@@ -11,7 +13,28 @@ return(
 
 <div className="pricing-grid">
 
-{satuanTO.map((item)=>(
+{satuanTO.map((item)=>{
+
+const num = parseInt(item.slug.replace("to-",""))
+const available = num <= 20
+
+if(!available){
+  return(
+    <div
+      key={item.slug}
+      className="pricing-card"
+      onClick={()=>alert("Tryout belum tersedia 🚧")}
+      style={{cursor:"not-allowed",opacity:0.6}}
+    >
+      <h3>{item.title}</h3>
+      <p>{item.soal} soal</p>
+      <p>{item.durasi}</p>
+      <strong>Rp {item.price.toLocaleString()}</strong>
+    </div>
+  )
+}
+
+return(
 
 <Link
 key={item.slug}
@@ -31,7 +54,9 @@ Rp {item.price.toLocaleString()}
 
 </Link>
 
-))}
+)
+
+})}
 
 </div>
 

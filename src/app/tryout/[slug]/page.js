@@ -1,8 +1,9 @@
 "use client"
 
 import { useParams,useRouter } from "next/navigation"
+import { useEffect,useState } from "react"
+import { supabase } from "@/lib/supabase"
 import TryoutGuard from "@/components/TryoutGuard"
-import { satuanTO } from "@/lib/packages"
 
 export default function TryoutPage(){
 
@@ -10,12 +11,24 @@ const params = useParams()
 const router = useRouter()
 const slug = params.slug
 
-const tryout = satuanTO.find(
-(item)=>item.slug===slug
-)
+const [tryout,setTryout] = useState(null)
+
+useEffect(()=>{
+  const getTryout = async ()=>{
+    const { data } = await supabase
+      .from("tryouts")
+      .select("*")
+      .eq("slug",slug)
+      .single()
+
+    setTryout(data)
+  }
+
+  getTryout()
+},[slug])
 
 if(!tryout){
-return <div className="container">Tryout tidak ditemukan</div>
+  return <div className="container">Loading...</div>
 }
 
 return(
@@ -28,8 +41,8 @@ return(
 
 <div className="card">
 
-<p>Jumlah soal : {tryout.soal}</p>
-<p>Durasi : {tryout.durasi}</p>
+<p>Jumlah soal : {tryout.total_questions}</p>
+<p>Durasi : {tryout.duration}</p>
 
 <button
 className="btn-primary"

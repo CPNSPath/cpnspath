@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import { bundling5 } from "@/lib/packages"
 
@@ -11,7 +13,26 @@ return(
 
 <div className="pricing-grid">
 
-{bundling5.map((item)=>(
+{bundling5.map((item,index)=>{
+
+const available = index < 4
+
+if(!available){
+  return(
+    <div
+      key={item.slug}
+      className="pricing-card"
+      onClick={()=>alert("Paket belum tersedia 🚧")}
+      style={{cursor:"not-allowed",opacity:0.6}}
+    >
+      <h3>{item.title}</h3>
+      <p>{item.jumlahTO} Tryout</p>
+      <strong>Rp {item.price.toLocaleString()}</strong>
+    </div>
+  )
+}
+
+return(
 
 <Link
 key={item.slug}
@@ -29,7 +50,9 @@ Rp {item.price.toLocaleString()}
 
 </Link>
 
-))}
+)
+
+})}
 
 </div>
 

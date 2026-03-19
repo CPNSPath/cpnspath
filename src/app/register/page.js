@@ -16,46 +16,45 @@ const [errorMsg,setErrorMsg] = useState("")
 const [successMsg,setSuccessMsg] = useState("")
 
 const handleRegister = async (e) => {
-e.preventDefault()
+  e.preventDefault()
 
-setErrorMsg("")
-setSuccessMsg("")
+  setErrorMsg("")
+  setSuccessMsg("")
 
-// validasi
-if(!email || !password){
-setErrorMsg("Semua field wajib diisi")
-return
-}
+  if(!email || !password){
+    setErrorMsg("Semua field wajib diisi")
+    return
+  }
 
-if(password.length < 6){
-setErrorMsg("Password minimal 6 karakter")
-return
-}
+  if(password.length < 6){
+    setErrorMsg("Password minimal 6 karakter")
+    return
+  }
 
-if(password !== confirmPassword){
-setErrorMsg("Password tidak sama")
-return
-}
+  if(password !== confirmPassword){
+    setErrorMsg("Password tidak sama")
+    return
+  }
 
-setLoading(true)
+  setLoading(true)
 
-const { error } = await supabase.auth.signUp({
-email,
-password
-})
+  const { error } = await supabase.auth.signUp({
+    email,
+    password
+  })
 
-if(error){
-setErrorMsg(error.message)
-setLoading(false)
-return
-}
+  if(error){
+    setErrorMsg(error.message)
+    setLoading(false)
+    return
+  }
 
-setSuccessMsg("Registrasi berhasil! Silakan login.")
-setLoading(false)
+  setSuccessMsg("Registrasi berhasil! Silakan login.")
+  setLoading(false)
 
-setTimeout(()=>{
-router.push("/login")
-},1500)
+  setTimeout(()=>{
+    router.push("/login")
+  },1500)
 }
 
 return(

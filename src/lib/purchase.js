@@ -8,6 +8,7 @@ const user = await getCurrentUser()
 
 if(!user){
 alert("Silakan login terlebih dahulu")
+window.location.href = "/login"
 return
 }
 
