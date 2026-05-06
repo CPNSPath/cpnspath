@@ -17,7 +17,7 @@ email
 .limit(20)
 
 if(error){
-console.log(error)
+console.error("getLeaderboard error:", error)
 return []
 }
 

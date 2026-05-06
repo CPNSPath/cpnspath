@@ -23,7 +23,7 @@ const { data, error } = await supabase
 .order("total",{ascending:false})
 
 if(error){
-console.log(error)
+console.error("Global leaderboard error:", error)
 return
 }
 

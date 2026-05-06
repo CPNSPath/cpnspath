@@ -295,7 +295,7 @@ lulus_tkp
 })
 
 }catch(err){
-console.log("Save error:", err)
+console.error("Save result error:", err)
 }
 
 router.push(`/tryout/${slug}/result`)

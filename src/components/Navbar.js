@@ -28,7 +28,7 @@ setUser(null)
 
 }catch(err){
 
-console.log("Navbar auth error:",err)
+console.error("Navbar auth error:", err)
 
 }finally{
 
@@ -67,7 +67,7 @@ router.push("/")
 
 }catch(err){
 
-console.log("Logout error:",err)
+console.error("Logout error:", err)
 
 }
 
@@ -75,15 +75,7 @@ console.log("Logout error:",err)
 
 return(
 
-<header
-className="navbar"
-style={{
-position:"sticky",
-top:0,
-zIndex:9999,
-background:"#0f172a"
-}}
->
+<header className="navbar">
 
 <div className="navbar-inner">
 

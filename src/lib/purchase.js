@@ -58,7 +58,7 @@ alert("Pembayaran gagal")
 })
 
 }catch(err){
-console.log(err)
+console.error("Purchase error:", err)
 alert("Terjadi kesalahan")
 }
 

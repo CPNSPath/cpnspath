@@ -350,3 +350,8 @@ tos:["to-91","to-92","to-93","to-94","to-95","to-96","to-97","to-98","to-99","to
 }
 
 ]
+
+export const satuanSKB = [
+{ slug:"skb-1", title:"SKB 1", price:15000, soal:110, durasi:"100 menit" },
+{ slug:"skb-2", title:"SKB 2", price:15000, soal:110, durasi:"100 menit" }
+]

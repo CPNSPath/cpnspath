@@ -18,15 +18,6 @@ const user = await getCurrentUser()
 
 if(!user) return
 
-console.log({
-toSlug,
-score,
-twk,
-tiu,
-tkp,
-lulus_twk
-})
-
 const { error } = await supabase
 .from("results")
 .insert([
@@ -52,7 +43,7 @@ lulus_tkp: lulus_tkp
 ])
 
 if(error){
-console.log("SAVE RESULT ERROR:", error)
+console.error("Save result error:", error)
 }
 
 // ==========================
@@ -78,7 +69,7 @@ onConflict: "user_id,to_slug"
 })
 
 if(lbError){
-console.log("LEADERBOARD ERROR:", lbError)
+console.error("Leaderboard update error:", lbError)
 }
 
 }

@@ -1,8 +1,7 @@
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import { Poppins, Inter } from "next/font/google"
-import Script from "next/script" // 
+import Script from "next/script"
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -14,19 +13,20 @@ const inter = Inter({
   weight: ["400","500"]
 })
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata = {
-  title: "CPNS Path",
-  description: "Platform latihan CAT CPNS",
+  title: "CPNS Path — Master Your CPNS Preparation",
+  description: "Platform tryout CPNS terlengkap. Latihan SKD (TWK, TIU, TKP) & SKB dengan ribuan soal & analisis hasil mendalam.",
+  keywords: [
+    "CPNS", "tryout CPNS", "latihan soal CPNS", "SKD", "SKB",
+    "TWK", "TIU", "TKP", "CAT BKN", "simulasi CAT", "persiapan CPNS",
+    "belajar CPNS", "soal CPNS online",
+  ],
+  openGraph: {
+    title: "CPNS Path — Master Your CPNS Preparation",
+    description: "Platform tryout CPNS terlengkap. Latihan SKD (TWK, TIU, TKP) & SKB dengan ribuan soal & analisis hasil mendalam.",
+    type: "website",
+    locale: "id_ID",
+  },
 };
 
 export const viewport = {

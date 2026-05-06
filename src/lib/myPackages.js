@@ -21,7 +21,7 @@ jumlah_to
 .eq("user_id",user.id)
 
 if(error){
-console.log(error)
+console.error("getMyPackages error:", error)
 return []
 }
 

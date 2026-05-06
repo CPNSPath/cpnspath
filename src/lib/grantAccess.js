@@ -13,7 +13,6 @@ paket = bundling10.find(p => p.slug === paketSlug)
 
 // ❌ kalau tidak ditemukan
 if(!paket){
-console.log("Paket tidak ditemukan")
 return
 }
 
@@ -32,10 +31,8 @@ const { error } = await supabase
 .insert(rows, { ignoreDuplicates: true })
 
 if(error){
-console.log("Grant access error:", error)
+console.error("Grant access error:", error)
 return
 }
-
-console.log("Access granted:", rows)
 
 }

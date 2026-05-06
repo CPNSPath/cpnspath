@@ -15,7 +15,7 @@ const { data,error } = await supabase
 .limit(20)
 
 if(error){
-console.log(error)
+console.error("getMyResults error:", error)
 return []
 }
 
