@@ -570,307 +570,107 @@ router.push("/tryout/twk/result")
 
 }
 
-return(
+return (
+  <div className="min-h-screen bg-[#0F172A] text-white flex flex-col lg:flex-row lg:h-screen lg:overflow-hidden">
 
-<div style={{
-display:"flex",
-height:"100vh",
-background:"#0f172a",
-color:"white",
-fontFamily:"Arial",
-overflow:"hidden"
-}}>
+    {/* Question area */}
+    <div className="flex-1 flex flex-col lg:overflow-y-auto">
 
-{/* AREA SOAL */}
+      <div className="flex items-center px-6 lg:px-10 py-5 border-b border-[#1F2937]">
+        <h2 className="text-lg font-semibold">Soal {current + 1} / {shuffledQuestions.length}</h2>
+      </div>
 
-<div style={{
-flex:1,
-padding:"40px 50px",
-display:"flex",
-flexDirection:"column",
-borderRight:"1px solid #1f2937",
-overflowY:"auto"
-}}>
+      <div className="mx-6 lg:mx-10 mt-6 mb-4 bg-[#020617] border border-[#1F2937] rounded-lg p-4">
+        <p className="text-sm text-[#94A3B8] mb-2">Progress {progressPercent}%</p>
+        <div className="h-2 bg-[#1F2937] rounded-full overflow-hidden">
+          <div className="h-full bg-[#2563EB] transition-all duration-300 rounded-full" style={{width:`${progressPercent}%`}} />
+        </div>
+      </div>
 
-<div style={{
-display:"flex",
-justifyContent:"space-between",
-alignItems:"center",
-marginBottom:"25px",
-borderBottom:"1px solid #1f2937",
-paddingBottom:"15px"
-}}>
+      <div className="mx-6 lg:mx-10 mb-6 bg-[#1E293B] border border-[#1F2937] rounded-xl p-6 lg:p-8">
+        <p className="text-base lg:text-lg leading-relaxed mb-6 lg:mb-8">{shuffledQuestions[current].question}</p>
 
-<h2 style={{fontSize:"22px"}}>
-Soal {current+1} / {shuffledQuestions.length}
-</h2>
+        <div className="space-y-3">
+          {shuffledQuestions[current].options.map((opt, i) => (
+            <button
+              key={i}
+              onClick={() => selectAnswer(i)}
+              className={`w-full text-left px-4 lg:px-5 py-3 rounded-lg border text-sm transition-colors ${
+                answers[current] === i
+                  ? "bg-[#2563EB] border-[#1D4ED8] text-white"
+                  : "bg-[#0F172A] border-[#1F2937] text-[#CBD5E1] hover:border-[#2563EB]"
+              }`}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+      </div>
 
-</div>
+      <div className="mx-6 lg:mx-10 mb-8 pt-5 border-t border-[#1F2937] flex flex-wrap gap-3">
+        <button
+          onClick={prev}
+          className="px-5 py-2.5 bg-[#374151] border border-[#4B5563] rounded-lg text-sm hover:bg-[#4B5563] transition-colors"
+        >
+          Previous
+        </button>
+        <button
+          onClick={next}
+          className="px-5 py-2.5 bg-[#2563EB] border border-[#1D4ED8] rounded-lg text-sm hover:bg-[#1D4ED8] transition-colors"
+        >
+          Next
+        </button>
+        <button
+          onClick={toggleDoubt}
+          className="px-5 py-2.5 bg-[#EAB308] border border-[#CA8A04] rounded-lg text-sm text-black hover:bg-[#CA8A04] transition-colors"
+        >
+          Ragu-ragu
+        </button>
+        <button
+          onClick={() => submitExam(false)}
+          className="px-5 py-2.5 bg-[#16A34A] border border-[#15803D] rounded-lg text-sm hover:bg-[#15803D] transition-colors"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
 
-{/* PROGRESS BAR */}
+    {/* Sidebar */}
+    <div className="lg:w-72 bg-[#111827] border-t lg:border-t-0 lg:border-l border-[#1F2937] flex flex-col p-6 lg:overflow-y-auto">
 
-<div style={{
-marginBottom:"30px",
-border:"1px solid #1f2937",
-padding:"12px 16px",
-borderRadius:"8px",
-background:"#020617"
-}}>
+      <div className="bg-[#020617] border border-[#1F2937] rounded-lg p-4 mb-4">
+        <p className="text-xs text-[#94A3B8] mb-1">Waktu Tersisa</p>
+        <p className="text-2xl font-bold">{formatTime()}</p>
+      </div>
 
-<div style={{
-fontSize:"14px",
-marginBottom:"8px",
-opacity:"0.8"
-}}>
-Progress {progressPercent}%
-</div>
+      <div className="bg-[#020617] border border-[#1F2937] rounded-lg p-4 mb-5 space-y-1 text-sm">
+        <p>Dijawab: <span className="font-semibold text-[#4ADE80]">{answeredCount}</span></p>
+        <p>Ragu: <span className="font-semibold text-[#EAB308]">{doubtCount}</span></p>
+        <p>Kosong: <span className="font-semibold text-[#94A3B8]">{emptyCount}</span></p>
+      </div>
 
-<div style={{
-height:"10px",
-background:"#1f2937",
-borderRadius:"6px",
-overflow:"hidden"
-}}>
+      <h3 className="text-sm font-semibold mb-3 pb-2 border-b border-[#1F2937]">Daftar Soal</h3>
+      <div className="grid grid-cols-5 gap-2">
+        {shuffledQuestions.map((q, i) => {
+          let bg = "bg-[#374151]"
+          if (i === current) bg = "bg-[#2563EB]"
+          else if (doubts[i]) bg = "bg-[#EAB308]"
+          else if (answers[i] != null) bg = "bg-[#16A34A]"
 
-<div style={{
-width:`${progressPercent}%`,
-height:"100%",
-background:"#2563eb",
-transition:"0.3s"
-}}/>
+          return (
+            <button
+              key={i}
+              onClick={() => setCurrent(i)}
+              className={`${bg} border border-[#1F2937] rounded-md py-2 text-xs font-bold text-white hover:opacity-80 transition-opacity`}
+            >
+              {i + 1}
+            </button>
+          )
+        })}
+      </div>
+    </div>
 
-</div>
-
-</div>
-
-{/* SOAL */}
-
-<div style={{
-background:"#1e293b",
-padding:"35px",
-borderRadius:"10px",
-border:"1px solid #1f2937"
-}}>
-
-<p style={{
-fontSize:"20px",
-marginBottom:"30px",
-lineHeight:"1.7"
-}}>
-{shuffledQuestions[current].question}
-</p>
-
-{shuffledQuestions[current].options.map((opt,i)=>(
-
-<div key={i} style={{marginBottom:"16px"}}>
-
-<label style={{
-cursor:"pointer",
-display:"flex",
-alignItems:"center"
-}}>
-
-<input
-type="radio"
-checked={answers[current]===i}
-onChange={()=>selectAnswer(i)}
-/>
-
-<span style={{
-marginLeft:"12px",
-fontSize:"16px"
-}}>
-{opt}
-</span>
-
-</label>
-
-</div>
-
-))}
-
-</div>
-
-{/* BUTTON */}
-
-<div style={{
-marginTop:"35px",
-display:"flex",
-gap:"12px",
-borderTop:"1px solid #1f2937",
-paddingTop:"20px"
-}}>
-
-<button
-onClick={prev}
-style={{
-padding:"10px 22px",
-background:"#374151",
-border:"1px solid #4b5563",
-borderRadius:"6px",
-color:"white",
-cursor:"pointer"
-}}
->
-Previous
-</button>
-
-<button
-onClick={next}
-style={{
-padding:"10px 22px",
-background:"#2563eb",
-border:"1px solid #1d4ed8",
-borderRadius:"6px",
-color:"white",
-cursor:"pointer"
-}}
->
-Next
-</button>
-
-<button
-onClick={toggleDoubt}
-style={{
-padding:"10px 22px",
-background:"#eab308",
-border:"1px solid #ca8a04",
-borderRadius:"6px",
-color:"black",
-cursor:"pointer"
-}}
->
-Ragu-ragu
-</button>
-
-<button
-onClick={()=>submitExam(false)}
-style={{
-padding:"10px 22px",
-background:"#16a34a",
-border:"1px solid #15803d",
-borderRadius:"6px",
-color:"white",
-cursor:"pointer"
-}}
->
-Submit
-</button>
-
-</div>
-
-</div>
-
-
-{/* NAVIGATOR SIDEBAR */}
-
-<div style={{
-width:"300px",
-background:"#111827",
-padding:"25px",
-borderLeft:"1px solid #1f2937",
-display:"flex",
-flexDirection:"column",
-justifyContent:"flex-start"
-}}>
-
-<h3 style={{
-marginBottom:"15px",
-borderBottom:"1px solid #1f2937",
-paddingBottom:"10px"
-}}>
-Daftar Soal
-</h3>
-
-<div style={{
-display:"grid",
-gridTemplateColumns:"repeat(5,1fr)",
-gap:"10px",
-marginBottom:"25px"
-}}>
-
-{shuffledQuestions.map((q,i)=>{
-
-let color="#374151"
-
-if(i===current) color="#2563eb"
-else if(doubts[i]) color="#eab308"
-else if(answers[i]!=null) color="#16a34a"
-
-return(
-
-<button
-key={i}
-onClick={()=>setCurrent(i)}
-style={{
-padding:"10px",
-background:color,
-border:"1px solid #1f2937",
-borderRadius:"6px",
-color:"white",
-fontWeight:"bold",
-cursor:"pointer"
-}}
->
-{i+1}
-</button>
-
-)
-
-})}
-
-</div>
-
-
-{/* TIMER */}
-
-<div style={{
-border:"1px solid #1f2937",
-borderRadius:"8px",
-padding:"14px",
-marginBottom:"20px",
-background:"#020617"
-}}>
-
-<div style={{
-fontSize:"13px",
-opacity:"0.7"
-}}>
-Waktu Tersisa
-</div>
-
-<div style={{
-fontSize:"26px",
-fontWeight:"bold",
-marginTop:"4px"
-}}>
-{formatTime()}
-</div>
-
-</div>
-
-
-{/* STATISTIK */}
-
-<div style={{
-background:"#020617",
-padding:"15px",
-borderRadius:"8px",
-fontSize:"14px",
-lineHeight:"1.9",
-border:"1px solid #1f2937"
-}}>
-
-<div>Dijawab : {answeredCount}</div>
-<div>Ragu : {doubtCount}</div>
-<div>Kosong : {emptyCount}</div>
-
-</div>
-
-</div>
-
-</div>
-
+  </div>
 )
 
 }

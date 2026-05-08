@@ -1,7 +1,12 @@
 {
   "permissions": {
     "allow": [
-      "Bash(Get-ChildItem *)"
+      "Bash(Get-ChildItem *)",
+      "Bash(Test-Path \"src\\\\app\\\\price\")",
+      "Bash(findstr *)",
+      "Bash(npm install *)",
+      "Bash(Get-Content *)",
+      "Bash(Test-Path C:\\\\Users\\\\titom\\\\Downloads\\\\website pertama\\\\belajar-web\\\\node_modules\\\\lucide-react *)"
     ]
   }
 }

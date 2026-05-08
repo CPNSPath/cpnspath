@@ -1,130 +1,143 @@
-"use client"
+import Link from 'next/link'
+import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
+import {
+  Brain,
+  BookOpen,
+  Users,
+  Briefcase,
+  GraduationCap,
+  Target,
+  Award,
+  FileText,
+  ChevronRight,
+} from 'lucide-react'
 
-import Navbar from "@/components/Navbar"
-import HeroBanner from "@/components/HeroBanner"
+const CATEGORIES = [
+  {
+    icon: Brain,
+    name: 'TWK',
+    desc: 'Tes Wawasan Kebangsaan — Pancasila, UUD 1945, NKRI',
+    link: '/tryout/twk',
+  },
+  {
+    icon: BookOpen,
+    name: 'TIU',
+    desc: 'Tes Intelegensi Umum — Verbal, numerik, figural',
+    link: '/tryout/tiu',
+  },
+  {
+    icon: Users,
+    name: 'TKP',
+    desc: 'Tes Karakteristik Pribadi — Profesionalisme, integritas',
+    link: '/tryout/tkp',
+  },
+  {
+    icon: Briefcase,
+    name: 'SKB',
+    desc: 'Seleksi Kompetensi Bidang sesuai formasi jabatan',
+    link: '/skb',
+  },
+  {
+    icon: Award,
+    name: 'Leaderboard',
+    desc: 'Lihat ranking nasional & posisimu',
+    link: '/leaderboard/global',
+  },
+  {
+    icon: FileText,
+    name: 'Pricing',
+    desc: 'Lihat semua paket & harga',
+    link: '/price/satuan',
+  },
+]
 
-export default function Home(){
+export default function Home() {
+  return (
+    <div className="bg-white min-h-screen flex flex-col">
+      {/* Navbar selalu di atas, transparan saat di hero, putih setelah scroll */}
+      <Navbar transparent={true} />
 
-return(
+      {/* ══════════════════════════════════════════
+          SECTION 1 — HERO
+          ══════════════════════════════════════════ */}
+            <section className="relative h-screen min-h-[680px] max-h-[900px] w-full overflow-hidden pt-16 lg:pt-20">
 
-<div
-style={{
-minHeight:"100vh",
-background:"var(--dark)",
-color:"white"
-}}
->
+        <img
+          src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=1920&q=85&auto=format&fit=crop"
+          alt="Student preparing for CPNS exam"
+          className="absolute inset-0 w-full h-full object-cover object-[70%_center]"
+        />
 
-{/* NAVBAR */}
-<Navbar/>
+        {/* Horizontal overlay: kiri gelap → kanan terang */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/10" />
 
-{/* MAIN CONTENT */}
+        {/* Vertical overlay: readability top & bottom */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40" />
 
-<div
-style={{
-maxWidth:"1800px",
-margin:"auto",
-padding:"30px"
-}}
->
+        {/* Hero content */}
+        <div className="relative z-20 h-full flex items-center">
+          <div className="w-full max-w-7xl mx-auto px-8 sm:px-12 lg:pl-32 lg:pr-8">
+            <div className="max-w-2xl" style={{ marginLeft: "24px" }}>
 
-{/* HERO */}
-<HeroBanner/>
+              <h1 className="text-white text-4xl sm:text-5xl lg:text-6xl font-light leading-[1.15] tracking-tight mb-8">
+                We Make Tough CPNS Tests<br />
+                Easy to Master
+              </h1>
 
-{/* INFORMASI SKD */}
+              <p className="text-white/95 text-lg sm:text-lg lg:text-xl font-light leading-[1.5] tracking-normal mb-12">
+                Latihan SKD &amp; SKB lengkap<br />
+                dengan ribuan soal terverifikasi
+              </p>
 
-<section className="info-section">
+              <button className="inline-flex items-center justify-center bg-[#ffc107] hover:bg-[#e0a800] text-[#212529] text-base tracking-wide min-w-[200px] h-11 py-5 rounded-full transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl">
+                Explore Our Tryouts
+              </button>
 
-<h2>Informasi SKD CPNS</h2>
+            </div>
+          </div>
+        </div>
 
-<div className="info-grid">
+      </section>
 
-{/* CARD 1 */}
-<div className="info-card">
-<h3>Seleksi Kompetensi Dasar (SKD)</h3>
-<p>
-Seleksi Kompetensi Dasar (SKD) CPNS dilaksanakan dengan metode 
-Computer Assisted Test (CAT) BKN. Peserta akan mengerjakan 
-110 soal dalam 100 menit. Soal dibagi menjadi tiga jenis yaitu 
-Tes Wawasan Kebangsaan (TWK), Tes Intelegensi Umum (TIU), 
-dan Tes Karakteristik Pribadi (TKP).
-</p>
-</div>
+      {/* ══════════════════════════════════════════
+          SECTION 2 — CATEGORIES GRID
+          ══════════════════════════════════════════ */}
+      <section className="bg-white py-24 md:py-32 lg:py-40">
+        <div className="max-w-auto mx-auto px-6 lg:px-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-16 lg:gap-x-20 xl:gap-x-24 gap-y-24 md:gap-y-28">
 
-{/* CARD 2 */}
-<div className="info-card">
-<h3>Passing Grade</h3>
-<p>
-Untuk formasi umum nilai ambang batas SKD adalah 
-TWK ≥ 65, TIU ≥ 80, dan TKP ≥ 166. 
-Beberapa kategori seperti lulusan Cumlaude, penyandang 
-disabilitas, dan putra-putri Papua memiliki ketentuan 
-nilai khusus sesuai kebijakan pemerintah.
-</p>
-</div>
+            {CATEGORIES.map(({ icon: Icon, name, desc, link }) => (
+              <Link key={name} href={link} className="text-center group cursor-pointer flex flex-col items-center justify-center min-h-[280px]">
 
-{/* CARD 3 */}
-<div className="info-card">
-<h3>Peluang Karir PNS</h3>
-<p>
-Karier PNS memiliki jalur yang jelas melalui promosi jabatan,
-rotasi jabatan setara, dan lintas jalur sesuai PermenPANRB
-No.22 Tahun 2021. ASN juga memperoleh gaji tetap,
-tunjangan kinerja, dan jaminan pensiun.
-</p>
-</div>
+                <div className="flex justify-center mb-7">
+                  <Icon
+                    size={64}
+                    strokeWidth={1.5}
+                    className="text-[#007bff] transition-transform duration-300 group-hover:scale-110"
+                  />
+                </div>
 
-{/* CARD BESAR */}
-<div className="info-card info-wide">
+                <h3 className="text-xl font-medium text-[#343a40] mb-3">
+                  {name}
+                </h3>
 
-<h3>Simulasi CAT dan Materi Ujian</h3>
+                <p className="text-sm text-[#6c757d] font-light leading-relaxed mb-5 max-w-[240px] mx-auto">
+                  {desc}
+                </p>
 
-<p>
-Untuk mempersiapkan ujian SKD, BKN rutin menyelenggarakan simulasi
-CAT yang memungkinkan peserta berlatih langsung mengerjakan soal
-TWK, TIU, dan TKP menggunakan komputer.
-</p>
-</div>
+                <span className="mt-2 inline-flex items-center text-[#007bff] text-sm font-medium hover:underline">
+  Get Started <ChevronRight size={14} className="ml-1" />
+</span>
 
-{/* CARD 5 */}
-<div className="info-card">
-<h3>Materi TWK</h3>
-<p>
-TWK mengukur pemahaman peserta terhadap nilai nasionalisme,
-integritas, bela negara, serta pemahaman terhadap
-Pancasila, UUD 1945, NKRI, dan Bhinneka Tunggal Ika.
-</p>
-</div>
+              </Link>
+            ))}
 
-{/* CARD 6 */}
-<div className="info-card">
-<h3>Materi TIU</h3>
-<p>
-TIU menguji kemampuan berpikir logis dan analitis
-melalui soal verbal, numerik, serta figural
-seperti pola, perhitungan, dan analisis logika.
-</p>
-</div>
+          </div>
+        </div>
+      </section>
 
-{/* CARD 7 */}
-<div className="info-card">
-<h3>Materi TKP</h3>
-<p>
-TKP menilai karakteristik pribadi peserta
-seperti kemampuan pelayanan publik,
-kerja sama tim, adaptasi sosial budaya,
-serta profesionalisme dalam bekerja.
-</p>
-</div>
-
-</div>
-
-</section>
-
-</div>
-
-</div>
-
-)
-
+      <Footer />
+    </div>
+  )
 }

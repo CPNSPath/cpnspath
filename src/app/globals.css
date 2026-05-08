@@ -126,6 +126,15 @@ html, body {
   --transition-base: 200ms ease;
   --transition-slow: 300ms ease;
 
+  /* --- UWORLD COLOR SYSTEM --- */
+  --uworld-blue:         #007bff;
+  --uworld-blue-hover:   #0069d9;
+  --uworld-yellow:       #ffc107;
+  --uworld-yellow-hover: #e0a800;
+  --uworld-dark:         #343a40;
+  --uworld-gray:         #6c757d;
+  --uworld-text-body:    rgba(74, 74, 74, 0.85);
+
   /* ============================================================
      LEGACY ALIASES — do NOT remove (backward compatibility)
      ============================================================ */
@@ -685,4 +694,101 @@ p, span, a, button {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+
+/* ============================================================
+   NAVBAR DRAWER — mobile slide-in from right
+   ============================================================ */
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.drawer-slide-in {
+  animation: slide-in-right 300ms ease-out both;
+}
+
+
+/* ============================================================
+   HOMEPAGE — UWorld-grade utilities
+   ============================================================ */
+
+.hero-headline {
+  font-family: var(--font-poppins);
+  font-size: clamp(36px, 5vw, 72px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.section-heading {
+  font-family: var(--font-poppins);
+  font-size: clamp(30px, 4vw, 48px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.font-display {
+  font-family: var(--font-poppins);
+}
+
+.animate-slide-up-600 {
+  animation: slide-up 600ms ease both;
+}
+
+@keyframes float-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+.animate-float {
+  animation: float-bounce 3s ease-in-out infinite;
+}
+
+.animate-float-delay {
+  animation: float-bounce 3s ease-in-out 1.5s infinite;
+}
+
+
+/* ============================================================
+   SHADCN/UI — Tailwind v4 @theme tokens
+   Maps shadcn Tailwind utilities → design tokens via --color-*.
+   No :root additions = zero conflict with existing CSS vars.
+   ============================================================ */
+
+@theme inline {
+  --color-background:           oklch(100% 0 0);
+  --color-foreground:           var(--neutral-900);
+
+  --color-card:                 oklch(100% 0 0);
+  --color-card-foreground:      var(--neutral-900);
+
+  --color-popover:              oklch(100% 0 0);
+  --color-popover-foreground:   var(--neutral-900);
+
+  --color-primary:              var(--primary-900);
+  --color-primary-foreground:   oklch(100% 0 0);
+
+  --color-secondary:            var(--neutral-100);
+  --color-secondary-foreground: var(--neutral-700);
+
+  --color-muted:                var(--neutral-100);
+  --color-muted-foreground:     var(--neutral-500);
+
+  --color-accent:               var(--neutral-100);
+  --color-accent-foreground:    var(--neutral-700);
+
+  --color-destructive:          var(--error);
+  --color-destructive-foreground: oklch(100% 0 0);
+
+  --color-border:               var(--border-default);
+  --color-input:                var(--border-default);
+  --color-ring:                 var(--primary-600);
 }

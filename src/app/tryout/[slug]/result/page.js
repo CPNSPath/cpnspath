@@ -2,169 +2,115 @@
 
 import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
+import Link from "next/link"
+import Navbar from "@/components/Navbar"
+import Footer from "@/components/Footer"
+import Section from "@/components/ui/Section"
+import Container from "@/components/ui/Container"
+import Card from "@/components/ui/Card"
+import Badge from "@/components/ui/Badge"
+import Button from "@/components/ui/Button"
 
-export default function ResultPage(){
+export default function ResultPage() {
+  const params = useParams()
+  const router = useRouter()
+  const slug = params.slug
 
-const params = useParams()
-const router = useRouter()
-const slug = params.slug
+  const [data, setData] = useState(null)
 
-const [data,setData] = useState(null)
+  useEffect(() => {
+    const saved = localStorage.getItem(slug + "_result")
 
-useEffect(()=>{
+    if (!saved) {
+      router.replace("/dashboard")
+      return
+    }
 
-const saved = localStorage.getItem(slug+"_result")
+    setData(JSON.parse(saved))
+  }, [slug])
 
-if(!saved){
-router.replace("/dashboard")
-return
-}
+  if (!data) {
+    return (
+      <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
+        <Navbar />
+        <Section variant="default" className="flex-1 flex items-center justify-center">
+          <p className="text-[#64748B]">Memuat hasil...</p>
+        </Section>
+        <Footer />
+      </div>
+    )
+  }
 
-setData(JSON.parse(saved))
+  const allPassed = data.lulus_twk && data.lulus_tiu && data.lulus_tkp
 
-},[slug])
+  const SECTIONS = [
+    { label: "TWK", value: data.twk, lulus: data.lulus_twk },
+    { label: "TIU", value: data.tiu, lulus: data.lulus_tiu },
+    { label: "TKP", value: data.tkp, lulus: data.lulus_tkp },
+  ]
 
-if(!data){
-return <div style={{color:"white",padding:"40px"}}>Loading...</div>
-}
+  return (
+    <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
+      <Navbar />
 
-// ==========================
-// STATUS
-// ==========================
+      <section className={`py-12 sm:py-16 ${allPassed ? "bg-[#052E16]" : "bg-[#172554]"}`}>
+        <Container>
+          <p className="text-sm text-[#93C5FD] mb-2">Hasil Tryout</p>
+          <p className="text-5xl font-bold text-white mb-2">{data.total}</p>
+          <p className={`text-lg font-bold ${allPassed ? "text-[#4ADE80]" : "text-[#F87171]"}`}>
+            {allPassed ? "ANDA LULUS 🎉" : "ANDA BELUM LULUS"}
+          </p>
+        </Container>
+      </section>
 
-const allPassed = data.lulus_twk && data.lulus_tiu && data.lulus_tkp
+      <Section variant="default" className="flex-1">
+        <Container>
+          <div className="max-w-3xl mx-auto space-y-6">
 
-function box(title,value,lulus){
+            {/* TWK / TIU / TKP breakdown */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {SECTIONS.map((sec) => (
+                <Card key={sec.label} variant="elevated" className="p-6 text-center">
+                  <p className="text-xs text-[#64748B] mb-2">{sec.label}</p>
+                  <p className="text-4xl font-bold text-[#0F172A] mb-3">{sec.value}</p>
+                  <Badge variant={sec.lulus ? "accent" : "warning"} size="sm">
+                    {sec.lulus ? "LULUS" : "TIDAK LULUS"}
+                  </Badge>
+                </Card>
+              ))}
+            </div>
 
-return(
-<div style={{
-flex:1,
-padding:"20px",
-borderRadius:"10px",
-background:"#020617",
-border:"1px solid #1f2937",
-textAlign:"center"
-}}>
+            {/* Stats */}
+            <Card variant="default" className="p-6">
+              <h2 className="heading-3 text-[#0F172A] mb-4">Detail Jawaban</h2>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-[#16A34A]">{data.correct}</p>
+                  <p className="text-xs text-[#64748B] mt-1">Benar</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-[#DC2626]">{data.wrong}</p>
+                  <p className="text-xs text-[#64748B] mt-1">Salah</p>
+                </div>
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-[#94A3B8]">{data.empty}</p>
+                  <p className="text-xs text-[#64748B] mt-1">Kosong</p>
+                </div>
+              </div>
+            </Card>
 
-<div style={{opacity:0.7,fontSize:"14px"}}>{title}</div>
+            <Button
+              variant="primary"
+              onClick={() => router.push("/dashboard")}
+            >
+              Kembali ke Dashboard
+            </Button>
 
-<div style={{
-fontSize:"28px",
-fontWeight:"bold",
-margin:"10px 0"
-}}>
-{value}
-</div>
+          </div>
+        </Container>
+      </Section>
 
-<div style={{
-color:lulus ? "#22c55e" : "#ef4444",
-fontWeight:"bold"
-}}>
-{lulus ? "LULUS" : "TIDAK"}
-</div>
-
-</div>
-)
-
-}
-
-// ==========================
-// UI
-// ==========================
-
-return(
-
-<div style={{
-minHeight:"100vh",
-background:"#0f172a",
-color:"white",
-padding:"40px",
-fontFamily:"Arial"
-}}>
-
-<h1 style={{fontSize:"28px",marginBottom:"30px"}}>
-Hasil Tryout
-</h1>
-
-{/* TOTAL */}
-
-<div style={{
-padding:"30px",
-borderRadius:"12px",
-background: allPassed ? "#052e16" : "#3f1d1d",
-border:"1px solid #1f2937",
-marginBottom:"30px"
-}}>
-
-<div style={{fontSize:"16px",opacity:"0.7"}}>
-Total Nilai
-</div>
-
-<div style={{fontSize:"42px",fontWeight:"bold"}}>
-{data.total}
-</div>
-
-<div style={{
-marginTop:"10px",
-fontWeight:"bold",
-color: allPassed ? "#22c55e" : "#ef4444"
-}}>
-{allPassed ? "ANDA LULUS 🎉" : "ANDA BELUM LULUS"}
-</div>
-
-</div>
-
-{/* DETAIL */}
-
-<div style={{
-display:"flex",
-gap:"15px",
-marginBottom:"30px"
-}}>
-
-{box("TWK",data.twk,data.lulus_twk)}
-{box("TIU",data.tiu,data.lulus_tiu)}
-{box("TKP",data.tkp,data.lulus_tkp)}
-
-</div>
-
-{/* STATS */}
-
-<div style={{
-background:"#020617",
-padding:"20px",
-borderRadius:"10px",
-border:"1px solid #1f2937"
-}}>
-
-<div>Benar : {data.correct}</div>
-<div>Salah : {data.wrong}</div>
-<div>Kosong : {data.empty}</div>
-
-</div>
-
-{/* BUTTON */}
-
-<div style={{marginTop:"30px"}}>
-
-<button
-onClick={()=>router.push("/dashboard")}
-style={{
-padding:"12px 25px",
-background:"#2563eb",
-border:"none",
-borderRadius:"8px",
-color:"white",
-cursor:"pointer"
-}}
->
-Kembali ke Dashboard
-</button>
-
-</div>
-
-</div>
-
-)
-
+      <Footer />
+    </div>
+  )
 }

@@ -10,64 +10,25 @@ export default function Error({ error, reset }) {
   }, [error])
 
   return (
-    <div style={{
-      minHeight: "100vh",
-      background: "var(--dark)",
-      color: "var(--text-light)",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      textAlign: "center",
-      padding: "40px",
-    }}>
-
-      <p style={{
-        fontSize: "60px",
-        marginBottom: "16px",
-      }}>
-        ⚠️
-      </p>
-
-      <h1 style={{
-        fontSize: "28px",
-        fontWeight: "600",
-        marginBottom: "12px",
-      }}>
-        Something Went Wrong
-      </h1>
-
-      <p style={{
-        color: "var(--text-muted)",
-        fontSize: "16px",
-        maxWidth: "420px",
-        lineHeight: "1.6",
-        marginBottom: "32px",
-      }}>
+    <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center text-center px-6">
+      <p className="text-6xl mb-4">⚠️</p>
+      <h1 className="text-2xl font-semibold text-[#0F172A] mb-3">Something Went Wrong</h1>
+      <p className="text-[#64748B] max-w-md mb-8 leading-relaxed">
         Terjadi kesalahan yang tidak terduga. Coba muat ulang halaman atau kembali ke beranda.
       </p>
-
-      <div style={{ display: "flex", gap: "12px" }}>
-
+      <div className="flex flex-wrap gap-3 justify-center">
         <button
-          className="btn-primary"
-          style={{ fontSize: "15px", padding: "12px 24px" }}
           onClick={() => reset()}
+          className="px-6 py-3 bg-[#1E3A8A] text-white rounded-lg text-sm font-medium hover:bg-[#172554] transition-colors"
         >
           Try Again
         </button>
-
         <Link href="/">
-          <button
-            className="btn-primary"
-            style={{ fontSize: "15px", padding: "12px 24px", background: "var(--card)" }}
-          >
+          <button className="px-6 py-3 bg-white text-[#0F172A] border border-[#E2E8F0] rounded-lg text-sm font-medium hover:bg-[#F1F5F9] transition-colors">
             Back to Home
           </button>
         </Link>
-
       </div>
-
     </div>
   )
 }
