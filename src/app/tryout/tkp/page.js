@@ -1,6 +1,7 @@
 "use client"
 
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
+import { useEffect, useState, Suspense } from "react"
 import Link from "next/link"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
@@ -9,6 +10,7 @@ import Container from "@/components/ui/Container"
 import Card from "@/components/ui/Card"
 import Badge from "@/components/ui/Badge"
 import Button from "@/components/ui/Button"
+import { supabase } from "@/lib/supabase"
 
 const INFO = [
   { label: "Jumlah Soal", value: "35 Soal" },
@@ -17,8 +19,50 @@ const INFO = [
   { label: "Tipe", value: "Multiple Choice" },
 ]
 
-export default function TKPIntro() {
+function TKPIntroContent() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const toId = searchParams.get("to_id")
+
+  const [accessChecked, setAccessChecked] = useState(!toId)
+  const [checking, setChecking] = useState(!!toId)
+
+  useEffect(() => {
+    if (!toId) return
+    async function checkAccess() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) {
+        router.replace(`/login?redirect=/tryout/tkp?to_id=${toId}`)
+        return
+      }
+      const { data: access } = await supabase
+        .from("user_packages")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("package_slug", "skd")
+        .eq("payment_status", "paid")
+        .maybeSingle()
+      if (!access) {
+        router.replace("/price")
+        return
+      }
+      setAccessChecked(true)
+      setChecking(false)
+    }
+    checkAccess()
+  }, [toId, router])
+
+  if (checking) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC]">
+        <p className="text-[#64748B]">Memverifikasi akses...</p>
+      </div>
+    )
+  }
+
+  const backHref = toId ? `/tryout/paket-to/${toId}` : "/tryout/free-trial"
+  const backLabel = toId ? `← Kembali ke TO SKD #${toId}` : "← Kembali ke Free Trial"
+  const examHref = toId ? `/tryout/tkp/exam?to_id=${toId}` : "/tryout/tkp/exam"
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
@@ -26,13 +70,12 @@ export default function TKPIntro() {
 
       <section className="bg-[#172554] py-12 sm:py-16">
         <Container>
-          <Link
-            href="/tryout"
-            className="text-sm text-[#93C5FD] hover:text-white transition-colors mb-3 inline-block"
-          >
-            ← Kembali ke Free Trial
+          <Link href={backHref} className="text-sm text-[#93C5FD] hover:text-white transition-colors mb-3 inline-block">
+            {backLabel}
           </Link>
-          <h1 className="heading-1 text-white mb-2">Tryout TKP</h1>
+          <h1 className="heading-1 text-white mb-2">
+            {toId ? `TO SKD #${toId} — TKP` : "Tryout TKP"}
+          </h1>
           <p className="body-base text-[#93C5FD]">Tes Karakteristik Pribadi</p>
         </Container>
       </section>
@@ -41,7 +84,9 @@ export default function TKPIntro() {
         <Container>
           <div className="max-w-lg mx-auto">
             <Card variant="elevated" className="p-8">
-              <Badge variant="primary" className="mb-6">Free Trial</Badge>
+              <Badge variant={toId ? "accent" : "primary"} className="mb-6">
+                {toId ? `Paket SKD — TO #${toId}` : "Free Trial"}
+              </Badge>
 
               <div className="grid grid-cols-2 gap-4 mb-8">
                 {INFO.map((item) => (
@@ -52,11 +97,7 @@ export default function TKPIntro() {
                 ))}
               </div>
 
-              <Button
-                variant="primary"
-                fullWidth
-                onClick={() => router.push("/tryout/tkp/exam")}
-              >
+              <Button variant="primary" fullWidth onClick={() => router.push(examHref)}>
                 Mulai Tryout
               </Button>
             </Card>
@@ -66,5 +107,13 @@ export default function TKPIntro() {
 
       <Footer />
     </div>
+  )
+}
+
+export default function TKPIntro() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#F8FAFC]" />}>
+      <TKPIntroContent />
+    </Suspense>
   )
 }

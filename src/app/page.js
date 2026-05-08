@@ -6,10 +6,10 @@ import {
   BookOpen,
   Users,
   Briefcase,
-  GraduationCap,
-  Target,
   Award,
   FileText,
+  PlayCircle,
+  ShoppingCart,
   ChevronRight,
 } from 'lucide-react'
 
@@ -39,16 +39,28 @@ const CATEGORIES = [
     link: '/skb',
   },
   {
+    icon: PlayCircle,
+    name: 'Paket SKD',
+    desc: '100 Tryout SKD lengkap — TWK, TIU, TKP — Rp 15.000',
+    link: '/price',
+  },
+  {
+    icon: ShoppingCart,
+    name: 'Paket SKB',
+    desc: '100 Tryout SKB sesuai formasi jabatan — Rp 15.000',
+    link: '/price',
+  },
+  {
+    icon: FileText,
+    name: 'Free Trial',
+    desc: 'Coba 3 subtest SKD gratis — tanpa daftar akun',
+    link: '/tryout/free-trial',
+  },
+  {
     icon: Award,
     name: 'Leaderboard',
     desc: 'Lihat ranking nasional & posisimu',
     link: '/leaderboard/global',
-  },
-  {
-    icon: FileText,
-    name: 'Pricing',
-    desc: 'Lihat semua paket & harga',
-    link: '/price/satuan',
   },
 ]
 
@@ -105,7 +117,7 @@ export default function Home() {
           ══════════════════════════════════════════ */}
       <section className="bg-white py-24 md:py-32 lg:py-40">
         <div className="max-w-auto mx-auto px-6 lg:px-12">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-16 lg:gap-x-20 xl:gap-x-24 gap-y-24 md:gap-y-28">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-12 lg:gap-x-16 xl:gap-x-20 gap-y-20 md:gap-y-24">
 
             {CATEGORIES.map(({ icon: Icon, name, desc, link }) => (
               <Link key={name} href={link} className="text-center group cursor-pointer flex flex-col items-center justify-center min-h-[280px]">
