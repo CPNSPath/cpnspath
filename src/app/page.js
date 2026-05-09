@@ -76,7 +76,7 @@ export default function Home() {
             <section className="relative h-screen min-h-[680px] max-h-[900px] w-full overflow-hidden pt-16 lg:pt-20">
 
         <img
-          src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=1920&q=85&auto=format&fit=crop"
+          src="https://i.ibb.co.com/C3CMBX5V/Gemini-Generated-Image-7li55e7li55e7li5-1.png&auto=format&fit=crop"
           alt="Student preparing for CPNS exam"
           className="absolute inset-0 w-full h-full object-cover object-[70%_center]"
         />
