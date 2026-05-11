@@ -235,12 +235,15 @@ const TryoutDropdown = () => (
         style={{ position: "fixed", top: 0, right: 0, height: "100vh", width: "min(280px, 80vw)", zIndex: 50 }}
       >
         <div className="flex items-center justify-between px-5 h-16 border-b border-[#E2E8F0] flex-shrink-0">
-          <span
-            className="text-lg font-bold text-[#1E3A8A]"
-            style={{ fontFamily: "var(--font-plus-jakarta, var(--font-poppins))" }}
-          >
-            CPNS Path
-          </span>
+          <svg width="140" height="36" viewBox="0 0 140 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="36" height="36" rx="8" fill="#172554"/>
+            <rect x="8" y="9" width="9" height="18" rx="2" fill="#fbbf24"/>
+            <rect x="19" y="9" width="9" height="18" rx="2" fill="white" opacity="0.9"/>
+            <line x1="18" y1="9" x2="18" y2="27" stroke="#172554" strokeWidth="1.5"/>
+            <polyline points="21,17 23,20 28,14" fill="none" stroke="#fbbf24" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+            <text x="44" y="16" fontFamily="system-ui, sans-serif" fontSize="13" fontWeight="700" fill="#172554" letterSpacing="1.5">CPNS</text>
+            <text x="44" y="29" fontFamily="system-ui, sans-serif" fontSize="9" fontWeight="400" fill="#172554" letterSpacing="4">PATH</text>
+          </svg>
           <button
             onClick={() => setDrawerOpen(false)}
             aria-label="Close navigation menu"
@@ -369,12 +372,15 @@ const TryoutDropdown = () => (
 
           {/* Logo */}
           <Link href="/" className="flex-shrink-0" style={{ marginLeft: "24px" }}>
-            <span
-              className="text-2xl lg:text-3xl font-bold tracking-tight text-white"
-              style={{ fontFamily: "var(--font-plus-jakarta, var(--font-poppins))" }}
-            >
-              CPNS Path
-            </span>
+            <svg width="140" height="36" viewBox="0 0 140 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="36" height="36" rx="8" fill="#172554"/>
+              <rect x="8" y="9" width="9" height="18" rx="2" fill="#fbbf24"/>
+              <rect x="19" y="9" width="9" height="18" rx="2" fill="white" opacity="0.9"/>
+              <line x1="18" y1="9" x2="18" y2="27" stroke="#172554" strokeWidth="1.5"/>
+              <polyline points="21,17 23,20 28,14" fill="none" stroke="#fbbf24" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+              <text x="44" y="16" fontFamily="system-ui, sans-serif" fontSize="13" fontWeight="700" fill="white" letterSpacing="1.5">CPNS</text>
+              <text x="44" y="29" fontFamily="system-ui, sans-serif" fontSize="9" fontWeight="400" fill="#fbbf24" letterSpacing="4">PATH</text>
+            </svg>
           </Link>
 
           {/* Menu desktop */}
