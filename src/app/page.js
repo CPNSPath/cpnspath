@@ -2,72 +2,10 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 import { supabase } from "@/lib/supabase"
-import Link from 'next/link'
-import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
-import {
-  Brain,
-  BookOpen,
-  Users,
-  Briefcase,
-  Award,
-  FileText,
-  PlayCircle,
-  ShoppingCart,
-  ChevronRight,
-} from 'lucide-react'
-
-const CATEGORIES = [
-  {
-    icon: Brain,
-    name: 'TWK',
-    desc: 'Tes Wawasan Kebangsaan — Pancasila, UUD 1945, NKRI',
-    link: '/tryout/twk',
-  },
-  {
-    icon: BookOpen,
-    name: 'TIU',
-    desc: 'Tes Intelegensi Umum — Verbal, numerik, figural',
-    link: '/tryout/tiu',
-  },
-  {
-    icon: Users,
-    name: 'TKP',
-    desc: 'Tes Karakteristik Pribadi — Profesionalisme, integritas',
-    link: '/tryout/tkp',
-  },
-  {
-    icon: Briefcase,
-    name: 'SKB',
-    desc: 'Seleksi Kompetensi Bidang sesuai formasi jabatan',
-    link: '/skb',
-  },
-  {
-    icon: PlayCircle,
-    name: 'Paket SKD',
-    desc: '100 Tryout SKD lengkap — TWK, TIU, TKP — Rp 15.000',
-    link: '/price',
-  },
-  {
-    icon: ShoppingCart,
-    name: 'Paket SKB',
-    desc: '100 Tryout SKB sesuai formasi jabatan — Rp 15.000',
-    link: '/price',
-  },
-  {
-    icon: FileText,
-    name: 'Free Trial',
-    desc: 'Coba 3 subtest SKD gratis — tanpa daftar akun',
-    link: '/tryout/free-trial',
-  },
-  {
-    icon: Award,
-    name: 'Leaderboard',
-    desc: 'Lihat ranking nasional & posisimu',
-    link: '/leaderboard/global',
-  },
-]
+import Navbar from "@/components/Navbar"
+import Footer from "@/components/Footer"
 
 export default function Home() {
   const router = useRouter()
@@ -86,92 +24,92 @@ export default function Home() {
   }, [])
 
   if (checking) {
-    return (
-      <div style={{ minHeight: "100vh", background: "#0f172a" }} />
-    )
+    return <div style={{ minHeight: "100vh", background: "#0f172a" }} />
   }
 
   return (
-    <div className="bg-white min-h-screen flex flex-col">
-      {/* Navbar selalu di atas, transparan saat di hero, putih setelah scroll */}
-      <Navbar transparent={true} />
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "#F8FAFC" }}>
+      <Navbar transparent />
 
-      {/* ══════════════════════════════════════════
-          SECTION 1 — HERO
-          ══════════════════════════════════════════ */}
-            <section className="relative h-screen min-h-[680px] max-h-[900px] w-full overflow-hidden pt-16 lg:pt-20">
+      {/* Hero Section */}
+      <section style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #172554 100%)", padding: "120px 24px 80px", position: "relative", overflow: "hidden", minHeight: "100vh", display: "flex", alignItems: "center" }}>
 
-        <img
-          src="https://i.ibb.co.com/C3CMBX5V/Gemini-Generated-Image-7li55e7li55e7li5-1.png&auto=format&fit=crop"
-          alt="Student preparing for CPNS exam"
-          className="absolute inset-0 w-full h-full object-cover object-[70%_center]"
-        />
+        {/* Decorative */}
+        <div style={{ position: "absolute", top: -60, right: -60, width: 320, height: 320, borderRadius: "50%", border: "1px solid rgba(251,191,36,0.08)" }} />
+        <div style={{ position: "absolute", top: 20, right: 60, width: 180, height: 180, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.04)" }} />
+        <div style={{ position: "absolute", bottom: -80, right: 120, width: 240, height: 240, borderRadius: "50%", background: "rgba(251,191,36,0.03)" }} />
+        <div style={{ position: "absolute", top: 0, left: "55%", width: 1, height: "100%", background: "linear-gradient(to bottom, transparent, rgba(251,191,36,0.08), transparent)" }} />
 
-        {/* Horizontal overlay: kiri gelap → kanan terang */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/10" />
+        <div style={{ maxWidth: 1100, margin: "0 auto", width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 40, position: "relative", zIndex: 1 }}>
 
-        {/* Vertical overlay: readability top & bottom */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/40" />
+          {/* Left */}
+          <div style={{ maxWidth: 520 }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.2)", borderRadius: 999, padding: "4px 14px", marginBottom: 22 }}>
+              <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#fbbf24" }} />
+              <span style={{ fontSize: "0.7rem", fontWeight: 600, color: "#fbbf24", letterSpacing: "0.06em" }}>Persiapan CPNS Terpercaya</span>
+            </div>
 
-        {/* Hero content */}
-        <div className="relative z-20 h-full flex items-center">
-          <div className="w-full max-w-7xl mx-auto px-8 sm:px-12 lg:pl-32 lg:pr-8">
-            <div className="max-w-2xl" style={{ marginLeft: "24px" }}>
+            <h1 style={{ fontSize: "clamp(2rem, 4vw, 2.75rem)", fontWeight: 800, color: "white", lineHeight: 1.2, margin: "0 0 14px", letterSpacing: "-0.02em" }}>
+              Raih Karir Impianmu<br />
+              sebagai <span style={{ color: "#fbbf24" }}>ASN</span> dengan<br />
+              Persiapan Terbaik
+            </h1>
 
-              <h1 className="text-white text-4xl sm:text-5xl lg:text-6xl font-light leading-[1.15] tracking-tight mb-8">
-                We Make Tough CPNS Tests<br />
-                Easy to Master
-              </h1>
+            <p style={{ fontSize: "0.9rem", color: "#93c5fd", margin: "0 0 10px", lineHeight: 1.7 }}>
+              Tryout SKD & SKB terstruktur, soal terverifikasi, dan analisis hasil yang membantu kamu fokus pada yang penting.
+            </p>
 
-              <p className="text-white/95 text-lg sm:text-lg lg:text-xl font-light leading-[1.5] tracking-normal mb-12">
-                Latihan SKD &amp; SKB lengkap<br />
-                dengan ribuan soal terverifikasi
-              </p>
+            <p style={{ fontSize: "0.8rem", color: "#475569", margin: "0 0 28px", lineHeight: 1.6, fontStyle: "italic" }}>
+              "Perjalanan seribu langkah dimulai dari satu latihan."
+            </p>
 
-              <Link href="/tryout/free-trial">
-                <button className="inline-flex items-center justify-center bg-[#ffc107] hover:bg-[#e0a800] text-[#212529] text-base tracking-wide min-w-[200px] h-11 py-5 rounded-full transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl">
-                  Explore Our Tryouts
-                </button>
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap", marginBottom: 28 }}>
+              <Link href="/tryout/free-trial" style={{ background: "#fbbf24", color: "#78350f", padding: "12px 24px", borderRadius: 10, fontSize: "0.9rem", fontWeight: 700, textDecoration: "none", display: "inline-block" }}>
+                Mulai Free Trial →
               </Link>
+              <Link href="/tryout/paket-to" style={{ background: "rgba(255,255,255,0.06)", color: "#cbd5e1", padding: "12px 24px", borderRadius: 10, fontSize: "0.9rem", fontWeight: 500, border: "1px solid rgba(255,255,255,0.12)", textDecoration: "none", display: "inline-block" }}>
+                Lihat Paket TO
+              </Link>
+            </div>
 
+            <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+              {["Soal terverifikasi", "Free trial tersedia", "Analisis hasil lengkap"].map(item => (
+                <div key={item} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <div style={{ width: 18, height: 18, borderRadius: "50%", background: "rgba(34,197,94,0.15)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><polyline points="2,6 5,9 10,3" stroke="#4ade80" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                  </div>
+                  <span style={{ fontSize: "0.75rem", color: "#64748b" }}>{item}</span>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
 
-      </section>
+          {/* Right cards */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 10, flexShrink: 0 }} className="hidden lg:flex">
 
-      {/* ══════════════════════════════════════════
-          SECTION 2 — CATEGORIES GRID
-          ══════════════════════════════════════════ */}
-      <section className="bg-white py-24 md:py-32 lg:py-40">
-        <div className="max-w-auto mx-auto px-6 lg:px-12">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-12 lg:gap-x-16 xl:gap-x-20 gap-y-20 md:gap-y-24">
+            <div style={{ background: "rgba(15,23,42,0.8)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12, padding: "16px 20px", width: 210 }}>
+              <p style={{ fontSize: "0.65rem", color: "#64748b", margin: "0 0 8px", textTransform: "uppercase", letterSpacing: "0.08em" }}>📊 Passing Grade SKD</p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                {[{ label: "TWK", val: "min. 65" }, { label: "TIU", val: "min. 80" }, { label: "TKP", val: "min. 166" }].map(item => (
+                  <div key={item.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <span style={{ fontSize: "0.78rem", color: "#93c5fd" }}>{item.label}</span>
+                    <span style={{ fontSize: "0.78rem", fontWeight: 700, color: "white" }}>{item.val}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
 
-            {CATEGORIES.map(({ icon: Icon, name, desc, link }) => (
-              <Link key={name} href={link} className="text-center group cursor-pointer flex flex-col items-center justify-center min-h-[280px]">
+            <div style={{ background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.2)", borderRadius: 12, padding: "16px 20px", width: 210 }}>
+              <p style={{ fontSize: "0.65rem", color: "#92400e", margin: "0 0 6px", textTransform: "uppercase", letterSpacing: "0.08em" }}>🎯 Free Trial</p>
+              <p style={{ fontSize: "0.875rem", fontWeight: 700, color: "#fbbf24", margin: "0 0 2px" }}>TWK · TIU · TKP</p>
+              <p style={{ fontSize: "0.72rem", color: "#92400e", margin: 0 }}>Coba gratis sekarang</p>
+            </div>
 
-                <div className="flex justify-center mb-7">
-                  <Icon
-                    size={64}
-                    strokeWidth={1.5}
-                    className="text-[#007bff] transition-transform duration-300 group-hover:scale-110"
-                  />
-                </div>
-
-                <h3 className="text-xl font-medium text-[#343a40] mb-3">
-                  {name}
-                </h3>
-
-                <p className="text-sm text-[#6c757d] font-light leading-relaxed mb-5 max-w-[240px] mx-auto">
-                  {desc}
-                </p>
-
-                <span className="mt-2 inline-flex items-center text-[#007bff] text-sm font-medium hover:underline">
-  Get Started <ChevronRight size={14} className="ml-1" />
-</span>
-
-              </Link>
-            ))}
+            <div style={{ background: "rgba(15,23,42,0.8)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "16px 20px", width: 210 }}>
+              <p style={{ fontSize: "0.65rem", color: "#64748b", margin: "0 0 6px", textTransform: "uppercase", letterSpacing: "0.08em" }}>📚 Ebook Gratis</p>
+              <p style={{ fontSize: "0.875rem", color: "white", fontWeight: 500, margin: "0 0 2px" }}>Panduan SKD & SKB</p>
+              <p style={{ fontSize: "0.72rem", color: "#4ade80", margin: 0 }}>Download langsung ↓</p>
+            </div>
 
           </div>
         </div>
