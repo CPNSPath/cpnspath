@@ -19,28 +19,19 @@ const user = await getCurrentUser()
 if(!user) return
 
 const { error } = await supabase
-.from("results")
-.insert([
-{
-user_id: user.id,
-to_slug: toSlug,
-
-// lama (optional)
-score: score,
-correct: correct,
-wrong: wrong,
-
-// 🔥 NEW CORE DATA
-twk: twk,
-tiu: tiu,
-tkp: tkp,
-total: score,
-
-lulus_twk: lulus_twk,
-lulus_tiu: lulus_tiu,
-lulus_tkp: lulus_tkp
-}
-])
+  .from("results")
+  .insert([{
+    user_id: user.id,
+    tryout_slug: toSlug,
+    score: score,
+    twk: twk,
+    tiu: tiu,
+    tkp: tkp,
+    total: score,
+    lulus_twk: lulus_twk,
+    lulus_tiu: lulus_tiu,
+    lulus_tkp: lulus_tkp
+  }])
 
 if(error){
 console.error("Save result error:", error)
@@ -51,22 +42,21 @@ console.error("Save result error:", error)
 // ==========================
 
 const { error: lbError } = await supabase
-.from("leaderboard")
-.upsert([
-{
-user_id: user.id,
-to_slug: toSlug,
-twk,
-tiu,
-tkp,
-total: score,
-lulus_twk,
-lulus_tiu,
-lulus_tkp
-}
-], {
-onConflict: "user_id,to_slug"
-})
+  .from("leaderboard")
+  .upsert([{
+    user_id: user.id,
+    to_slug: toSlug,
+    twk,
+    tiu,
+    tkp,
+    total: score,
+    lulus_twk,
+    lulus_tiu,
+    lulus_tkp,
+    updated_at: new Date().toISOString()
+  }], {
+    onConflict: "user_id,to_slug"
+  })
 
 if(lbError){
 console.error("Leaderboard update error:", lbError)

@@ -3,6 +3,7 @@
 import { useState,useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { saveTryoutResult } from "@/lib/saveResult"
+import { supabase } from "@/lib/supabase"
 
 const shuffledQuestions = [
 
@@ -432,6 +433,27 @@ export default function TWKExam(){
 const router = useRouter()
 const [current,setCurrent]=useState(0)
 const [answers,setAnswers]=useState({})
+
+useEffect(() => {
+  async function checkAlreadyDone() {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      router.replace("/login?redirect=/tryout/twk")
+      return
+    }
+    const { data } = await supabase
+      .from("results")
+      .select("id")
+      .eq("user_id", user.id)
+      .eq("tryout_slug", "free-trial-twk")
+      .maybeSingle()
+    if (data) {
+      router.replace("/tryout/twk/result")
+    }
+  }
+  checkAlreadyDone()
+}, [])
+
 useEffect(()=>{
 
 try{

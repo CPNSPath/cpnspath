@@ -21,6 +21,8 @@ function TIUIntroContent() {
 
   const [accessChecked, setAccessChecked] = useState(!toId)
   const [checking, setChecking] = useState(!!toId)
+  const [alreadyDone, setAlreadyDone] = useState(false)
+  const [checkingDone, setCheckingDone] = useState(true)
 
   useEffect(() => {
     if (!toId) return
@@ -47,10 +49,35 @@ function TIUIntroContent() {
     checkAccess()
   }, [toId, router])
 
+  useEffect(() => {
+    if (toId) { setCheckingDone(false); return }
+    async function checkAlreadyDone() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) { setCheckingDone(false); return }
+      const { data } = await supabase
+        .from("results")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("to_slug", "free-trial-tiu")
+        .maybeSingle()
+      if (data) setAlreadyDone(true)
+      setCheckingDone(false)
+    }
+    checkAlreadyDone()
+  }, [toId])
+
   if (checking) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC]">
         <p className="text-[#64748B]">Memverifikasi akses...</p>
+      </div>
+    )
+  }
+
+  if (checkingDone) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC]">
+        <p style={{ color: "#64748b" }}>Memeriksa status tryout...</p>
       </div>
     )
   }
@@ -101,14 +128,27 @@ function TIUIntroContent() {
             </div>
 
             <div style={{ padding: "8px 24px 24px" }}>
-              <button
-                onClick={() => router.push(examHref)}
-                style={{ display: "block", width: "100%", padding: "13px 20px", borderRadius: 12, fontSize: "0.9rem", fontWeight: 600, textAlign: "center", cursor: "pointer", border: "none", background: "#fbbf24", color: "#78350f", transition: "background 0.2s, transform 0.2s" }}
-                onMouseEnter={e => { e.currentTarget.style.background = "#f59e0b"; e.currentTarget.style.transform = "translateY(-1px)" }}
-                onMouseLeave={e => { e.currentTarget.style.background = "#fbbf24"; e.currentTarget.style.transform = "translateY(0)" }}
-              >
-                Mulai Tryout
-              </button>
+              {alreadyDone && !toId ? (
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ background: "rgba(34,197,94,0.08)", border: "1px solid rgba(34,197,94,0.2)", borderRadius: 12, padding: "16px", marginBottom: 12 }}>
+                    <p style={{ fontSize: "1.5rem", marginBottom: 6 }}>✅</p>
+                    <p style={{ fontSize: "0.9rem", fontWeight: 700, color: "#16a34a", marginBottom: 4 }}>Sudah Dikerjakan</p>
+                    <p style={{ fontSize: "0.8rem", color: "#64748b" }}>Kamu sudah menyelesaikan Free Trial TIU</p>
+                  </div>
+                  <Link href="/tryout/tiu/result" style={{ display: "block", width: "100%", padding: "13px 20px", borderRadius: 12, fontSize: "0.9rem", fontWeight: 600, textAlign: "center", textDecoration: "none", background: "#172554", color: "#fff" }}>
+                    Lihat Hasil →
+                  </Link>
+                </div>
+              ) : (
+                <button
+                  onClick={() => router.push(examHref)}
+                  style={{ display: "block", width: "100%", padding: "13px 20px", borderRadius: 12, fontSize: "0.9rem", fontWeight: 600, textAlign: "center", cursor: "pointer", border: "none", background: "#fbbf24", color: "#78350f", transition: "background 0.2s, transform 0.2s" }}
+                  onMouseEnter={e => { e.currentTarget.style.background = "#f59e0b"; e.currentTarget.style.transform = "translateY(-1px)" }}
+                  onMouseLeave={e => { e.currentTarget.style.background = "#fbbf24"; e.currentTarget.style.transform = "translateY(0)" }}
+                >
+                  Mulai Tryout
+                </button>
+              )}
             </div>
           </div>
         </div>

@@ -3,6 +3,7 @@
 import { useState,useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { saveTryoutResult } from "@/lib/saveResult"
+import { supabase } from "@/lib/supabase"
 
 const shuffledQuestions = [
 
@@ -264,6 +265,26 @@ export default function TIUExam(){
 const router = useRouter()
 const [current,setCurrent]=useState(0)
 const [answers,setAnswers]=useState({})
+
+useEffect(() => {
+  async function checkAlreadyDone() {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      router.replace("/login?redirect=/tryout/tiu")
+      return
+    }
+    const { data } = await supabase
+      .from("results")
+      .select("id")
+      .eq("user_id", user.id)
+      .eq("tryout_slug", "free-trial-tiu")
+      .maybeSingle()
+    if (data) {
+      router.replace("/tryout/tiu/result")
+    }
+  }
+  checkAlreadyDone()
+}, [])
 
 useEffect(()=>{
 
