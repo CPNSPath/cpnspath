@@ -13,10 +13,8 @@ const TRYOUT_ITEMS = [
 ]
 
 const OTHER_NAV_LINKS = [
-  { label: "Leaderboard", href: "/leaderboard/global" },
-  { label: "Ebook",       href: "/ebook" },
-  { label: "Pricing",     href: "/price" },
-  { label: "About",       href: "#" },
+  { label: "Ebook", href: "/ebook" },
+  { label: "Pricing", href: "/price" },
 ]
 
 const USER_LINKS = [
@@ -411,26 +409,24 @@ const TryoutDropdown = () => (
           </div>
 
           {/* Icons desktop */}
-          <div className="hidden lg:flex items-center gap-5 flex-shrink-0" style={{ marginRight: "24px" }}>
-            <button
-              aria-label="Help"
-              className={`transition-colors duration-150 ${
-                isTransparent ? "text-white hover:text-yellow-400" : "text-gray-300 hover:text-yellow-400"
-              }`}
-            >
-              <HelpCircle size={24} strokeWidth={1.5} />
-            </button>
-
+          <div className="hidden lg:flex items-center gap-4 flex-shrink-0" style={{ marginRight: "24px" }}>
             {!loading && !user && (
-              <Link
-                href="/login"
-                aria-label="Account"
-                className={`transition-colors duration-150 ${
-                  isTransparent ? "text-white hover:text-yellow-400" : "text-gray-300 hover:text-yellow-400"
-                }`}
-              >
-                <User size={24} strokeWidth={1.5} />
-              </Link>
+              <>
+                <Link
+                  href="/login"
+                  style={{ background: "transparent", border: "1px solid rgba(255,255,255,0.2)", color: "white", padding: "6px 18px", borderRadius: 8, fontSize: "0.8rem", fontWeight: 500, textDecoration: "none", transition: "all 0.15s" }}
+                  onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.08)" }}
+                  onMouseLeave={e => { e.currentTarget.style.background = "transparent" }}
+                >
+                  Masuk
+                </Link>
+                <Link
+                  href="/register"
+                  style={{ background: "#fbbf24", color: "#78350f", padding: "6px 18px", borderRadius: 8, fontSize: "0.8rem", fontWeight: 700, textDecoration: "none" }}
+                >
+                  Daftar
+                </Link>
+              </>
             )}
 
             {!loading && user && (
@@ -450,16 +446,6 @@ const TryoutDropdown = () => (
                 {dropdownOpen && <UserDropdown />}
               </div>
             )}
-
-            <Link
-              href="/cart"
-              aria-label="Cart"
-              className={`transition-colors duration-150 ${
-                isTransparent ? "text-white hover:text-yellow-400" : "text-gray-300 hover:text-yellow-400"
-              }`}
-            >
-              <ShoppingBag size={24} strokeWidth={1.5} />
-            </Link>
           </div>
 
           {/* Hamburger mobile */}
