@@ -9,7 +9,8 @@
       "Bash(Test-Path C:\\\\Users\\\\titom\\\\Downloads\\\\website pertama\\\\belajar-web\\\\node_modules\\\\lucide-react *)",
       "Bash(Remove-Item -Recurse -Force \"src\\\\app\\\\price\\\\bundling-5\")",
       "Bash(Remove-Item -Recurse -Force \"src\\\\app\\\\price\\\\bundling-10\")",
-      "Bash(Write-Host \"Deleted\")"
+      "Bash(Write-Host \"Deleted\")",
+      "Bash(exist C:\\\\Users\\\\titom\\\\Downloads\\\\website pertama\\\\belajar-web\\\\src\\\\app\\\\tryout\\\\paket-to\\\\[to_number]\\\\exam *)"
     ]
   }
 }

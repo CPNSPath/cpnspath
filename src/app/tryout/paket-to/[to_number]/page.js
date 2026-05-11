@@ -1,4 +1,4 @@
-import { redirect, notFound } from "next/navigation"
+import { notFound } from "next/navigation"
 import { cookies } from "next/headers"
 import { createServerClient } from "@supabase/ssr"
 import Link from "next/link"
@@ -23,25 +23,16 @@ async function getSupabaseServer() {
   )
 }
 
-const SUBTESTS = [
-  { code: "TWK", label: "Tes Wawasan Kebangsaan", soal: 35, durasi: "30 menit", color: "bg-blue-600", key: "twk" },
-  { code: "TIU", label: "Tes Intelegensi Umum",  soal: 30, durasi: "30 menit", color: "bg-purple-600", key: "tiu" },
-  { code: "TKP", label: "Tes Karakteristik Pribadi", soal: 35, durasi: "30 menit", color: "bg-green-600", key: "tkp" },
-]
-
 export default async function TODetailPage({ params }) {
   const { to_number } = await params
   const toNum = parseInt(to_number, 10)
 
-  if (isNaN(toNum) || toNum < 1 || toNum > 100) {
-    notFound()
-  }
+  if (isNaN(toNum) || toNum < 1 || toNum > 100) notFound()
 
   const supabase = await getSupabaseServer()
-
-  // Auth check
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) {
+    const { redirect } = await import("next/navigation")
     redirect(`/login?redirect=/tryout/paket-to/${toNum}`)
   }
 
@@ -56,23 +47,17 @@ export default async function TODetailPage({ params }) {
 
   const hasAccess = !!toAccess
 
-  // Ambil TO data dari DB
   const { data: skdPackage } = await supabase
-    .from("packages")
-    .select("id")
-    .eq("slug", "skd")
-    .single()
+    .from("packages").select("id").eq("slug", "skd").single()
 
   const { data: tryout } = await supabase
     .from("tryouts")
-    .select("id, to_number, title, description")
+    .select("id, to_number, title")
     .eq("package_id", skdPackage?.id)
     .eq("to_number", toNum)
     .maybeSingle()
 
-  if (!tryout) {
-    notFound()
-  }
+  if (!tryout) notFound()
 
   return (
     <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
@@ -93,73 +78,69 @@ export default async function TODetailPage({ params }) {
         </div>
       )}
 
-      {/* Header */}
-      <section className="bg-[#172554] pt-24 pb-10 sm:pt-28 sm:pb-14">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <Link
-            href="/tryout/paket-to"
-            className="inline-flex items-center gap-2 text-[#93C5FD] hover:text-white text-sm mb-5 transition-colors"
-          >
+      <section style={{ background: "#172554", padding: "56px 24px", position: "relative", overflow: "hidden", marginTop: hasAccess ? "72px" : "0" }}>
+        <div style={{ position: "absolute", top: -80, right: -80, width: 260, height: 260, borderRadius: "50%", background: "rgba(255,255,255,0.04)" }} />
+        <div style={{ position: "absolute", bottom: -60, left: -60, width: 160, height: 160, borderRadius: "50%", background: "rgba(251,191,36,0.05)" }} />
+        <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
+          <Link href="/tryout/paket-to" style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "4px 14px", borderRadius: 999, background: "rgba(255,255,255,0.1)", color: "#93C5FD", fontSize: "0.75rem", fontWeight: 500, marginBottom: 12, textDecoration: "none" }}>
             ← Kembali ke daftar TO
           </Link>
-          <h1 className="text-3xl sm:text-4xl font-bold text-white">
-            TO SKD #{toNum}
-          </h1>
-          <p className="text-[#93C5FD] mt-2 text-sm">
-            Pilih subtest yang ingin dikerjakan
-          </p>
+          <h1 style={{ fontSize: "2rem", fontWeight: 700, color: "#fff", marginBottom: 8, letterSpacing: "-0.02em" }}>TO SKD #{toNum}</h1>
+          <p style={{ fontSize: "0.9rem", color: "#93C5FD" }}>TWK + TIU + TKP — 100 soal dalam 1 sesi</p>
         </div>
       </section>
 
-      {/* Subtest cards */}
-      <section className="flex-1 py-10">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-            {SUBTESTS.map((s) => (
-              <Link
-                key={s.code}
-                href={`/tryout/${s.key}?to_id=${toNum}`}
-                className={`group bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md hover:border-[#ffc107] transition-all${!hasAccess ? " pointer-events-none opacity-50 cursor-not-allowed" : ""}`}
-                style={{ pointerEvents: hasAccess ? "auto" : "none" }}
-              >
-                <div className={`${s.color} px-5 py-4`}>
-                  <span className="text-white font-extrabold text-2xl">{s.code}</span>
-                  <p className="text-white/80 text-xs mt-0.5">{s.label}</p>
-                </div>
-                <div className="px-5 py-4 space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-[#94A3B8]">Soal</span>
-                    <span className="font-medium text-[#0F172A]">{s.soal} soal</span>
+      <section style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "48px 24px" }}>
+        <div style={{ width: "100%", maxWidth: 480 }}>
+          <div style={{ background: "#fff", borderRadius: 20, overflow: "hidden", border: "1px solid #e2e8f0", boxShadow: "0 4px 6px rgba(0,0,0,0.05)" }}>
+            <div style={{ background: "#0f1d3a", padding: "24px 20px", textAlign: "center" }}>
+              <span style={{ fontSize: "2.5rem", display: "block", marginBottom: 6 }}>📋</span>
+              <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "#fff", margin: 0 }}>TO SKD #{toNum}</h2>
+              <p style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.6)", marginTop: 4 }}>Tryout Seleksi Kompetensi Dasar</p>
+            </div>
+            <div style={{ padding: "20px 24px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 20 }}>
+                {[
+                  { label: "Total Soal", value: "100 soal" },
+                  { label: "Durasi", value: "90 menit" },
+                  { label: "TWK", value: "35 soal (min. 65)" },
+                  { label: "TIU", value: "30 soal (min. 80)" },
+                  { label: "TKP", value: "35 soal (min. 166)" },
+                  { label: "Tipe", value: "Multiple Choice" },
+                ].map(item => (
+                  <div key={item.label} style={{ background: "#f8fafc", borderRadius: 10, padding: "12px 14px", textAlign: "center" }}>
+                    <p style={{ fontSize: "0.7rem", color: "#64748b", marginBottom: 4 }}>{item.label}</p>
+                    <p style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f172a" }}>{item.value}</p>
                   </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-[#94A3B8]">Durasi</span>
-                    <span className="font-medium text-[#0F172A]">{s.durasi}</span>
-                  </div>
-                  <div className="pt-3">
-                    <span className="inline-block w-full text-center py-2 rounded-lg bg-[#ffc107] text-[#172554] font-semibold text-sm group-hover:bg-[#e6ac00] transition-colors">
-                      Mulai {s.code}
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            ))}
+                ))}
+              </div>
+
+              <div style={{ background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.2)", borderRadius: 10, padding: "12px 16px", marginBottom: 20 }}>
+                <p style={{ fontSize: "0.8rem", color: "#92400e", fontWeight: 500, margin: 0 }}>
+                  ⚠ Pastikan koneksi internet stabil. Ujian tidak dapat dijeda setelah dimulai.
+                </p>
+              </div>
+
+              {hasAccess ? (
+                <Link href={`/tryout/paket-to/${toNum}/exam`} style={{ display: "block", width: "100%", padding: "13px 20px", borderRadius: 12, fontSize: "0.9rem", fontWeight: 700, textAlign: "center", textDecoration: "none", background: "#fbbf24", color: "#78350f" }}>
+                  Mulai Ujian TO #{toNum} →
+                </Link>
+              ) : (
+                <Link href={`/tryout/paket-to/${toNum}/beli`} style={{ display: "block", width: "100%", padding: "13px 20px", borderRadius: 12, fontSize: "0.9rem", fontWeight: 700, textAlign: "center", textDecoration: "none", background: "#172554", color: "#fff" }}>
+                  Beli TO #{toNum} — Rp 15.000
+                </Link>
+              )}
+            </div>
           </div>
 
-          {/* Navigation prev/next */}
-          <div className="flex justify-between mt-8">
+          <div style={{ display: "flex", justifyContent: "space-between", marginTop: 16 }}>
             {toNum > 1 ? (
-              <Link
-                href={`/tryout/paket-to/${toNum - 1}`}
-                className="px-4 py-2 rounded-lg border border-gray-200 text-sm text-[#334155] hover:border-[#ffc107] hover:text-[#172554] transition-colors"
-              >
+              <Link href={`/tryout/paket-to/${toNum - 1}`} style={{ padding: "8px 16px", borderRadius: 8, border: "1px solid #e2e8f0", fontSize: "0.8rem", color: "#64748b", textDecoration: "none" }}>
                 ← TO #{toNum - 1}
               </Link>
             ) : <div />}
             {toNum < 100 && (
-              <Link
-                href={`/tryout/paket-to/${toNum + 1}`}
-                className="px-4 py-2 rounded-lg border border-gray-200 text-sm text-[#334155] hover:border-[#ffc107] hover:text-[#172554] transition-colors"
-              >
+              <Link href={`/tryout/paket-to/${toNum + 1}`} style={{ padding: "8px 16px", borderRadius: 8, border: "1px solid #e2e8f0", fontSize: "0.8rem", color: "#64748b", textDecoration: "none" }}>
                 TO #{toNum + 1} →
               </Link>
             )}
