@@ -32,7 +32,7 @@ export default function Home() {
       <Navbar transparent />
 
       {/* Hero Section */}
-      <section style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #172554 100%)", padding: "120px 24px 80px", position: "relative", overflow: "hidden", minHeight: "100vh", display: "flex", alignItems: "center" }}>
+      <section style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #172554 100%)", padding: "120px 80px 80px", position: "relative", overflow: "hidden", minHeight: "100vh", display: "flex", alignItems: "center" }}>
 
         {/* Decorative */}
         <div style={{ position: "absolute", top: -60, right: -60, width: 320, height: 320, borderRadius: "50%", border: "1px solid rgba(251,191,36,0.08)" }} />
@@ -49,7 +49,7 @@ export default function Home() {
               <span style={{ fontSize: "0.7rem", fontWeight: 600, color: "#fbbf24", letterSpacing: "0.06em" }}>Persiapan CPNS Terpercaya</span>
             </div>
 
-            <h1 style={{ fontSize: "clamp(2rem, 4vw, 2.75rem)", fontWeight: 800, color: "white", lineHeight: 1.2, margin: "0 0 14px", letterSpacing: "-0.02em" }}>
+            <h1 style={{ fontSize: "clamp(2.5rem, 5vw, 3.5rem)", fontWeight: 800, color: "white", lineHeight: 1.2, margin: "0 0 14px", letterSpacing: "-0.02em" }}>
               Raih Karir Impianmu<br />
               sebagai <span style={{ color: "#fbbf24" }}>ASN</span> dengan<br />
               Persiapan Terbaik

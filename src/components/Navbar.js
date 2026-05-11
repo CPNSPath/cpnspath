@@ -355,7 +355,7 @@ const TryoutDropdown = () => (
 
   const isTransparent = transparent && !isScrolled
 
-  const linkClass = `text-sm uppercase tracking-widest font-medium transition-colors duration-150 ${
+  const linkClass = `text-xs uppercase tracking-widest font-medium transition-colors duration-150 ${
     isTransparent ? "text-white hover:text-yellow-400" : "text-gray-300 hover:text-yellow-400"
   }`
 
@@ -366,7 +366,7 @@ const TryoutDropdown = () => (
           isTransparent ? "bg-transparent" : "bg-gray-900 border-b border-gray-800"
         }`}
       >
-        <div className="max-w-[1600px] mx-auto px-6 lg:px-12 h-16 lg:h-20 flex items-center justify-between gap-4">
+        <div className="max-w-[1600px] mx-auto px-6 lg:px-12 h-14 flex items-center gap-4">
 
           {/* Logo */}
           <Link href="/" className="flex-shrink-0" style={{ marginLeft: "24px" }}>
@@ -382,7 +382,7 @@ const TryoutDropdown = () => (
           </Link>
 
           {/* Menu desktop */}
-          <div className="hidden lg:flex items-center gap-8 xl:gap-14 2xl:gap-20">
+          <div className="hidden lg:flex items-center gap-6 xl:gap-10 ml-auto mr-8">
 
             {/* Tryout dropdown trigger */}
 <div className="relative" ref={tryoutRef}>
@@ -414,7 +414,7 @@ const TryoutDropdown = () => (
               <>
                 <Link
                   href="/login"
-                  style={{ background: "transparent", border: "1px solid rgba(255,255,255,0.2)", color: "white", padding: "6px 18px", borderRadius: 8, fontSize: "0.8rem", fontWeight: 500, textDecoration: "none", transition: "all 0.15s" }}
+                  style={{ background: "transparent", border: "1px solid rgba(255,255,255,0.2)", color: "white", padding: "5px 14px", borderRadius: 7, fontSize: "0.75rem", fontWeight: 500, textDecoration: "none", transition: "all 0.15s" }}
                   onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.08)" }}
                   onMouseLeave={e => { e.currentTarget.style.background = "transparent" }}
                 >
@@ -422,7 +422,7 @@ const TryoutDropdown = () => (
                 </Link>
                 <Link
                   href="/register"
-                  style={{ background: "#fbbf24", color: "#78350f", padding: "6px 18px", borderRadius: 8, fontSize: "0.8rem", fontWeight: 700, textDecoration: "none" }}
+                  style={{ background: "#fbbf24", color: "#78350f", padding: "5px 14px", borderRadius: 7, fontSize: "0.75rem", fontWeight: 700, textDecoration: "none" }}
                 >
                   Daftar
                 </Link>
