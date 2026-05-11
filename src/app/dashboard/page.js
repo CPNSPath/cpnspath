@@ -19,6 +19,7 @@ export default function Dashboard() {
   const [packages, setPackages] = useState([])
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(true)
+  const [userTryouts, setUserTryouts] = useState([])
   const [settingOpen, setSettingOpen] = useState(false)
   const settingRef = useRef(null)
 
@@ -42,6 +43,13 @@ export default function Dashboard() {
         const myResults = await getMyResults()
         setPackages(myPackages)
         setResults(myResults)
+        const { data: myTryouts } = await supabase
+          .from("user_tryouts")
+          .select("to_number, package_slug, payment_status")
+          .eq("user_id", data.user.id)
+          .eq("payment_status", "paid")
+          .order("to_number", { ascending: true })
+        setUserTryouts(myTryouts || [])
       } catch (err) {
         console.error("Dashboard error:", err)
       } finally {
@@ -290,33 +298,45 @@ export default function Dashboard() {
             )}
           </div>
 
-          {/* Paket */}
+          {/* Paket TO Saya */}
           <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #e2e8f0", padding: "24px", boxShadow: "0 2px 4px rgba(0,0,0,0.03)" }}>
-            <h2 style={{ fontSize: "1rem", fontWeight: 700, color: "#0f172a", marginBottom: 20 }}>📦 Paket Tryout Saya</h2>
-            {packages.length === 0 ? (
+            <h2 style={{ fontSize: "1rem", fontWeight: 700, color: "#0f172a", marginBottom: 20 }}>📦 Paket TO Saya</h2>
+            {userTryouts.length === 0 ? (
               <div style={{ textAlign: "center", padding: "32px 0" }}>
                 <div style={{ fontSize: "2.5rem", marginBottom: 12 }}>🛒</div>
-                <p style={{ fontSize: "0.9rem", fontWeight: 600, color: "#334155", marginBottom: 6 }}>Belum ada paket</p>
-                <p style={{ fontSize: "0.8rem", color: "#94a3b8", marginBottom: 16 }}>Beli paket SKD atau SKB untuk akses 100 tryout</p>
-                <Link href="/price" style={{ display: "inline-block", padding: "10px 20px", borderRadius: 10, background: "#fbbf24", color: "#78350f", fontSize: "0.85rem", fontWeight: 600, textDecoration: "none" }}>
-                  Lihat Paket
+                <p style={{ fontSize: "0.9rem", fontWeight: 600, color: "#334155", marginBottom: 6 }}>Belum ada TO yang dibeli</p>
+                <p style={{ fontSize: "0.8rem", color: "#94a3b8", marginBottom: 16 }}>Beli tryout SKD atau SKB sesuai kebutuhan</p>
+                <Link href="/tryout/paket-to" style={{ display: "inline-block", padding: "10px 20px", borderRadius: 10, background: "#fbbf24", color: "#78350f", fontSize: "0.85rem", fontWeight: 600, textDecoration: "none" }}>
+                  Lihat Paket TO
                 </Link>
               </div>
             ) : (
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
-                {packages.map((item, i) => {
-                  const paket = item.packages
-                  return (
-                    <div key={i} style={{ background: "#f8fafc", borderRadius: 12, padding: "16px", border: "1px solid #e2e8f0" }}>
-                      <div style={{ fontSize: "0.65rem", fontWeight: 700, padding: "3px 10px", borderRadius: 999, background: "rgba(22,163,74,0.12)", color: "#16a34a", display: "inline-block", marginBottom: 10 }}>AKTIF</div>
-                      <p style={{ fontSize: "0.9rem", fontWeight: 700, color: "#0f172a", marginBottom: 4 }}>{paket?.name}</p>
-                      <p style={{ fontSize: "0.8rem", color: "#64748b", marginBottom: 12 }}>{paket?.description}</p>
-                      <Link href="/tryout/paket-to" style={{ display: "block", textAlign: "center", padding: "8px", borderRadius: 8, background: "#172554", color: "#fff", fontSize: "0.8rem", fontWeight: 600, textDecoration: "none" }}>
-                        Mulai Tryout
-                      </Link>
-                    </div>
-                  )
-                })}
+              <div>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+                  <p style={{ fontSize: "0.85rem", color: "#64748b" }}>
+                    <span style={{ fontWeight: 700, color: "#172554", fontSize: "1.1rem" }}>{userTryouts.length}</span> TO dimiliki
+                  </p>
+                  <Link href="/tryout/paket-to" style={{ fontSize: "0.8rem", color: "#172554", fontWeight: 600, textDecoration: "none" }}>
+                    Lihat semua →
+                  </Link>
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(70px, 1fr))", gap: 8 }}>
+                  {userTryouts.slice(0, 20).map((t) => (
+                    <Link key={t.to_number} href={`/tryout/paket-to/${t.to_number}`}
+                      style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "12px 8px", borderRadius: 10, background: "#f0fdf4", border: "1px solid #bbf7d0", textDecoration: "none", transition: "all 0.15s" }}
+                      onMouseEnter={e => { e.currentTarget.style.background = "#dcfce7"; e.currentTarget.style.transform = "translateY(-1px)" }}
+                      onMouseLeave={e => { e.currentTarget.style.background = "#f0fdf4"; e.currentTarget.style.transform = "translateY(0)" }}
+                    >
+                      <span style={{ fontSize: "1rem", fontWeight: 800, color: "#172554" }}>{t.to_number}</span>
+                      <span style={{ fontSize: "0.6rem", color: "#16a34a", fontWeight: 600 }}>SKD</span>
+                    </Link>
+                  ))}
+                  {userTryouts.length > 20 && (
+                    <Link href="/tryout/paket-to" style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "12px 8px", borderRadius: 10, background: "#f8fafc", border: "1px solid #e2e8f0", textDecoration: "none" }}>
+                      <span style={{ fontSize: "0.75rem", color: "#64748b", fontWeight: 600 }}>+{userTryouts.length - 20} lagi</span>
+                    </Link>
+                  )}
+                </div>
               </div>
             )}
           </div>
