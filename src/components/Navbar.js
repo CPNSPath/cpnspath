@@ -366,7 +366,7 @@ const TryoutDropdown = () => (
           isTransparent ? "bg-transparent" : "bg-gray-900 border-b border-gray-800"
         }`}
       >
-        <div className="max-w-[1600px] mx-auto px-6 lg:px-12 h-14 flex items-center gap-4">
+        <div className="max-w-[1600px] mx-auto px-6 lg:px-12 h-14 flex items-center justify-between gap-4">
 
           {/* Logo */}
           <Link href="/" className="flex-shrink-0" style={{ marginLeft: "24px" }}>
@@ -382,7 +382,7 @@ const TryoutDropdown = () => (
           </Link>
 
           {/* Menu desktop */}
-          <div className="hidden lg:flex items-center gap-6 xl:gap-10 ml-auto mr-8">
+          <div className="hidden lg:flex items-center gap-6 xl:gap-10">
 
             {/* Tryout dropdown trigger */}
 <div className="relative" ref={tryoutRef}>

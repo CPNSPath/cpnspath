@@ -32,7 +32,7 @@ export default function Home() {
       <Navbar transparent />
 
       {/* Hero Section */}
-      <section style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #172554 100%)", padding: "120px 80px 80px", position: "relative", overflow: "hidden", minHeight: "100vh", display: "flex", alignItems: "center" }}>
+      <section style={{ background: "linear-gradient(135deg, #0f172a 0%, #1e3a5f 60%, #172554 100%)", padding: "140px 80px 80px", position: "relative", overflow: "hidden", minHeight: "100vh", display: "flex", alignItems: "center" }}>
 
         {/* Decorative */}
         <div style={{ position: "absolute", top: -60, right: -60, width: 320, height: 320, borderRadius: "50%", border: "1px solid rgba(251,191,36,0.08)" }} />
@@ -43,7 +43,7 @@ export default function Home() {
         <div style={{ maxWidth: 1100, margin: "0 auto", width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 40, position: "relative", zIndex: 1 }}>
 
           {/* Left */}
-          <div style={{ maxWidth: 520 }}>
+          <div style={{ maxWidth: 520, paddingLeft: 0 }}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(251,191,36,0.1)", border: "1px solid rgba(251,191,36,0.2)", borderRadius: 999, padding: "4px 14px", marginBottom: 22 }}>
               <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#fbbf24" }} />
               <span style={{ fontSize: "0.7rem", fontWeight: 600, color: "#fbbf24", letterSpacing: "0.06em" }}>Persiapan CPNS Terpercaya</span>
@@ -87,28 +87,28 @@ export default function Home() {
           {/* Right cards */}
           <div style={{ display: "flex", flexDirection: "column", gap: 10, flexShrink: 0 }} className="hidden lg:flex">
 
-            <div style={{ background: "rgba(15,23,42,0.8)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12, padding: "16px 20px", width: 210 }}>
-              <p style={{ fontSize: "0.65rem", color: "#64748b", margin: "0 0 8px", textTransform: "uppercase", letterSpacing: "0.08em" }}>📊 Passing Grade SKD</p>
+            <div style={{ background: "rgba(15,23,42,0.8)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 12, padding: "20px 24px", width: 260 }}>
+              <p style={{ fontSize: "0.75rem", color: "#64748b", margin: "0 0 8px", textTransform: "uppercase", letterSpacing: "0.08em" }}>📊 Passing Grade SKD</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                 {[{ label: "TWK", val: "min. 65" }, { label: "TIU", val: "min. 80" }, { label: "TKP", val: "min. 166" }].map(item => (
                   <div key={item.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <span style={{ fontSize: "0.78rem", color: "#93c5fd" }}>{item.label}</span>
-                    <span style={{ fontSize: "0.78rem", fontWeight: 700, color: "white" }}>{item.val}</span>
+                    <span style={{ fontSize: "0.9rem", color: "#93c5fd" }}>{item.label}</span>
+                    <span style={{ fontSize: "1rem", fontWeight: 800, color: "white" }}>{item.val}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div style={{ background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.2)", borderRadius: 12, padding: "16px 20px", width: 210 }}>
-              <p style={{ fontSize: "0.65rem", color: "#92400e", margin: "0 0 6px", textTransform: "uppercase", letterSpacing: "0.08em" }}>🎯 Free Trial</p>
+            <div style={{ background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.2)", borderRadius: 12, padding: "20px 24px", width: 260 }}>
+              <p style={{ fontSize: "0.75rem", color: "#92400e", margin: "0 0 6px", textTransform: "uppercase", letterSpacing: "0.08em" }}>🎯 Free Trial</p>
               <p style={{ fontSize: "0.875rem", fontWeight: 700, color: "#fbbf24", margin: "0 0 2px" }}>TWK · TIU · TKP</p>
-              <p style={{ fontSize: "0.72rem", color: "#92400e", margin: 0 }}>Coba gratis sekarang</p>
+              <p style={{ fontSize: "0.82rem", color: "#92400e", margin: 0 }}>Coba gratis sekarang</p>
             </div>
 
-            <div style={{ background: "rgba(15,23,42,0.8)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "16px 20px", width: 210 }}>
-              <p style={{ fontSize: "0.65rem", color: "#64748b", margin: "0 0 6px", textTransform: "uppercase", letterSpacing: "0.08em" }}>📚 Ebook Gratis</p>
+            <div style={{ background: "rgba(15,23,42,0.8)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 12, padding: "20px 24px", width: 260 }}>
+              <p style={{ fontSize: "0.75rem", color: "#64748b", margin: "0 0 6px", textTransform: "uppercase", letterSpacing: "0.08em" }}>📚 Ebook Gratis</p>
               <p style={{ fontSize: "0.875rem", color: "white", fontWeight: 500, margin: "0 0 2px" }}>Panduan SKD & SKB</p>
-              <p style={{ fontSize: "0.72rem", color: "#4ade80", margin: 0 }}>Download langsung ↓</p>
+              <p style={{ fontSize: "0.82rem", color: "#4ade80", margin: 0 }}>Download langsung ↓</p>
             </div>
 
           </div>
