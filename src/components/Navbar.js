@@ -14,6 +14,7 @@ const TRYOUT_ITEMS = [
 
 const OTHER_NAV_LINKS = [
   { label: "Leaderboard", href: "/leaderboard/global" },
+  { label: "Ebook",       href: "/ebook" },
   { label: "Pricing",     href: "/price" },
   { label: "About",       href: "#" },
 ]

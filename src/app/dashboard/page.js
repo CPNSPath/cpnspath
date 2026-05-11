@@ -111,6 +111,7 @@ export default function Dashboard() {
             { icon: "📝", label: "Free Trial", href: "/tryout/free-trial", active: false },
             { icon: "📦", label: "Paket TO", href: "/price", active: false },
             { icon: "🏆", label: "Leaderboard", href: "/leaderboard/global", active: false },
+            { icon: "📚", label: "Ebook", href: "/ebook", active: false },
           ].map((link) => (
             <Link key={link.label} href={link.href} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 8, marginBottom: 2, textDecoration: "none", background: link.active ? "#eff6ff" : "transparent", borderLeft: link.active ? "3px solid #172554" : "3px solid transparent", transition: "all 0.15s" }}
               onMouseEnter={e => { if (!link.active) e.currentTarget.style.background = "#f8fafc" }}
