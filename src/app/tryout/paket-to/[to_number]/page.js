@@ -45,18 +45,16 @@ export default async function TODetailPage({ params }) {
     redirect(`/login?redirect=/tryout/paket-to/${toNum}`)
   }
 
-  // Akses paket check
-  const { data: skdAccess } = await supabase
-    .from("user_packages")
+  const { data: toAccess } = await supabase
+    .from("user_tryouts")
     .select("id")
     .eq("user_id", user.id)
+    .eq("to_number", toNum)
     .eq("package_slug", "skd")
     .eq("payment_status", "paid")
     .maybeSingle()
 
-  if (!skdAccess) {
-    redirect("/price")
-  }
+  const hasAccess = !!toAccess
 
   // Ambil TO data dari DB
   const { data: skdPackage } = await supabase
@@ -79,6 +77,21 @@ export default async function TODetailPage({ params }) {
   return (
     <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
       <Navbar />
+
+      {!hasAccess && (
+        <div style={{ background: "#fbbf24", padding: "14px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12, marginTop: 72 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <span style={{ fontSize: "1.25rem" }}>🔒</span>
+            <div>
+              <p style={{ fontSize: "0.875rem", fontWeight: 700, color: "#78350f", margin: 0 }}>TO SKD #{toNum} belum dibeli</p>
+              <p style={{ fontSize: "0.78rem", color: "#92400e", margin: 0 }}>Beli tryout ini untuk mulai mengerjakan</p>
+            </div>
+          </div>
+          <Link href={`/tryout/paket-to/${toNum}/beli`} style={{ background: "#172554", color: "#fff", padding: "10px 24px", borderRadius: 10, fontSize: "0.875rem", fontWeight: 700, textDecoration: "none" }}>
+            Beli TO #{toNum} — Rp 15.000
+          </Link>
+        </div>
+      )}
 
       {/* Header */}
       <section className="bg-[#172554] pt-24 pb-10 sm:pt-28 sm:pb-14">
@@ -106,7 +119,8 @@ export default async function TODetailPage({ params }) {
               <Link
                 key={s.code}
                 href={`/tryout/${s.key}?to_id=${toNum}`}
-                className="group bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md hover:border-[#ffc107] transition-all"
+                className={`group bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md hover:border-[#ffc107] transition-all${!hasAccess ? " pointer-events-none opacity-50 cursor-not-allowed" : ""}`}
+                style={{ pointerEvents: hasAccess ? "auto" : "none" }}
               >
                 <div className={`${s.color} px-5 py-4`}>
                   <span className="text-white font-extrabold text-2xl">{s.code}</span>

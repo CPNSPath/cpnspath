@@ -433,23 +433,15 @@ export default function TWKExam(){
 const router = useRouter()
 const [current,setCurrent]=useState(0)
 const [answers,setAnswers]=useState({})
+const [checking, setChecking] = useState(true)
 
 useEffect(() => {
   async function checkAlreadyDone() {
     const { data: { user } } = await supabase.auth.getUser()
-    if (!user) {
-      router.replace("/login?redirect=/tryout/twk")
-      return
-    }
-    const { data } = await supabase
-      .from("results")
-      .select("id")
-      .eq("user_id", user.id)
-      .eq("tryout_slug", "free-trial-twk")
-      .maybeSingle()
-    if (data) {
-      router.replace("/tryout/twk/result")
-    }
+    if (!user) { router.replace("/login?redirect=/tryout/twk"); return }
+    const { data } = await supabase.from("results").select("id").eq("user_id", user.id).eq("tryout_slug", "free-trial-twk").maybeSingle()
+    if (data) { router.replace("/tryout/twk/result"); return }
+    setChecking(false)
   }
   checkAlreadyDone()
 }, [])
@@ -590,6 +582,16 @@ async function submitExam(force=false){
   })
 
   router.push("/tryout/twk/result")
+}
+
+if (checking) {
+  return (
+    <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#F8FAFC", flexDirection: "column", gap: 16 }}>
+      <div style={{ width: 40, height: 40, border: "4px solid #e2e8f0", borderTop: "4px solid #172554", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
+      <p style={{ color: "#64748b", fontSize: "0.9rem" }}>Memeriksa akses...</p>
+      <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
+    </div>
+  )
 }
 
 return (

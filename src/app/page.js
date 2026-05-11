@@ -1,3 +1,8 @@
+"use client"
+
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import { supabase } from "@/lib/supabase"
 import Link from 'next/link'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
@@ -65,6 +70,27 @@ const CATEGORIES = [
 ]
 
 export default function Home() {
+  const router = useRouter()
+  const [checking, setChecking] = useState(true)
+
+  useEffect(() => {
+    async function checkUser() {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session) {
+        router.replace("/dashboard")
+      } else {
+        setChecking(false)
+      }
+    }
+    checkUser()
+  }, [])
+
+  if (checking) {
+    return (
+      <div style={{ minHeight: "100vh", background: "#0f172a" }} />
+    )
+  }
+
   return (
     <div className="bg-white min-h-screen flex flex-col">
       {/* Navbar selalu di atas, transparan saat di hero, putih setelah scroll */}

@@ -8,20 +8,22 @@ const user = await getCurrentUser()
 if(!user) return []
 
 const { data, error } = await supabase
-.from("purchases")
-.select(`
-package_id,
-packages(
-id,
-title,
-price,
-jumlah_to
-)
-`)
-.eq("user_id",user.id)
+  .from("purchases")
+  .select(`
+    package_id,
+    packages(
+      id,
+      name,
+      description,
+      price,
+      slug,
+      exam_type
+    )
+  `)
+  .eq("user_id", user.id)
 
 if(error){
-console.error("getMyPackages error:", error)
+console.error("getMyPackages error:", JSON.stringify(error), error?.message, error?.details, error?.hint)
 return []
 }
 

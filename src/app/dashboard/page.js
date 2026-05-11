@@ -1,52 +1,45 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import Link from "next/link"
-import { useRouter, usePathname } from "next/navigation"
+import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
 import { getMyPackages } from "@/lib/myPackages"
 import { getMyResults } from "@/lib/resultHelper"
-import Card from "@/components/ui/Card"
-import Badge from "@/components/ui/Badge"
-import Button from "@/components/ui/Button"
 
-function getInitial(email) {
-  if (!email) return "U"
-  return email[0].toUpperCase()
+function getInitial(user) {
+  if (user?.user_metadata?.name) return user.user_metadata.name[0].toUpperCase()
+  if (user?.email) return user.email[0].toUpperCase()
+  return "U"
 }
-
-const SIDEBAR_LINKS = [
-  { icon: "🏠", label: "Overview", href: "/dashboard" },
-  { icon: "📝", label: "My Tryouts", href: "#" },   // TODO: link ke halaman tryouts
-  { icon: "📦", label: "My Packages", href: "#" },  // TODO: link ke halaman packages
-  { icon: "📊", label: "Performance", href: "#" },  // TODO: link ke halaman performance
-  { icon: "⚙️", label: "Settings", href: "#" },     // TODO: link ke halaman settings
-]
 
 export default function Dashboard() {
   const router = useRouter()
-  const pathname = usePathname()
-
   const [user, setUser] = useState(null)
   const [packages, setPackages] = useState([])
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(true)
+  const [settingOpen, setSettingOpen] = useState(false)
+  const settingRef = useRef(null)
+
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (settingRef.current && !settingRef.current.contains(e.target)) {
+        setSettingOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
 
   useEffect(() => {
     const initializeDashboard = async () => {
       try {
         const { data, error } = await supabase.auth.getUser()
-
-        if (error || !data.user) {
-          router.push("/login")
-          return
-        }
-
+        if (error || !data.user) { router.push("/login"); return }
         setUser(data.user)
-
         const myPackages = await getMyPackages()
         const myResults = await getMyResults()
-
         setPackages(myPackages)
         setResults(myResults)
       } catch (err) {
@@ -55,7 +48,6 @@ export default function Dashboard() {
         setLoading(false)
       }
     }
-
     initializeDashboard()
   }, [])
 
@@ -64,230 +56,270 @@ export default function Dashboard() {
     router.push("/")
   }
 
-  const avgScore =
-    results.length > 0
-      ? Math.round(results.reduce((sum, r) => sum + (r.score || 0), 0) / results.length)
-      : 0
+  const avgScore = results.length > 0
+    ? Math.round(results.reduce((sum, r) => sum + (r.score || 0), 0) / results.length)
+    : 0
 
-  const STATS = [
-    { label: "Tryouts Completed", value: results.length },
-    { label: "Active Packages", value: packages.length },
-    { label: "Average Score", value: results.length > 0 ? `${avgScore}` : "—" },
-    { label: "National Rank", value: "—" },
-  ]
+  const twkResult = results.find(r => r.tryout_slug === "free-trial-twk")
+  const tiuResult = results.find(r => r.tryout_slug === "free-trial-tiu")
+  const tkpResult = results.find(r => r.tryout_slug === "free-trial-tkp")
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-10 h-10 border-4 border-[#1E3A8A] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-sm text-[#64748B]">Memuat dashboard...</p>
-        </div>
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#F8FAFC", flexDirection: "column", gap: 16 }}>
+        <div style={{ width: 40, height: 40, border: "4px solid #e2e8f0", borderTop: "4px solid #172554", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
+        <p style={{ color: "#64748b", fontSize: "0.9rem" }}>Memuat dashboard...</p>
+        <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] flex">
+    <div style={{ minHeight: "100vh", background: "#F8FAFC", display: "flex" }}>
 
-      {/* ── SIDEBAR (desktop) ───────────────────────────────── */}
-      <aside className="hidden lg:flex flex-col w-60 bg-white border-r border-[#E2E8F0] fixed top-0 left-0 h-screen z-40">
-
-        {/* Logo */}
-        <div className="px-5 h-16 flex items-center border-b border-[#E2E8F0] flex-shrink-0">
-          <Link href="/">
-            <span
-              className="text-lg font-bold text-[#1E3A8A]"
-              style={{ fontFamily: "var(--font-plus-jakarta, var(--font-poppins))" }}
-            >
-              CPNS Path
-            </span>
+      {/* Sidebar */}
+      <aside style={{ width: 240, flexShrink: 0, background: "#fff", borderRight: "1px solid #e2e8f0", display: "flex", flexDirection: "column", position: "fixed", top: 0, left: 0, height: "100vh", zIndex: 40 }} className="hidden lg:flex">
+        <div style={{ padding: "0 20px", height: 64, display: "flex", alignItems: "center", borderBottom: "1px solid #e2e8f0" }}>
+          <Link href="/" style={{ textDecoration: "none" }}>
+            <span style={{ fontSize: "1.2rem", fontWeight: 800, color: "#172554", letterSpacing: "-0.02em" }}>CPNS Path</span>
           </Link>
         </div>
 
-        {/* User info */}
         {user && (
-          <div className="px-5 py-4 border-b border-[#E2E8F0] flex-shrink-0">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-[#DBEAFE] text-[#1E3A8A] font-bold text-sm flex items-center justify-center flex-shrink-0">
-                {getInitial(user.email)}
-              </div>
-              <div className="min-w-0">
-                <p className="text-sm font-semibold text-[#0F172A] truncate">
-                  {user.email?.split("@")[0]}
-                </p>
-                <p className="text-xs text-[#64748B] truncate">{user.email}</p>
-              </div>
+          <div style={{ padding: "16px 20px", borderBottom: "1px solid #e2e8f0", display: "flex", alignItems: "center", gap: 10 }}>
+            <div style={{ width: 38, height: 38, borderRadius: "50%", background: "#fbbf24", color: "#78350f", fontWeight: 800, fontSize: "1rem", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              {getInitial(user)}
+            </div>
+            <div style={{ minWidth: 0 }}>
+              <p style={{ fontSize: "0.875rem", fontWeight: 700, color: "#0f172a", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user.user_metadata?.name || user.email?.split("@")[0]}</p>
+              <p style={{ fontSize: "0.72rem", color: "#94a3b8", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user.email}</p>
             </div>
           </div>
         )}
 
-        {/* Nav */}
-        <nav className="flex-1 overflow-y-auto py-3 px-3">
-          {SIDEBAR_LINKS.map((link) => {
-            const isActive = link.href !== "#" && pathname === link.href
-            return (
-              <Link
-                key={link.label}
-                href={link.href}
-                className={[
-                  "flex items-center gap-3 px-3 py-2.5 rounded-md text-sm font-medium transition-colors mb-0.5 border-l-2",
-                  isActive
-                    ? "bg-[#EFF6FF] text-[#1E3A8A] border-[#2563EB]"
-                    : "text-[#475569] border-transparent hover:bg-[#F1F5F9] hover:text-[#1E3A8A]",
-                ].join(" ")}
-              >
-                <span aria-hidden="true">{link.icon}</span>
-                {link.label}
-              </Link>
-            )
-          })}
+        <nav style={{ flex: 1, padding: "12px 12px", overflowY: "auto" }}>
+          {[
+            { icon: "▦", label: "Overview", href: "/dashboard", active: true },
+            { icon: "📝", label: "Free Trial", href: "/tryout/free-trial", active: false },
+            { icon: "📦", label: "Paket TO", href: "/price", active: false },
+            { icon: "🏆", label: "Leaderboard", href: "/leaderboard/global", active: false },
+          ].map((link) => (
+            <Link key={link.label} href={link.href} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 8, marginBottom: 2, textDecoration: "none", background: link.active ? "#eff6ff" : "transparent", borderLeft: link.active ? "3px solid #172554" : "3px solid transparent", transition: "all 0.15s" }}
+              onMouseEnter={e => { if (!link.active) e.currentTarget.style.background = "#f8fafc" }}
+              onMouseLeave={e => { if (!link.active) e.currentTarget.style.background = "transparent" }}
+            >
+              <span style={{ fontSize: "0.85rem" }}>{link.icon}</span>
+              <span style={{ fontSize: "0.875rem", fontWeight: link.active ? 600 : 400, color: link.active ? "#172554" : "#475569" }}>{link.label}</span>
+            </Link>
+          ))}
         </nav>
 
-        {/* Logout */}
-        <div className="px-3 py-3 border-t border-[#E2E8F0] flex-shrink-0">
-          <button
-            onClick={logout}
-            className="flex items-center gap-3 w-full px-3 py-2.5 rounded-md text-sm font-medium text-[#DC2626] hover:bg-[#FEE2E2] transition-colors"
+        <div style={{ padding: "12px", borderTop: "1px solid #e2e8f0" }}>
+          <button onClick={logout} style={{ display: "flex", alignItems: "center", gap: 10, width: "100%", padding: "10px 12px", borderRadius: 8, border: "none", background: "none", cursor: "pointer", transition: "background 0.15s" }}
+            onMouseEnter={e => e.currentTarget.style.background = "#fef2f2"}
+            onMouseLeave={e => e.currentTarget.style.background = "none"}
           >
-            <span aria-hidden="true">🚪</span>
-            Logout
+            <span style={{ fontSize: "0.85rem" }}>🚪</span>
+            <span style={{ fontSize: "0.875rem", fontWeight: 500, color: "#dc2626" }}>Logout</span>
           </button>
         </div>
       </aside>
 
-      {/* ── MAIN ────────────────────────────────────────────── */}
-      <div className="flex-1 lg:ml-60 flex flex-col min-w-0">
+      {/* Main */}
+      <div style={{ flex: 1, minWidth: 0, marginLeft: 240 }} className="lg:ml-[240px]">
 
-        {/* Mobile top bar */}
-        <header className="lg:hidden sticky top-0 z-30 bg-white border-b border-[#E2E8F0] h-14 flex items-center justify-between px-4 flex-shrink-0">
-          <Link href="/">
-            <span
-              className="text-base font-bold text-[#1E3A8A]"
-              style={{ fontFamily: "var(--font-plus-jakarta, var(--font-poppins))" }}
+        {/* Mobile header */}
+        <header style={{ background: "#fff", borderBottom: "1px solid #e2e8f0", height: 56, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 16px", position: "sticky", top: 0, zIndex: 30 }} className="lg:hidden">
+          <span style={{ fontSize: "1rem", fontWeight: 800, color: "#172554" }}>CPNS Path</span>
+          <div style={{ position: "relative" }} ref={settingRef}>
+            <button
+              onClick={() => setSettingOpen(v => !v)}
+              style={{ width: 36, height: 36, borderRadius: "50%", background: "#fbbf24", color: "#78350f", fontWeight: 800, fontSize: "0.9rem", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
             >
-              CPNS Path
-            </span>
-          </Link>
-          <div className="flex items-center gap-2">
-            {user && (
-              <div className="w-8 h-8 rounded-full bg-[#DBEAFE] text-[#1E3A8A] font-bold text-xs flex items-center justify-center">
-                {getInitial(user.email)}
+              {getInitial(user)}
+            </button>
+            {settingOpen && (
+              <div style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", width: 240, background: "#1e293b", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 14, overflow: "hidden", boxShadow: "0 20px 40px rgba(0,0,0,0.4)", zIndex: 50 }}>
+                <div style={{ padding: "14px 16px", borderBottom: "1px solid rgba(255,255,255,0.07)", display: "flex", alignItems: "center", gap: 10 }}>
+                  <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#fbbf24", color: "#78350f", fontWeight: 800, fontSize: "0.9rem", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    {getInitial(user)}
+                  </div>
+                  <div style={{ minWidth: 0 }}>
+                    <p style={{ fontSize: "0.875rem", fontWeight: 600, color: "#f1f5f9", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user?.user_metadata?.name || user?.email?.split("@")[0]}</p>
+                    <p style={{ fontSize: "0.72rem", color: "#64748b", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user?.email}</p>
+                  </div>
+                </div>
+                <div style={{ padding: "6px 0" }}>
+                  <Link href="/dashboard/settings" onClick={() => setSettingOpen(false)} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 16px", textDecoration: "none", transition: "background 0.15s" }}
+                    onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.05)"}
+                    onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+                  >
+                    <span style={{ fontSize: "0.85rem", color: "#64748b" }}>⚙</span>
+                    <span style={{ fontSize: "0.875rem", color: "#cbd5e1" }}>Edit Profil</span>
+                  </Link>
+                  <Link href="/dashboard/settings?tab=password" onClick={() => setSettingOpen(false)} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 16px", textDecoration: "none", transition: "background 0.15s" }}
+                    onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.05)"}
+                    onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+                  >
+                    <span style={{ fontSize: "0.85rem", color: "#64748b" }}>🔑</span>
+                    <span style={{ fontSize: "0.875rem", color: "#cbd5e1" }}>Ganti Password</span>
+                  </Link>
+                </div>
+                <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", padding: "6px 0" }}>
+                  <button onClick={logout} style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "10px 16px", background: "none", border: "none", cursor: "pointer", transition: "background 0.15s" }}
+                    onMouseEnter={e => e.currentTarget.style.background = "rgba(220,38,38,0.1)"}
+                    onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+                  >
+                    <span style={{ fontSize: "0.85rem", color: "#ef4444" }}>🚪</span>
+                    <span style={{ fontSize: "0.875rem", color: "#ef4444", fontWeight: 500 }}>Logout</span>
+                  </button>
+                </div>
               </div>
             )}
-            <Button variant="ghost" size="sm" onClick={logout}>Logout</Button>
           </div>
         </header>
 
-        <main className="flex-1 py-8 px-4 sm:px-6 lg:px-8">
+        <main style={{ padding: "32px 32px" }}>
 
-          {/* Heading */}
-          <div className="mb-8">
-            <h1 className="heading-1 text-[#0F172A]">
-              Welcome back, {user?.email?.split("@")[0] ?? "User"} 👋
+          {/* Greeting */}
+          <div style={{ marginBottom: 32 }}>
+            <h1 style={{ fontSize: "1.75rem", fontWeight: 700, color: "#0f172a", marginBottom: 4, letterSpacing: "-0.02em" }}>
+              Halo, {user?.user_metadata?.name || user?.email?.split("@")[0]} 👋
             </h1>
-            <p className="body-small text-[#64748B] mt-1">
-              {new Date().toLocaleDateString("id-ID", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
+            <p style={{ fontSize: "0.9rem", color: "#64748b" }}>
+              {new Date().toLocaleDateString("id-ID", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}
             </p>
           </div>
 
-          {/* Stat cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-            {STATS.map(({ label, value }) => (
-              <Card key={label} variant="default" className="p-5">
-                <p className="text-2xl font-bold text-[#1E3A8A]">{value}</p>
-                <p className="text-xs text-[#64748B] mt-1">{label}</p>
-              </Card>
+          {/* Stats */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16, marginBottom: 32 }}>
+            {[
+              { label: "Tryout Selesai", value: results.length, color: "#172554", bg: "rgba(23,37,84,0.06)" },
+              { label: "Rata-rata Skor", value: results.length > 0 ? avgScore : "—", color: "#16a34a", bg: "rgba(22,163,74,0.06)" },
+              { label: "Paket Aktif", value: packages.length, color: "#d97706", bg: "rgba(217,119,6,0.06)" },
+              { label: "Ranking Nasional", value: "—", color: "#7c3aed", bg: "rgba(124,58,237,0.06)" },
+            ].map((stat) => (
+              <div key={stat.label} style={{ background: "#fff", borderRadius: 14, padding: "20px", border: "1px solid #e2e8f0", boxShadow: "0 2px 4px rgba(0,0,0,0.03)" }}>
+                <div style={{ fontSize: "2rem", fontWeight: 800, color: stat.color, marginBottom: 4 }}>{stat.value}</div>
+                <div style={{ fontSize: "0.8rem", color: "#64748b", fontWeight: 500 }}>{stat.label}</div>
+              </div>
             ))}
           </div>
 
-          {/* My Packages */}
-          <section className="mb-10">
-            <h2 className="heading-3 text-[#0F172A] mb-4">📦 Paket Tryout Saya</h2>
+          {/* Progress Free Trial SKD */}
+          <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #e2e8f0", padding: "24px", marginBottom: 24, boxShadow: "0 2px 4px rgba(0,0,0,0.03)" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
+              <h2 style={{ fontSize: "1rem", fontWeight: 700, color: "#0f172a", margin: 0 }}>📊 Progress Free Trial SKD</h2>
+              <Link href="/tryout/free-trial/skd" style={{ fontSize: "0.8rem", color: "#172554", fontWeight: 600, textDecoration: "none" }}>Lihat semua →</Link>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
+              {[
+                { code: "TWK", name: "Tes Wawasan Kebangsaan", result: twkResult, passing: 65, href: "/tryout/twk" },
+                { code: "TIU", name: "Tes Intelegensi Umum", result: tiuResult, passing: 80, href: "/tryout/tiu" },
+                { code: "TKP", name: "Tes Karakteristik Pribadi", result: tkpResult, passing: 166, href: "/tryout/tkp" },
+              ].map((item) => (
+                <div key={item.code} style={{ background: "#f8fafc", borderRadius: 12, padding: "16px", border: "1px solid #e2e8f0" }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+                    <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "#334155" }}>{item.code}</span>
+                    {item.result ? (
+                      <span style={{ fontSize: "0.65rem", fontWeight: 700, padding: "2px 8px", borderRadius: 999, background: item.result.score >= item.passing ? "rgba(22,163,74,0.12)" : "rgba(220,38,38,0.1)", color: item.result.score >= item.passing ? "#16a34a" : "#dc2626" }}>
+                        {item.result.score >= item.passing ? "LULUS" : "TIDAK LULUS"}
+                      </span>
+                    ) : (
+                      <span style={{ fontSize: "0.65rem", fontWeight: 600, padding: "2px 8px", borderRadius: 999, background: "rgba(148,163,184,0.12)", color: "#94a3b8" }}>BELUM</span>
+                    )}
+                  </div>
+                  <div style={{ fontSize: "1.75rem", fontWeight: 800, color: "#0f172a", marginBottom: 2 }}>
+                    {item.result ? item.result.score : "—"}
+                  </div>
+                  <div style={{ fontSize: "0.72rem", color: "#94a3b8", marginBottom: 10 }}>Passing grade: {item.passing}</div>
+                  {item.result && (
+                    <div style={{ background: "#e2e8f0", borderRadius: 999, height: 6, overflow: "hidden" }}>
+                      <div style={{ height: "100%", borderRadius: 999, background: item.result.score >= item.passing ? "#16a34a" : "#ef4444", width: `${Math.min(100, Math.round((item.result.score / (item.passing * 1.5)) * 100))}%`, transition: "width 0.8s ease" }} />
+                    </div>
+                  )}
+                  {!item.result && (
+                    <Link href={item.href} style={{ display: "block", textAlign: "center", padding: "8px", borderRadius: 8, background: "#fbbf24", color: "#78350f", fontSize: "0.8rem", fontWeight: 600, textDecoration: "none" }}>
+                      Mulai Sekarang
+                    </Link>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
 
-            {packages.length === 0 ? (
-              <Card variant="default" className="p-8 text-center">
-                <p className="text-4xl mb-3" aria-hidden="true">📭</p>
-                <p className="text-sm font-medium text-[#334155] mb-1">Belum ada paket tryout</p>
-                <p className="text-xs text-[#64748B] mb-4">
-                  Beli paket untuk mulai latihan SKD &amp; SKB
-                </p>
-                <Link href="/price">
-                  <Button variant="primary" size="sm">Lihat Paket</Button>
+          {/* Riwayat Tryout */}
+          <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #e2e8f0", padding: "24px", marginBottom: 24, boxShadow: "0 2px 4px rgba(0,0,0,0.03)" }}>
+            <h2 style={{ fontSize: "1rem", fontWeight: 700, color: "#0f172a", marginBottom: 20 }}>📋 Riwayat Tryout</h2>
+            {results.length === 0 ? (
+              <div style={{ textAlign: "center", padding: "32px 0" }}>
+                <div style={{ fontSize: "2.5rem", marginBottom: 12 }}>📭</div>
+                <p style={{ fontSize: "0.9rem", fontWeight: 600, color: "#334155", marginBottom: 6 }}>Belum ada riwayat tryout</p>
+                <p style={{ fontSize: "0.8rem", color: "#94a3b8", marginBottom: 16 }}>Selesaikan tryout pertamamu</p>
+                <Link href="/tryout/free-trial" style={{ display: "inline-block", padding: "10px 20px", borderRadius: 10, background: "#172554", color: "#fff", fontSize: "0.85rem", fontWeight: 600, textDecoration: "none" }}>
+                  Mulai Free Trial
                 </Link>
-              </Card>
+              </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {packages.map((item, index) => {
-                  const paket = item.packages
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {results.map((r, i) => {
+                  const slugLabel = r.tryout_slug?.replace("free-trial-", "").toUpperCase() || r.tryout_slug
+                  const passing = r.tryout_slug?.includes("twk") ? 65 : r.tryout_slug?.includes("tiu") ? 80 : 166
+                  const lulus = r.score >= passing
                   return (
-                    <Card key={index} variant="default">
-                      <Card.Body>
-                        <Badge variant="primary" className="mb-3">Aktif</Badge>
-                        <h3 className="text-sm font-semibold text-[#0F172A] mb-1">{paket?.title}</h3>
-                        <p className="text-xs text-[#64748B] mb-4">{paket?.jumlah_to} Tryout tersedia</p>
-                        <Link href="/tryout">
-                          <Button variant="primary" size="sm" fullWidth>Mulai Tryout</Button>
-                        </Link>
-                      </Card.Body>
-                    </Card>
+                    <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 16px", borderRadius: 10, background: "#f8fafc", border: "1px solid #e2e8f0" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                        <div style={{ width: 40, height: 40, borderRadius: 10, background: lulus ? "rgba(22,163,74,0.1)" : "rgba(220,38,38,0.08)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1rem" }}>
+                          {lulus ? "✅" : "❌"}
+                        </div>
+                        <div>
+                          <p style={{ fontSize: "0.875rem", fontWeight: 600, color: "#0f172a", margin: 0 }}>{slugLabel}</p>
+                          <p style={{ fontSize: "0.72rem", color: "#94a3b8", margin: 0 }}>
+                            {new Date(r.created_at).toLocaleDateString("id-ID", { day: "numeric", month: "short", year: "numeric" })}
+                          </p>
+                        </div>
+                      </div>
+                      <div style={{ textAlign: "right" }}>
+                        <div style={{ fontSize: "1.25rem", fontWeight: 800, color: lulus ? "#16a34a" : "#dc2626" }}>{r.score}</div>
+                        <div style={{ fontSize: "0.65rem", color: "#94a3b8" }}>Passing: {passing}</div>
+                      </div>
+                    </div>
                   )
                 })}
               </div>
             )}
-          </section>
+          </div>
 
-          {/* Results */}
-          <section>
-            <h2 className="heading-3 text-[#0F172A] mb-4">📊 Riwayat Tryout</h2>
-
-            {results.length === 0 ? (
-              <Card variant="default" className="p-8 text-center">
-                <p className="text-4xl mb-3" aria-hidden="true">📋</p>
-                <p className="text-sm font-medium text-[#334155] mb-1">Belum ada riwayat tryout</p>
-                <p className="text-xs text-[#64748B] mb-4">
-                  Selesaikan tryout pertamamu untuk melihat hasilnya di sini
-                </p>
-                <Link href="/tryout">
-                  <Button variant="outline" size="sm">Mulai Tryout</Button>
+          {/* Paket */}
+          <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #e2e8f0", padding: "24px", boxShadow: "0 2px 4px rgba(0,0,0,0.03)" }}>
+            <h2 style={{ fontSize: "1rem", fontWeight: 700, color: "#0f172a", marginBottom: 20 }}>📦 Paket Tryout Saya</h2>
+            {packages.length === 0 ? (
+              <div style={{ textAlign: "center", padding: "32px 0" }}>
+                <div style={{ fontSize: "2.5rem", marginBottom: 12 }}>🛒</div>
+                <p style={{ fontSize: "0.9rem", fontWeight: 600, color: "#334155", marginBottom: 6 }}>Belum ada paket</p>
+                <p style={{ fontSize: "0.8rem", color: "#94a3b8", marginBottom: 16 }}>Beli paket SKD atau SKB untuk akses 100 tryout</p>
+                <Link href="/price" style={{ display: "inline-block", padding: "10px 20px", borderRadius: 10, background: "#fbbf24", color: "#78350f", fontSize: "0.85rem", fontWeight: 600, textDecoration: "none" }}>
+                  Lihat Paket
                 </Link>
-              </Card>
+              </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {results.map((r, i) => (
-                  <Card key={i} variant="default">
-                    <Card.Body>
-                      <div className="flex items-center justify-between mb-3">
-                        <p className="text-xs font-semibold text-[#64748B] uppercase tracking-wide">
-                          {r.to_slug}
-                        </p>
-                        <Badge variant={r.score >= 70 ? "success" : "error"}>
-                          {r.score >= 70 ? "PASS" : "FAIL"}
-                        </Badge>
-                      </div>
-                      <p className="text-3xl font-bold text-[#1E3A8A]">{r.score}</p>
-                      <p className="text-xs text-[#64748B]">Score</p>
-                      <div className="flex gap-6 mt-3 pt-3 border-t border-[#E2E8F0]">
-                        <div>
-                          <p className="text-sm font-semibold text-[#059669]">{r.correct}</p>
-                          <p className="text-xs text-[#64748B]">Benar</p>
-                        </div>
-                        <div>
-                          <p className="text-sm font-semibold text-[#DC2626]">{r.wrong}</p>
-                          <p className="text-xs text-[#64748B]">Salah</p>
-                        </div>
-                      </div>
-                    </Card.Body>
-                  </Card>
-                ))}
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
+                {packages.map((item, i) => {
+                  const paket = item.packages
+                  return (
+                    <div key={i} style={{ background: "#f8fafc", borderRadius: 12, padding: "16px", border: "1px solid #e2e8f0" }}>
+                      <div style={{ fontSize: "0.65rem", fontWeight: 700, padding: "3px 10px", borderRadius: 999, background: "rgba(22,163,74,0.12)", color: "#16a34a", display: "inline-block", marginBottom: 10 }}>AKTIF</div>
+                      <p style={{ fontSize: "0.9rem", fontWeight: 700, color: "#0f172a", marginBottom: 4 }}>{paket?.name}</p>
+                      <p style={{ fontSize: "0.8rem", color: "#64748b", marginBottom: 12 }}>{paket?.description}</p>
+                      <Link href="/tryout/paket-to" style={{ display: "block", textAlign: "center", padding: "8px", borderRadius: 8, background: "#172554", color: "#fff", fontSize: "0.8rem", fontWeight: 600, textDecoration: "none" }}>
+                        Mulai Tryout
+                      </Link>
+                    </div>
+                  )
+                })}
               </div>
             )}
-          </section>
+          </div>
 
         </main>
       </div>
