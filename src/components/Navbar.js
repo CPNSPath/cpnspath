@@ -9,7 +9,7 @@ import { HelpCircle, User, ShoppingBag, ChevronDown } from "lucide-react"
 
 const TRYOUT_ITEMS = [
   { label: "Free Trial",  href: "/tryout/free-trial",  desc: "3 subtest gratis — TWK, TIU, TKP" },
-  { label: "Paket TO",    href: "/tryout/paket-to",    desc: "100 TO SKD & SKB — akses penuh" },
+  { label: "Paket TO",    href: "/price",    desc: "100 TO SKD & SKB — akses penuh" },
 ]
 
 const OTHER_NAV_LINKS = [
@@ -108,26 +108,62 @@ export default function Navbar({ transparent = false }) {
 
   // ── User dropdown panel ────────────────────────────────────────────────────
   const UserDropdown = () => (
-    <div className="absolute right-0 mt-2 w-52 bg-white rounded-lg border border-[#E2E8F0] shadow-lg py-1 z-50">
-      <div className="px-4 py-2 border-b border-[#E2E8F0]">
-        <p className="text-xs text-[#64748B] truncate">{user?.email}</p>
+    <div style={{
+      position: "absolute", right: 0, top: "calc(100% + 8px)",
+      width: 240, background: "#1e293b",
+      border: "1px solid rgba(255,255,255,0.1)",
+      borderRadius: 14, overflow: "hidden",
+      boxShadow: "0 20px 40px rgba(0,0,0,0.4)", zIndex: 50
+    }}>
+      {/* Caret */}
+      <div style={{ position: "absolute", top: -5, right: 14, width: 10, height: 10, background: "#1e293b", borderLeft: "1px solid rgba(255,255,255,0.1)", borderTop: "1px solid rgba(255,255,255,0.1)", transform: "rotate(45deg)" }} />
+
+      {/* User info */}
+      <div style={{ padding: "14px 16px", borderBottom: "1px solid rgba(255,255,255,0.07)", display: "flex", alignItems: "center", gap: 10 }}>
+        <div style={{ width: 36, height: 36, borderRadius: "50%", background: "#fbbf24", color: "#78350f", fontWeight: 800, fontSize: "0.9rem", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+          {getInitial(user?.email)}
+        </div>
+        <div style={{ minWidth: 0 }}>
+          <p style={{ fontSize: "0.85rem", fontWeight: 600, color: "#f1f5f9", margin: 0, truncate: true, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+            {user?.email?.split("@")[0]}
+          </p>
+          <p style={{ fontSize: "0.72rem", color: "#64748b", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+            {user?.email}
+          </p>
+        </div>
       </div>
-      {USER_LINKS.map((link) => (
-        <Link
-          key={link.label}
-          href={link.href}
-          onClick={() => setDropdownOpen(false)}
-          className="block px-4 py-2 text-sm text-[#334155] hover:bg-[#F1F5F9] hover:text-[#1E3A8A] transition-colors"
-        >
-          {link.label}
-        </Link>
-      ))}
-      <div className="border-t border-[#E2E8F0] mt-1">
+
+      {/* Links */}
+      <div style={{ padding: "6px 0" }}>
+        {[
+          { label: "Dashboard", href: "/dashboard", icon: "▦" },
+          { label: "My Packages", href: "#", icon: "◈" },
+          { label: "Settings", href: "#", icon: "⚙" },
+        ].map((link) => (
+          <Link
+            key={link.label}
+            href={link.href}
+            onClick={() => setDropdownOpen(false)}
+            style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 16px", textDecoration: "none", transition: "background 0.15s" }}
+            onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.05)"}
+            onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+          >
+            <span style={{ fontSize: "0.8rem", color: "#64748b", width: 16, textAlign: "center" }}>{link.icon}</span>
+            <span style={{ fontSize: "0.875rem", color: "#cbd5e1", fontWeight: 400 }}>{link.label}</span>
+          </Link>
+        ))}
+      </div>
+
+      {/* Logout */}
+      <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", padding: "6px 0" }}>
         <button
           onClick={logout}
-          className="w-full text-left px-4 py-2 text-sm text-[#DC2626] hover:bg-[#FEE2E2] transition-colors"
+          style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "9px 16px", background: "none", border: "none", cursor: "pointer", transition: "background 0.15s" }}
+          onMouseEnter={e => e.currentTarget.style.background = "rgba(220,38,38,0.1)"}
+          onMouseLeave={e => e.currentTarget.style.background = "transparent"}
         >
-          Logout
+          <span style={{ fontSize: "0.8rem", color: "#ef4444", width: 16, textAlign: "center" }}>⏻</span>
+          <span style={{ fontSize: "0.875rem", color: "#ef4444", fontWeight: 500 }}>Logout</span>
         </button>
       </div>
     </div>
@@ -159,7 +195,7 @@ const TryoutDropdown = () => (
         href={item.href}
         onClick={() => setTryoutOpen(false)}
         className="flex items-center gap-3 px-4 py-3.5 transition-colors"
-        style={{ borderBottom: i < TRYOUT_ITEMS.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none", textDecoration: "none" }}
+        style={{ borderBottom: "1px solid rgba(255,255,255,0.04)", textDecoration: "none" }}
         onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.05)")}
         onMouseLeave={e => (e.currentTarget.style.background = "transparent")}
       >

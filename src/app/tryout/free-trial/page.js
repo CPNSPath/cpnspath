@@ -1,46 +1,108 @@
 "use client"
 
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 import Link from "next/link"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
+import { supabase } from "@/lib/supabase"
 
-const SUBTESTS = [
+const PACKAGES = [
   {
-    href: "/tryout/twk",
-    code: "TWK",
-    name: "Tes Wawasan Kebangsaan",
-    soal: 35,
-    durasi: "30 menit",
-    passingGrade: "65",
-    color: "bg-blue-600",
-    desc: "Pancasila, UUD 1945, NKRI, Bhineka Tunggal Ika",
+    slug: "skd",
+    name: "Free Trial SKD",
+    icon: "📋",
+    badge: null,
+    desc: "Coba 3 subtest SKD gratis — TWK, TIU, TKP",
+    features: ["3 Subtest gratis", "TWK + TIU + TKP", "Perlu login akun", "Pembahasan lengkap", "Langsung mulai"],
   },
   {
-    href: "/tryout/tiu",
-    code: "TIU",
-    name: "Tes Intelegensi Umum",
-    soal: 30,
-    durasi: "30 menit",
-    passingGrade: "80",
-    color: "bg-purple-600",
-    desc: "Verbal, numerik, figural & penalaran logis",
-  },
-  {
-    href: "/tryout/tkp",
-    code: "TKP",
-    name: "Tes Karakteristik Pribadi",
-    soal: 35,
-    durasi: "30 menit",
-    passingGrade: "166",
-    color: "bg-green-600",
-    desc: "Orientasi pelayanan, integritas & kerjasama tim",
+    slug: "skb",
+    name: "Free Trial SKB",
+    icon: "🏆",
+    badge: "Baru",
+    desc: "Coba tryout SKB gratis sesuai bidang formasi",
+    features: ["Subtest SKB gratis", "Sesuai bidang formasi", "Perlu login akun", "Pembahasan lengkap", "Langsung mulai"],
   },
 ]
 
 export default function FreeTrial() {
+  const router = useRouter()
+  const [showPopup, setShowPopup] = useState(false)
+  const [targetSlug, setTargetSlug] = useState(null)
+  const [checking, setChecking] = useState(false)
+
+  async function handleClick(slug) {
+    setChecking(true)
+    const { data: { user } } = await supabase.auth.getUser()
+    setChecking(false)
+    if (user) {
+      router.push(`/tryout/free-trial/${slug}`)
+    } else {
+      setTargetSlug(slug)
+      setShowPopup(true)
+    }
+  }
+
   return (
     <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
       <Navbar />
+
+      {/* Popup Login */}
+      {showPopup && (
+        <div
+          style={{ position: "fixed", inset: 0, zIndex: 100, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}
+          onClick={(e) => { if (e.target === e.currentTarget) setShowPopup(false) }}
+        >
+          <div style={{ background: "#fff", borderRadius: 24, width: "100%", maxWidth: 420, overflow: "hidden", boxShadow: "0 25px 60px rgba(0,0,0,0.2)" }}>
+            {/* Popup header */}
+            <div style={{ background: "#0f1d3a", padding: "28px 28px 24px", textAlign: "center", position: "relative" }}>
+              <button
+                onClick={() => setShowPopup(false)}
+                style={{ position: "absolute", top: 16, right: 16, background: "rgba(255,255,255,0.1)", border: "none", color: "#fff", width: 32, height: 32, borderRadius: "50%", cursor: "pointer", fontSize: "1rem", display: "flex", alignItems: "center", justifyContent: "center" }}
+              >
+                ✕
+              </button>
+              <div style={{ fontSize: "2.5rem", marginBottom: 12 }}>🔐</div>
+              <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "#fff", marginBottom: 6 }}>Login Diperlukan</h2>
+              <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.5 }}>
+                Silakan login atau buat akun untuk mulai Free Trial {targetSlug?.toUpperCase()}
+              </p>
+            </div>
+
+            {/* Popup body */}
+            <div style={{ padding: "24px 28px 28px" }}>
+              <div style={{ background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.2)", borderRadius: 12, padding: "12px 16px", marginBottom: 20, display: "flex", alignItems: "center", gap: 10 }}>
+                <span style={{ fontSize: "1.1rem" }}>✨</span>
+                <p style={{ fontSize: "0.8rem", color: "#78350f", fontWeight: 500 }}>Akun gratis — daftar dalam 30 detik, langsung bisa tryout!</p>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                <Link href={`/login?redirect=/tryout/free-trial/${targetSlug}`}>
+                  <button style={{ width: "100%", padding: "13px 20px", borderRadius: 12, fontSize: "0.9rem", fontWeight: 700, border: "none", background: "#172554", color: "#fff", cursor: "pointer", transition: "background 0.2s" }}
+                    onMouseEnter={e => e.currentTarget.style.background = "#1e3a5f"}
+                    onMouseLeave={e => e.currentTarget.style.background = "#172554"}
+                  >
+                    Login ke Akun Saya
+                  </button>
+                </Link>
+                <Link href={`/register?redirect=/tryout/free-trial/${targetSlug}`}>
+                  <button style={{ width: "100%", padding: "13px 20px", borderRadius: 12, fontSize: "0.9rem", fontWeight: 700, border: "2px solid #fbbf24", background: "#fbbf24", color: "#78350f", cursor: "pointer", transition: "background 0.2s" }}
+                    onMouseEnter={e => e.currentTarget.style.background = "#f59e0b"}
+                    onMouseLeave={e => e.currentTarget.style.background = "#fbbf24"}
+                  >
+                    Daftar Akun Gratis
+                  </button>
+                </Link>
+              </div>
+
+              <p style={{ textAlign: "center", fontSize: "0.75rem", color: "#94a3b8", marginTop: 16 }}>
+                Dengan mendaftar, kamu menyetujui syarat & ketentuan CPNS Path
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Hero */}
       <section style={{ background: "#172554", padding: "56px 24px", position: "relative", overflow: "hidden", marginTop: "72px" }}>
@@ -48,69 +110,55 @@ export default function FreeTrial() {
         <div style={{ position: "absolute", bottom: -60, left: -60, width: 160, height: 160, borderRadius: "50%", background: "rgba(251,191,36,0.05)" }} />
         <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
           <span style={{ display: "inline-block", padding: "4px 14px", borderRadius: 999, background: "rgba(251,191,36,0.15)", color: "#fbbf24", fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12 }}>Gratis</span>
-          <h1 style={{ fontSize: "2rem", fontWeight: 700, color: "#fff", marginBottom: 8, letterSpacing: "-0.02em" }}>Free Trial — Coba Tryout SKD Gratis</h1>
-          <p style={{ fontSize: "0.95rem", color: "#93C5FD", lineHeight: 1.6 }}>Latihan 3 subtest gratis untuk persiapan SKD CPNS — tidak perlu daftar akun</p>
+          <h1 style={{ fontSize: "2rem", fontWeight: 700, color: "#fff", marginBottom: 8, letterSpacing: "-0.02em" }}>Free Trial — Coba Tryout Gratis</h1>
+          <p style={{ fontSize: "0.95rem", color: "#93C5FD", lineHeight: 1.6 }}>Pilih jenis tryout yang ingin kamu coba — gratis, cukup login dulu</p>
         </div>
       </section>
 
       {/* Cards */}
       <section style={{ flex: 1, padding: "48px 24px 32px" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", width: "100%" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 28, justifyItems: "center", marginBottom: 48 }}>
-            {SUBTESTS.map((s) => (
+        <div style={{ maxWidth: 900, margin: "0 auto", width: "100%" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 32, justifyItems: "center", marginBottom: 48 }}>
+            {PACKAGES.map((pkg) => (
               <div
-                key={s.code}
-                style={{ background: "#fff", borderRadius: 20, overflow: "hidden", width: "100%", maxWidth: 360, display: "flex", flexDirection: "column", border: "1px solid #e2e8f0", boxShadow: "0 4px 6px rgba(0,0,0,0.05)", transition: "border-color 0.2s, box-shadow 0.2s, transform 0.2s" }}
-                onMouseEnter={e => { e.currentTarget.style.borderColor = "#fbbf24"; e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 20px 40px rgba(0,0,0,0.1)" }}
-                onMouseLeave={e => { e.currentTarget.style.borderColor = "#e2e8f0"; e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.05)" }}
+                key={pkg.slug}
+                style={{ background: "#fff", borderRadius: 20, overflow: "hidden", width: "100%", maxWidth: 390, display: "flex", flexDirection: "column", position: "relative", border: pkg.badge ? "2px solid #fbbf24" : "1px solid #e2e8f0", boxShadow: pkg.badge ? "0 0 0 4px rgba(251,191,36,0.08)" : "0 4px 6px rgba(0,0,0,0.05)", transition: "border-color 0.2s, box-shadow 0.2s, transform 0.2s" }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = "#fbbf24"; e.currentTarget.style.transform = "translateY(-2px)" }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = pkg.badge ? "#fbbf24" : "#e2e8f0"; e.currentTarget.style.transform = "translateY(0)" }}
               >
-                {/* Header */}
-                <div style={{ background: "#0f1d3a", padding: "24px 20px 20px", textAlign: "center" }}>
-                  <span style={{ fontSize: "2.25rem", display: "block", marginBottom: 6 }}>
-                    {s.code === "TWK" ? "🇮🇩" : s.code === "TIU" ? "🧠" : "🤝"}
+                {pkg.badge && (
+                  <span style={{ position: "absolute", top: 14, right: 14, fontSize: "0.65rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", padding: "5px 14px", borderRadius: 999, background: "#fbbf24", color: "#78350f", zIndex: 2 }}>
+                    {pkg.badge}
                   </span>
-                  <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "#fff", letterSpacing: "-0.01em" }}>{s.code}</h2>
-                  <p style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.6)", marginTop: 2 }}>{s.name}</p>
+                )}
+                <div style={{ background: "#0f1d3a", padding: "24px 20px 20px", textAlign: "center" }}>
+                  <span style={{ fontSize: "2.5rem", display: "block", marginBottom: 6 }}>{pkg.icon}</span>
+                  <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "#fff" }}>{pkg.name}</h2>
+                  <p style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.6)", marginTop: 4 }}>{pkg.desc}</p>
                 </div>
-
-                {/* Body */}
-                <div style={{ flex: 1, padding: "20px 24px 10px" }}>
-                  <p style={{ fontSize: "0.85rem", color: "#475569", marginBottom: 16, lineHeight: 1.5 }}>{s.desc}</p>
-                  <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 8 }}>
-                    {[
-                      { label: "Jumlah soal", value: `${s.soal} soal` },
-                      { label: "Durasi", value: s.durasi },
-                      { label: "Passing grade", value: s.passingGrade, isPassing: true },
-                    ].map((item) => (
-                      <li key={item.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.85rem", padding: "6px 0", borderBottom: "1px dashed #e2e8f0" }}>
-                        <span style={{ color: "#64748b", fontWeight: 500 }}>{item.label}</span>
-                        {item.isPassing ? (
-                          <span style={{ background: "rgba(34,197,94,0.1)", color: "#16a34a", fontWeight: 700, padding: "2px 10px", borderRadius: 999 }}>{item.value}</span>
-                        ) : (
-                          <span style={{ color: "#1e293b", fontWeight: 600 }}>{item.value}</span>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* CTA */}
+                <ul style={{ flex: 1, padding: "18px 24px 10px", listStyle: "none", display: "flex", flexDirection: "column", gap: 10 }}>
+                  {pkg.features.map((f) => (
+                    <li key={f} style={{ display: "flex", alignItems: "center", gap: 12, fontSize: "0.875rem", color: "#334155" }}>
+                      <span style={{ width: 22, height: 22, borderRadius: "50%", background: "rgba(34,197,94,0.12)", color: "#16a34a", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: "0.7rem", fontWeight: 700 }}>✓</span>
+                      {f}
+                    </li>
+                  ))}
+                </ul>
                 <div style={{ padding: "8px 24px 24px" }}>
-                  <Link href={s.href}>
-                    <button
-                      style={{ display: "block", width: "100%", padding: "13px 20px", borderRadius: 12, fontSize: "0.9rem", fontWeight: 600, textAlign: "center", cursor: "pointer", border: "none", background: "#172554", color: "#fff", letterSpacing: "0.02em", transition: "background 0.2s, transform 0.2s" }}
-                      onMouseEnter={e => { e.currentTarget.style.background = "#1e3a5f"; e.currentTarget.style.transform = "translateY(-1px)" }}
-                      onMouseLeave={e => { e.currentTarget.style.background = "#172554"; e.currentTarget.style.transform = "translateY(0)" }}
-                    >
-                      Mulai {s.code}
-                    </button>
-                  </Link>
+                  <button
+                    onClick={() => handleClick(pkg.slug)}
+                    disabled={checking}
+                    style={{ display: "block", width: "100%", padding: "13px 20px", borderRadius: 12, fontSize: "0.9rem", fontWeight: 600, textAlign: "center", cursor: checking ? "wait" : "pointer", border: "none", background: "#fbbf24", color: "#78350f", transition: "background 0.2s, transform 0.2s", opacity: checking ? 0.7 : 1 }}
+                    onMouseEnter={e => { if (!checking) e.currentTarget.style.background = "#f59e0b" }}
+                    onMouseLeave={e => { e.currentTarget.style.background = "#fbbf24" }}
+                  >
+                    {checking ? "Mengecek..." : `Mulai ${pkg.name}`}
+                  </button>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Upsell Banner */}
           <div style={{ background: "#fff", border: "1px solid #e2e8f0", borderRadius: 20, padding: "28px 24px", textAlign: "center", boxShadow: "0 4px 6px rgba(0,0,0,0.05)", maxWidth: 720, margin: "0 auto" }}>
             <p style={{ fontSize: "1.1rem", fontWeight: 700, color: "#1e293b", marginBottom: 6 }}>Mau akses 100 TO lengkap?</p>
             <p style={{ fontSize: "0.9rem", color: "#64748b", marginBottom: 16 }}>Dapatkan 100 Tryout SKD + SKB hanya Rp 15.000 per paket — akses selamanya</p>

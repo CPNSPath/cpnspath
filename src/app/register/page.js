@@ -4,9 +4,6 @@ import { useState } from "react"
 import Link from "next/link"
 import { supabase } from "@/lib/supabase"
 import { useRouter } from "next/navigation"
-import Card from "@/components/ui/Card"
-import Button from "@/components/ui/Button"
-import Input from "@/components/ui/Input"
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -63,99 +60,123 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
-
-        {/* Logo */}
-        <div className="text-center mb-8">
+    <div style={{ minHeight: "100vh", display: "flex", background: "#0f172a" }}>
+      {/* Sisi kiri — branding */}
+      <div style={{ flex: 1, display: "none", flexDirection: "column", justifyContent: "center", padding: "60px 48px", background: "#172554", position: "relative", overflow: "hidden" }} className="lg:flex">
+        <div style={{ position: "absolute", top: -100, right: -100, width: 400, height: 400, borderRadius: "50%", background: "rgba(255,255,255,0.03)" }} />
+        <div style={{ position: "absolute", bottom: -80, left: -80, width: 300, height: 300, borderRadius: "50%", background: "rgba(251,191,36,0.05)" }} />
+        <div style={{ position: "relative", zIndex: 1 }}>
           <Link href="/">
-            <span
-              className="text-2xl font-bold text-[#1E3A8A]"
-              style={{ fontFamily: "var(--font-plus-jakarta, var(--font-poppins))" }}
-            >
-              CPNS Path
-            </span>
+            <span style={{ fontSize: "1.75rem", fontWeight: 800, color: "#fff", letterSpacing: "-0.02em" }}>CPNS Path</span>
           </Link>
-        </div>
-
-        <Card variant="elevated" className="p-8">
-          <div className="text-center mb-8">
-            <h1 className="heading-2 text-[#0F172A]">Start Your CPNS Journey</h1>
-            <p className="body-small text-[#64748B] mt-2">Create free account, no credit card required</p>
+          <p style={{ fontSize: "1.5rem", fontWeight: 700, color: "#fff", marginTop: 48, lineHeight: 1.4 }}>Mulai perjalananmu sekarang!</p>
+          <p style={{ fontSize: "0.95rem", color: "#93C5FD", marginTop: 12, lineHeight: 1.7 }}>Bergabung dengan ribuan peserta CPNS yang sudah berlatih bersama kami.</p>
+          <div style={{ marginTop: 48, display: "flex", flexDirection: "column", gap: 16 }}>
+            {["Daftar gratis, tidak perlu kartu kredit", "Akses 3 subtest gratis langsung", "Hasil tryout & pembahasan lengkap"].map(f => (
+              <div key={f} style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <span style={{ width: 24, height: 24, borderRadius: "50%", background: "rgba(251,191,36,0.2)", color: "#fbbf24", fontSize: "0.75rem", fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>✓</span>
+                <span style={{ fontSize: "0.9rem", color: "#cbd5e1" }}>{f}</span>
+              </div>
+            ))}
           </div>
+        </div>
+      </div>
 
-          <form onSubmit={handleRegister} className="space-y-4" noValidate>
-            <Input
-              label="Email"
-              type="email"
-              placeholder="your@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              disabled={loading}
-            />
+      {/* Sisi kanan — form */}
+      <div style={{ width: "100%", maxWidth: 480, display: "flex", flexDirection: "column", justifyContent: "center", padding: "48px 32px", background: "#fff" }} className="lg:max-w-[480px]">
+        <div style={{ maxWidth: 380, margin: "0 auto", width: "100%" }}>
+          <Link href="/" style={{ display: "block", marginBottom: 32 }}>
+            <span style={{ fontSize: "1.5rem", fontWeight: 800, color: "#172554", letterSpacing: "-0.02em" }}>CPNS Path</span>
+          </Link>
 
-            <Input
-              label="Password"
-              type="password"
-              placeholder="Minimal 6 karakter"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              disabled={loading}
-            />
+          <h1 style={{ fontSize: "1.75rem", fontWeight: 700, color: "#0f172a", marginBottom: 6, letterSpacing: "-0.02em" }}>Buat akun gratis</h1>
+          <p style={{ fontSize: "0.9rem", color: "#64748b", marginBottom: 32 }}>Sudah punya akun? <Link href="/login" style={{ color: "#172554", fontWeight: 600, textDecoration: "none" }}>Masuk</Link></p>
 
-            <Input
-              label="Confirm Password"
-              type="password"
-              placeholder="Ulangi password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-              disabled={loading}
-            />
+          <form onSubmit={handleRegister} noValidate style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <div>
+              <label style={{ display: "block", fontSize: "0.85rem", fontWeight: 600, color: "#334155", marginBottom: 6 }}>Email</label>
+              <input
+                type="email"
+                placeholder="your@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
+                required
+                style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: "1.5px solid #e2e8f0", fontSize: "0.9rem", color: "#0f172a", outline: "none", transition: "border-color 0.15s", background: "#fff" }}
+                onFocus={e => e.target.style.borderColor = "#172554"}
+                onBlur={e => e.target.style.borderColor = "#e2e8f0"}
+              />
+            </div>
 
-            {/* Terms checkbox */}
-            <label className="flex items-start gap-3 cursor-pointer">
+            <div>
+              <label style={{ display: "block", fontSize: "0.85rem", fontWeight: 600, color: "#334155", marginBottom: 6 }}>Password</label>
+              <input
+                type="password"
+                placeholder="Minimal 6 karakter"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={loading}
+                required
+                style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: "1.5px solid #e2e8f0", fontSize: "0.9rem", color: "#0f172a", outline: "none", transition: "border-color 0.15s", background: "#fff" }}
+                onFocus={e => e.target.style.borderColor = "#172554"}
+                onBlur={e => e.target.style.borderColor = "#e2e8f0"}
+              />
+            </div>
+
+            <div>
+              <label style={{ display: "block", fontSize: "0.85rem", fontWeight: 600, color: "#334155", marginBottom: 6 }}>Konfirmasi Password</label>
+              <input
+                type="password"
+                placeholder="Ulangi password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                disabled={loading}
+                required
+                style={{ width: "100%", padding: "12px 14px", borderRadius: 10, border: "1.5px solid #e2e8f0", fontSize: "0.9rem", color: "#0f172a", outline: "none", transition: "border-color 0.15s", background: "#fff" }}
+                onFocus={e => e.target.style.borderColor = "#172554"}
+                onBlur={e => e.target.style.borderColor = "#e2e8f0"}
+              />
+            </div>
+
+            <label style={{ display: "flex", alignItems: "flex-start", gap: 10, cursor: "pointer" }}>
               <input
                 type="checkbox"
                 checked={terms}
                 onChange={(e) => setTerms(e.target.checked)}
-                className="mt-0.5 h-4 w-4 rounded border-[#CBD5E1] text-[#1E3A8A] accent-[#1E3A8A] flex-shrink-0"
+                style={{ marginTop: 2, width: 16, height: 16, accentColor: "#172554", flexShrink: 0 }}
               />
-              <span className="text-sm text-[#64748B]">
-                I agree to the{" "}
-                <span className="text-[#2563EB] hover:underline cursor-pointer">Terms of Service</span>
-                {" "}&amp;{" "}
-                <span className="text-[#2563EB] hover:underline cursor-pointer">Privacy Policy</span>
+              <span style={{ fontSize: "0.82rem", color: "#64748b", lineHeight: 1.5 }}>
+                Saya setuju dengan <span style={{ color: "#172554", fontWeight: 600, cursor: "pointer" }}>Syarat & Ketentuan</span> dan <span style={{ color: "#172554", fontWeight: 600, cursor: "pointer" }}>Kebijakan Privasi</span>
               </span>
             </label>
 
             {errorMsg && (
-              <p className="text-xs text-[#DC2626] bg-[#FEE2E2] border border-[#FECACA] rounded-md px-4 py-2.5" role="alert">
+              <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: 8, padding: "10px 14px", fontSize: "0.82rem", color: "#dc2626" }}>
                 {errorMsg}
-              </p>
+              </div>
             )}
 
             {successMsg && (
-              <p className="text-xs text-[#059669] bg-[#D1FAE5] border border-[#A7F3D0] rounded-md px-4 py-2.5" role="status">
+              <div style={{ background: "#f0fdf4", border: "1px solid #a7f3d0", borderRadius: 8, padding: "10px 14px", fontSize: "0.82rem", color: "#059669" }}>
                 {successMsg}
-              </p>
+              </div>
             )}
 
-            <Button type="submit" variant="primary" fullWidth loading={loading} className="mt-2">
-              Create Account
-            </Button>
+            <button
+              type="submit"
+              disabled={loading}
+              style={{ width: "100%", padding: "13px 20px", borderRadius: 10, border: "none", background: loading ? "#94a3b8" : "#fbbf24", color: loading ? "#fff" : "#78350f", fontSize: "0.9rem", fontWeight: 700, cursor: loading ? "not-allowed" : "pointer", transition: "background 0.15s", marginTop: 4 }}
+              onMouseEnter={e => { if (!loading) e.currentTarget.style.background = "#f59e0b" }}
+              onMouseLeave={e => { if (!loading) e.currentTarget.style.background = "#fbbf24" }}
+            >
+              {loading ? "Mendaftarkan..." : "Buat Akun Gratis"}
+            </button>
           </form>
 
-          <p className="text-center text-sm text-[#64748B] mt-6">
-            Already have an account?{" "}
-            <Link href="/login" className="font-semibold text-[#2563EB] hover:text-[#1D4ED8] transition-colors">
-              Sign in
-            </Link>
+          <p style={{ textAlign: "center", fontSize: "0.78rem", color: "#94a3b8", marginTop: 20 }}>
+            Sudah punya akun? <Link href="/login" style={{ color: "#172554", fontWeight: 600, textDecoration: "none" }}>Masuk sekarang</Link>
           </p>
-        </Card>
-
+        </div>
       </div>
     </div>
   )

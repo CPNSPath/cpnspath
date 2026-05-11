@@ -5,11 +5,6 @@ import { useEffect, useState, Suspense } from "react"
 import Link from "next/link"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
-import Section from "@/components/ui/Section"
-import Container from "@/components/ui/Container"
-import Card from "@/components/ui/Card"
-import Badge from "@/components/ui/Badge"
-import Button from "@/components/ui/Button"
 import { supabase } from "@/lib/supabase"
 
 const INFO = [
@@ -68,42 +63,56 @@ function TIUIntroContent() {
     <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
       <Navbar />
 
-      <section className="bg-[#172554] py-12 sm:py-16">
-        <Container>
-          <Link href={backHref} className="text-sm text-[#93C5FD] hover:text-white transition-colors mb-3 inline-block">
+      <section style={{ background: "#172554", padding: "56px 24px", position: "relative", overflow: "hidden", marginTop: "72px" }}>
+        <div style={{ position: "absolute", top: -80, right: -80, width: 260, height: 260, borderRadius: "50%", background: "rgba(255,255,255,0.04)" }} />
+        <div style={{ position: "absolute", bottom: -60, left: -60, width: 160, height: 160, borderRadius: "50%", background: "rgba(251,191,36,0.05)" }} />
+        <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
+          <Link href={backHref} style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "4px 14px", borderRadius: 999, background: "rgba(255,255,255,0.1)", color: "#93C5FD", fontSize: "0.75rem", fontWeight: 500, marginBottom: 12, cursor: "pointer", textDecoration: "none" }}>
             {backLabel}
           </Link>
-          <h1 className="heading-1 text-white mb-2">
-            {toId ? `TO SKD #${toId} — TIU` : "Tryout TIU"}
+          <h1 style={{ fontSize: "2rem", fontWeight: 700, color: "#fff", marginBottom: 8, letterSpacing: "-0.02em" }}>
+            {toId ? `TO SKD #${toId} — TIU` : "Free Trial TIU"}
           </h1>
-          <p className="body-base text-[#93C5FD]">Tes Intelegensi Umum</p>
-        </Container>
+          <p style={{ fontSize: "0.95rem", color: "#93C5FD", lineHeight: 1.6 }}>Tes Intelegensi Umum</p>
+        </div>
       </section>
 
-      <Section variant="default" className="flex-1 flex items-center">
-        <Container>
-          <div className="max-w-lg mx-auto">
-            <Card variant="elevated" className="p-8">
-              <Badge variant={toId ? "accent" : "primary"} className="mb-6">
-                {toId ? `Paket SKD — TO #${toId}` : "Free Trial"}
-              </Badge>
+      <section style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "48px 24px" }}>
+        <div style={{ width: "100%", maxWidth: 420 }}>
+          <div style={{ background: "#fff", borderRadius: 20, overflow: "hidden", border: "1px solid #e2e8f0", boxShadow: "0 4px 6px rgba(0,0,0,0.05)" }}>
+            <div style={{ background: "#0f1d3a", padding: "24px 20px 20px", textAlign: "center" }}>
+              <span style={{ fontSize: "2.5rem", display: "block", marginBottom: 6 }}>🧠</span>
+              <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "#fff" }}>TIU</h2>
+              <p style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.6)", marginTop: 4 }}>Tes Intelegensi Umum</p>
+            </div>
 
-              <div className="grid grid-cols-2 gap-4 mb-8">
+            <div style={{ padding: "20px 24px 10px" }}>
+              <span style={{ display: "inline-block", padding: "4px 14px", borderRadius: 999, background: toId ? "rgba(251,191,36,0.15)" : "rgba(34,197,94,0.12)", color: toId ? "#d97706" : "#16a34a", fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 16 }}>
+                {toId ? `Paket SKD — TO #${toId}` : "Free Trial"}
+              </span>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 8 }}>
                 {INFO.map((item) => (
-                  <div key={item.label} className="bg-[#F8FAFC] rounded-lg p-4 text-center">
-                    <p className="text-xs text-[#64748B] mb-1">{item.label}</p>
-                    <p className="text-base font-bold text-[#0F172A]">{item.value}</p>
+                  <div key={item.label} style={{ background: "#F8FAFC", borderRadius: 10, padding: "12px 16px", textAlign: "center" }}>
+                    <p style={{ fontSize: "0.72rem", color: "#64748b", marginBottom: 4 }}>{item.label}</p>
+                    <p style={{ fontSize: "0.95rem", fontWeight: 700, color: "#0f172a" }}>{item.value}</p>
                   </div>
                 ))}
               </div>
+            </div>
 
-              <Button variant="primary" fullWidth onClick={() => router.push(examHref)}>
+            <div style={{ padding: "8px 24px 24px" }}>
+              <button
+                onClick={() => router.push(examHref)}
+                style={{ display: "block", width: "100%", padding: "13px 20px", borderRadius: 12, fontSize: "0.9rem", fontWeight: 600, textAlign: "center", cursor: "pointer", border: "none", background: "#fbbf24", color: "#78350f", transition: "background 0.2s, transform 0.2s" }}
+                onMouseEnter={e => { e.currentTarget.style.background = "#f59e0b"; e.currentTarget.style.transform = "translateY(-1px)" }}
+                onMouseLeave={e => { e.currentTarget.style.background = "#fbbf24"; e.currentTarget.style.transform = "translateY(0)" }}
+              >
                 Mulai Tryout
-              </Button>
-            </Card>
+              </button>
+            </div>
           </div>
-        </Container>
-      </Section>
+        </div>
+      </section>
 
       <Footer />
     </div>

@@ -102,9 +102,11 @@ export default function Home() {
                 dengan ribuan soal terverifikasi
               </p>
 
-              <button className="inline-flex items-center justify-center bg-[#ffc107] hover:bg-[#e0a800] text-[#212529] text-base tracking-wide min-w-[200px] h-11 py-5 rounded-full transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl">
-                Explore Our Tryouts
-              </button>
+              <Link href="/tryout/free-trial">
+                <button className="inline-flex items-center justify-center bg-[#ffc107] hover:bg-[#e0a800] text-[#212529] text-base tracking-wide min-w-[200px] h-11 py-5 rounded-full transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl">
+                  Explore Our Tryouts
+                </button>
+              </Link>
 
             </div>
           </div>
