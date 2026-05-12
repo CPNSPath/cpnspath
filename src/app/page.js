@@ -192,6 +192,18 @@ export default function Home() {
         </div>
       </div>
 
+      <div style={{ background: "white", padding: "16px 0", display: "flex", alignItems: "center", justifyContent: "center", gap: 6, position: "relative", zIndex: 10 }}>
+        <div style={{ flex: 1, height: 1, background: "linear-gradient(to right, transparent, #e2e8f0)" }} />
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <div style={{ width: 4, height: 4, borderRadius: "50%", background: "#e2e8f0" }} />
+          <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#cbd5e1" }} />
+          <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#172554", opacity: 0.2 }} />
+          <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#cbd5e1" }} />
+          <div style={{ width: 4, height: 4, borderRadius: "50%", background: "#e2e8f0" }} />
+        </div>
+        <div style={{ flex: 1, height: 1, background: "linear-gradient(to left, transparent, #e2e8f0)" }} />
+      </div>
+
       {/* ===== HALAMAN 2 ===== */}
       <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", position: "relative", overflow: "hidden" }}>
 
