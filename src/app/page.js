@@ -65,7 +65,7 @@ export default function Home() {
         <div style={{ position: "absolute", bottom: -60, left: "35%", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(251,191,36,0.1) 0%, transparent 70%)" }} />
         <div style={{ position: "absolute", top: 80, left: -40, width: 220, height: 220, borderRadius: "50%", background: "radial-gradient(circle, rgba(16,185,129,0.06) 0%, transparent 70%)" }} />
 
-        <Navbar transparent />
+        <Navbar />
 
         {/* Hero content */}
         <div style={{ position: "relative", zIndex: 1, flex: 1, padding: "80px 48px 0", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 32 }}>
