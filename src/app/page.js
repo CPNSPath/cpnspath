@@ -59,19 +59,19 @@ export default function Home() {
         <div style={{ position: "relative", zIndex: 1, flex: 1, display: "flex", alignItems: "stretch" }}>
 
           {/* LEFT */}
-          <div style={{ width: "42%", padding: "24px 32px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <div style={{ width: "50%", padding: "40px 48px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: 999, padding: "4px 12px", marginBottom: 14, width: "fit-content" }}>
               <div style={{ width: 5, height: 5, borderRadius: "50%", background: "#3b82f6" }} />
               <span style={{ fontSize: 10, fontWeight: 600, color: "#1d4ed8" }}>Persiapan CPNS Terpercaya</span>
             </div>
 
-            <h1 style={{ fontSize: "clamp(1.6rem, 2.8vw, 2.2rem)", fontWeight: 800, color: "#0f172a", lineHeight: 1.2, margin: "0 0 12px", letterSpacing: "-0.025em" }}>
+            <h1 style={{ fontSize: "clamp(2rem, 3.2vw, 2.8rem)", fontWeight: 800, color: "#0f172a", lineHeight: 1.2, margin: "0 0 16px", letterSpacing: "-0.025em" }}>
               Raih Karir Impianmu<br />
               sebagai <span style={{ color: "#172554", borderBottom: "3px solid #fbbf24", paddingBottom: 1 }}>ASN</span> dengan<br />
               Persiapan Terbaik
             </h1>
 
-            <p style={{ fontSize: 12, color: "#64748b", margin: "0 0 4px", lineHeight: 1.7, maxWidth: 300 }}>Tryout SKD & SKB terstruktur, soal terverifikasi, analisis hasil mendalam.</p>
+            <p style={{ fontSize: 14, color: "#64748b", margin: "0 0 8px", lineHeight: 1.7, maxWidth: 300 }}>Tryout SKD & SKB terstruktur, soal terverifikasi, analisis hasil mendalam.</p>
             <p style={{ fontSize: 10, color: "#94a3b8", margin: "0 0 16px", fontStyle: "italic" }}>"Perjalanan seribu langkah dimulai dari satu latihan."</p>
 
             <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
@@ -99,7 +99,7 @@ export default function Home() {
           </div>
 
           {/* DIVIDER */}
-          <div style={{ width: 1, background: "linear-gradient(to bottom, transparent, #e2e8f0 20%, #e2e8f0 80%, transparent)", margin: "20px 0", flexShrink: 0, position: "relative" }}>
+          <div style={{ width: 1, background: "linear-gradient(to bottom, transparent, #e2e8f0 20%, #e2e8f0 80%, transparent)", margin: "0", flexShrink: 0, position: "relative" }}>
             <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 28, height: 28, borderRadius: "50%", background: "white", border: "1px solid #e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 6px rgba(0,0,0,0.06)" }}>
               <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
                 <path d="M8 2v12M2 8h12" stroke="#cbd5e1" strokeWidth="1.5" strokeLinecap="round"/>
@@ -108,7 +108,7 @@ export default function Home() {
           </div>
 
           {/* RIGHT */}
-          <div style={{ flex: 1, padding: "20px 28px 20px 24px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 8 }}>
+          <div style={{ flex: 1, padding: "40px 48px 40px 32px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 8 }}>
 
             {/* Feature pills */}
             <div style={{ display: "flex", gap: 6, marginBottom: 4, flexWrap: "wrap" }}>
