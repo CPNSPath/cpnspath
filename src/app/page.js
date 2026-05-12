@@ -108,7 +108,7 @@ export default function Home() {
           </div>
 
           {/* RIGHT */}
-<div style={{ flex: 1, padding: "40px 32px 28px 24px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 10 }}>
+<div style={{ flex: 1, padding: "40px 32px 32px 24px", display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 10 }}>
 
   {/* Header */}
   <div style={{ textAlign: "center" }}>
