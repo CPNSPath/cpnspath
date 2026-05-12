@@ -60,19 +60,22 @@ export default function Home() {
 
           {/* LEFT */}
           <div style={{ width: "50%", padding: "40px 48px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: 999, padding: "4px 12px", marginBottom: 14, width: "fit-content" }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: 999, padding: "4px 12px", marginBottom: 16, width: "fit-content" }}>
               <div style={{ width: 5, height: 5, borderRadius: "50%", background: "#3b82f6" }} />
               <span style={{ fontSize: 10, fontWeight: 600, color: "#1d4ed8" }}>Persiapan CPNS Terpercaya</span>
             </div>
 
-            <h1 style={{ fontSize: "clamp(2rem, 3.2vw, 2.8rem)", fontWeight: 800, color: "#0f172a", lineHeight: 1.2, margin: "0 0 16px", letterSpacing: "-0.025em" }}>
-              Raih Karir Impianmu<br />
-              sebagai <span style={{ color: "#172554", borderBottom: "3px solid #fbbf24", paddingBottom: 1 }}>ASN</span> dengan<br />
-              Persiapan Terbaik
+            <h1 style={{ fontSize: "clamp(2.4rem, 3.8vw, 3.4rem)", fontWeight: 800, color: "#0f172a", lineHeight: 1.15, margin: "0 0 16px", letterSpacing: "-0.04em" }}>
+              Raih Karir<br />
+              Impianmu<br />
+              sebagai <span style={{ color: "#172554", borderBottom: "3px solid #fbbf24", paddingBottom: 2 }}>ASN</span><br />
+              dengan<br />
+              Persiapan<br />
+              Terbaik
             </h1>
 
             <p style={{ fontSize: 14, color: "#64748b", margin: "0 0 8px", lineHeight: 1.7, maxWidth: 300 }}>Tryout SKD & SKB terstruktur, soal terverifikasi, analisis hasil mendalam.</p>
-            <p style={{ fontSize: 10, color: "#94a3b8", margin: "0 0 16px", fontStyle: "italic" }}>"Perjalanan seribu langkah dimulai dari satu latihan."</p>
+            <p style={{ fontSize: 10, color: "#94a3b8", margin: "0 0 20px", fontStyle: "italic" }}>"Perjalanan seribu langkah dimulai dari satu latihan."</p>
 
             <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
               <Link href="/tryout/free-trial" style={{ background: "#172554", color: "white", padding: "10px 18px", borderRadius: 8, fontSize: 12, fontWeight: 700, textDecoration: "none", boxShadow: "0 4px 12px rgba(23,37,84,0.2)" }}>Mulai Free Trial →</Link>
