@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { supabase } from "@/lib/supabase"
 import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
 
 export default function Home() {
   const router = useRouter()
@@ -26,6 +25,18 @@ export default function Home() {
   if (checking) {
     return <div style={{ minHeight: "100vh", background: "#fff" }} />
   }
+
+  const NavLogo = () => (
+    <svg width="120" height="32" viewBox="0 0 140 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="36" height="36" rx="8" fill="#172554"/>
+      <rect x="8" y="9" width="9" height="18" rx="2" fill="#fbbf24"/>
+      <rect x="19" y="9" width="9" height="18" rx="2" fill="white" opacity="0.9"/>
+      <line x1="18" y1="9" x2="18" y2="27" stroke="#172554" strokeWidth="1.5"/>
+      <polyline points="21,17 23,20 28,14" fill="none" stroke="#fbbf24" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+      <text x="44" y="16" fontFamily="system-ui, sans-serif" fontSize="13" fontWeight="700" fill="#172554" letterSpacing="1.5">CPNS</text>
+      <text x="44" y="29" fontFamily="system-ui, sans-serif" fontSize="9" fontWeight="400" fill="#172554" letterSpacing="4">PATH</text>
+    </svg>
+  )
 
   return (
     <div style={{ fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
@@ -54,19 +65,19 @@ export default function Home() {
         <div style={{ position: "absolute", bottom: -60, left: "35%", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(251,191,36,0.1) 0%, transparent 70%)" }} />
         <div style={{ position: "absolute", top: 80, left: -40, width: 220, height: 220, borderRadius: "50%", background: "radial-gradient(circle, rgba(16,185,129,0.06) 0%, transparent 70%)" }} />
 
-        <Navbar />
+        <Navbar transparent />
 
         {/* Hero content */}
         <div style={{ position: "relative", zIndex: 1, flex: 1, padding: "80px 48px 0", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 32 }}>
 
           {/* Left */}
-          <div style={{ flex: 1, maxWidth: 580 }}>
+          <div style={{ flex: 1, maxWidth: 500 }}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: 999, padding: "5px 16px", marginBottom: 22 }}>
               <div style={{ width: 5, height: 5, borderRadius: "50%", background: "#3b82f6" }} />
               <span style={{ fontSize: 11, fontWeight: 600, color: "#1d4ed8", letterSpacing: "0.05em" }}>Persiapan CPNS Terpercaya</span>
             </div>
 
-            <h1 style={{ fontSize: "clamp(2.2rem, 4vw, 3.2rem)", fontWeight: 800, color: "#0f172a", lineHeight: 1.15, margin: "0 0 16px", letterSpacing: "-0.025em" }}>
+            <h1 style={{ fontSize: "clamp(2rem, 3.5vw, 2.8rem)", fontWeight: 800, color: "#0f172a", lineHeight: 1.15, margin: "0 0 16px", letterSpacing: "-0.025em" }}>
               Raih Karir Impianmu<br />
               sebagai{" "}
               <span style={{ color: "#172554", borderBottom: "3px solid #fbbf24", paddingBottom: 2 }}>ASN</span>
@@ -104,65 +115,65 @@ export default function Home() {
           </div>
 
           {/* Right cards */}
-          <div style={{ flexShrink: 0, width: 420, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+          <div style={{ flexShrink: 0, width: 340, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
 
             {/* SKD */}
-            <div style={{ background: "white", border: "2px solid #e0e7ff", borderRadius: 16, padding: 20, boxShadow: "0 4px 16px rgba(99,102,241,0.1)" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 14 }}>
-                <span style={{ fontSize: 16 }}>📋</span>
-                <span style={{ fontSize: 10, fontWeight: 700, color: "#6366f1", textTransform: "uppercase", letterSpacing: "0.12em" }}>Passing Grade SKD</span>
+            <div style={{ background: "white", border: "1px solid #e0e7ff", borderRadius: 14, padding: 16, boxShadow: "0 2px 8px rgba(99,102,241,0.08)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 12 }}>
+                <span style={{ fontSize: 14 }}>📋</span>
+                <span style={{ fontSize: 9, fontWeight: 700, color: "#6366f1", textTransform: "uppercase", letterSpacing: "0.12em" }}>Passing Grade SKD</span>
               </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {[{ label: "TWK", val: "≥ 65", color: "#3b82f6" }, { label: "TIU", val: "≥ 80", color: "#8b5cf6" }, { label: "TKP", val: "≥ 166", color: "#22c55e" }].map((item, i) => (
                   <div key={item.label}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                        <div style={{ width: 8, height: 8, borderRadius: "50%", background: item.color }} />
-                        <span style={{ fontSize: 13, color: "#64748b", fontWeight: 500 }}>{item.label}</span>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                        <div style={{ width: 7, height: 7, borderRadius: "50%", background: item.color }} />
+                        <span style={{ fontSize: 12, color: "#64748b", fontWeight: 500 }}>{item.label}</span>
                       </div>
-                      <span style={{ fontSize: 16, fontWeight: 800, color: "#172554" }}>{item.val}</span>
+                      <span style={{ fontSize: 14, fontWeight: 800, color: "#172554" }}>{item.val}</span>
                     </div>
-                    {i < 2 && <div style={{ height: 1, background: "#f1f5f9", marginTop: 10 }} />}
+                    {i < 2 && <div style={{ height: 1, background: "#f1f5f9", marginTop: 8 }} />}
                   </div>
                 ))}
               </div>
             </div>
 
             {/* SKB */}
-            <div style={{ background: "white", border: "2px solid #ede9fe", borderRadius: 16, padding: 20, boxShadow: "0 4px 16px rgba(124,58,237,0.08)" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 14 }}>
-                <span style={{ fontSize: 16 }}>🎯</span>
-                <span style={{ fontSize: 10, fontWeight: 700, color: "#7c3aed", textTransform: "uppercase", letterSpacing: "0.12em" }}>Paket SKB</span>
+            <div style={{ background: "white", border: "1px solid #ede9fe", borderRadius: 14, padding: 16, boxShadow: "0 2px 8px rgba(124,58,237,0.06)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10 }}>
+                <span style={{ fontSize: 14 }}>🎯</span>
+                <span style={{ fontSize: 9, fontWeight: 700, color: "#7c3aed", textTransform: "uppercase", letterSpacing: "0.12em" }}>Paket SKB</span>
               </div>
-              <p style={{ fontSize: 12, color: "#64748b", margin: "0 0 12px", lineHeight: 1.6 }}>Sesuai formasi & bidang jabatan yang kamu pilih</p>
-              <div style={{ background: "#f5f3ff", border: "1px solid #ede9fe", borderRadius: 8, padding: "8px 12px", textAlign: "center", marginBottom: 8 }}>
-                <span style={{ fontSize: 14, fontWeight: 800, color: "#7c3aed" }}>100 Tryout</span>
+              <p style={{ fontSize: 11, color: "#64748b", margin: "0 0 10px", lineHeight: 1.5 }}>Sesuai formasi & bidang jabatan</p>
+              <div style={{ background: "#f5f3ff", border: "1px solid #ede9fe", borderRadius: 7, padding: "7px 10px", textAlign: "center", marginBottom: 7 }}>
+                <span style={{ fontSize: 13, fontWeight: 800, color: "#7c3aed" }}>100 Tryout</span>
               </div>
-              <div style={{ background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 8, padding: "8px 12px", textAlign: "center" }}>
-                <span style={{ fontSize: 13, fontWeight: 700, color: "#b45309" }}>Rp 15.000 / TO</span>
+              <div style={{ background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 7, padding: "7px 10px", textAlign: "center" }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#b45309" }}>Rp 15.000 / TO</span>
               </div>
             </div>
 
             {/* Free trial full width */}
-            <div style={{ gridColumn: "span 2", background: "#172554", borderRadius: 16, padding: "18px 22px", display: "flex", alignItems: "center", justifyContent: "space-between", border: "2px solid #1e3a8a" }}>
+            <div style={{ gridColumn: "span 2", background: "#172554", borderRadius: 14, padding: "14px 18px", display: "flex", alignItems: "center", justifyContent: "space-between", border: "1px solid #1e3a8a" }}>
               <div>
-                <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>🎯 Free Trial SKD</div>
-                <div style={{ fontSize: 18, fontWeight: 800, color: "#fbbf24", letterSpacing: "0.05em" }}>TWK · TIU · TKP</div>
-                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 4 }}>Gratis, tanpa kartu kredit</div>
+                <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>🎯 Free Trial SKD</div>
+                <div style={{ fontSize: 16, fontWeight: 800, color: "#fbbf24", letterSpacing: "0.05em" }}>TWK · TIU · TKP</div>
+                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginTop: 3 }}>Gratis, tanpa kartu kredit</div>
               </div>
-              <Link href="/tryout/free-trial" style={{ background: "#fbbf24", color: "#78350f", padding: "10px 20px", borderRadius: 10, fontSize: 13, fontWeight: 700, textDecoration: "none", flexShrink: 0 }}>Coba Sekarang →</Link>
+              <Link href="/tryout/free-trial" style={{ background: "#fbbf24", color: "#78350f", padding: "9px 16px", borderRadius: 9, fontSize: 12, fontWeight: 700, textDecoration: "none", flexShrink: 0 }}>Coba Sekarang →</Link>
             </div>
 
             {/* Ebook full width */}
-            <div style={{ gridColumn: "span 2", background: "#f0fdf4", border: "2px solid #bbf7d0", borderRadius: 16, padding: "16px 22px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 14, minWidth: 0 }}>
-                <span style={{ fontSize: 28, flexShrink: 0 }}>📚</span>
+            <div style={{ gridColumn: "span 2", background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 14, padding: "13px 18px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 0 }}>
+                <span style={{ fontSize: 22, flexShrink: 0 }}>📚</span>
                 <div style={{ minWidth: 0 }}>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: "#166534", marginBottom: 3 }}>Ebook Panduan SKD & SKB</div>
-                  <div style={{ fontSize: 12, color: "#16a34a" }}>Download gratis sekarang</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: "#166534", marginBottom: 2 }}>Ebook Panduan SKD & SKB</div>
+                  <div style={{ fontSize: 11, color: "#16a34a" }}>Download gratis sekarang</div>
                 </div>
               </div>
-              <Link href="/ebook" style={{ background: "#22c55e", color: "white", padding: "10px 18px", borderRadius: 10, fontSize: 12, fontWeight: 700, textDecoration: "none", flexShrink: 0, whiteSpace: "nowrap" }}>↓ Download</Link>
+              <Link href="/ebook" style={{ background: "#22c55e", color: "white", padding: "9px 14px", borderRadius: 9, fontSize: 11, fontWeight: 700, textDecoration: "none", flexShrink: 0, whiteSpace: "nowrap" }}>↓ Download</Link>
             </div>
 
           </div>
