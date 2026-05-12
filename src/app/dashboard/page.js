@@ -21,6 +21,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true)
   const [userTryouts, setUserTryouts] = useState([])
   const [settingOpen, setSettingOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const settingRef = useRef(null)
 
   useEffect(() => {
@@ -86,7 +87,7 @@ export default function Dashboard() {
     <div style={{ minHeight: "100vh", background: "#F8FAFC", display: "flex" }}>
 
       {/* Sidebar */}
-      <aside style={{ width: 240, flexShrink: 0, background: "#fff", borderRight: "1px solid #e2e8f0", display: "flex", flexDirection: "column", position: "fixed", top: 0, left: 0, height: "100vh", zIndex: 40 }} className="hidden lg:flex">
+      <aside style={{ width: 240, flexShrink: 0, background: "#fff", borderRight: "1px solid #e2e8f0", display: "flex", flexDirection: "column", position: "fixed", top: 0, left: 0, height: "100vh", zIndex: 40 }} className="hidden lg:flex dashboard-sidebar">
         <div style={{ padding: "0 20px", height: 64, display: "flex", alignItems: "center", borderBottom: "1px solid #e2e8f0" }}>
           <Link href="/" style={{ textDecoration: "none" }}>
             <svg width="120" height="32" viewBox="0 0 140 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -147,7 +148,12 @@ export default function Dashboard() {
 
         {/* Mobile header */}
         <header style={{ background: "#fff", borderBottom: "1px solid #e2e8f0", height: 56, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 16px", position: "sticky", top: 0, zIndex: 30 }} className="lg:hidden">
-          <span style={{ fontSize: "1rem", fontWeight: 800, color: "#172554" }}>CPNS Path</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <button onClick={() => setSidebarOpen(true)} style={{ background: "none", border: "none", cursor: "pointer", padding: 4, display: "flex", alignItems: "center" }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 6H21M3 12H21M3 18H21" stroke="#172554" strokeWidth="2" strokeLinecap="round"/></svg>
+            </button>
+            <span style={{ fontSize: "1rem", fontWeight: 800, color: "#172554" }}>CPNS Path</span>
+          </div>
           <div style={{ position: "relative" }} ref={settingRef}>
             <button
               onClick={() => setSettingOpen(v => !v)}
@@ -195,6 +201,64 @@ export default function Dashboard() {
             )}
           </div>
         </header>
+
+        {sidebarOpen && (
+          <>
+            <div onClick={() => setSidebarOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.4)", zIndex: 45 }} />
+            <aside style={{ position: "fixed", top: 0, left: 0, height: "100vh", width: 260, background: "#fff", borderRight: "1px solid #e2e8f0", display: "flex", flexDirection: "column", zIndex: 50, overflowY: "auto" }}>
+              <div style={{ padding: "0 20px", height: 64, display: "flex", alignItems: "center", borderBottom: "1px solid #e2e8f0" }}>
+                <Link href="/" style={{ textDecoration: "none" }}>
+                  <svg width="120" height="32" viewBox="0 0 140 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="36" height="36" rx="8" fill="#172554"/>
+                    <rect x="8" y="9" width="9" height="18" rx="2" fill="#fbbf24"/>
+                    <rect x="19" y="9" width="9" height="18" rx="2" fill="white" opacity="0.9"/>
+                    <line x1="18" y1="9" x2="18" y2="27" stroke="#172554" strokeWidth="1.5"/>
+                    <polyline points="21,17 23,20 28,14" fill="none" stroke="#fbbf24" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    <text x="44" y="16" fontFamily="system-ui, sans-serif" fontSize="13" fontWeight="700" fill="#172554" letterSpacing="1.5">CPNS</text>
+                    <text x="44" y="29" fontFamily="system-ui, sans-serif" fontSize="9" fontWeight="400" fill="#fbbf24" letterSpacing="4">PATH</text>
+                  </svg>
+                </Link>
+              </div>
+              {user && (
+                <div style={{ padding: "16px 20px", borderBottom: "1px solid #e2e8f0", display: "flex", alignItems: "center", gap: 10 }}>
+                  <div style={{ width: 38, height: 38, borderRadius: "50%", background: "#fbbf24", color: "#78350f", fontWeight: 800, fontSize: "1rem", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    {getInitial(user)}
+                  </div>
+                  <div style={{ minWidth: 0 }}>
+                    <p style={{ fontSize: "0.875rem", fontWeight: 700, color: "#0f172a", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user.user_metadata?.name || user.email?.split("@")[0]}</p>
+                    <p style={{ fontSize: "0.72rem", color: "#94a3b8", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{user.email}</p>
+                  </div>
+                </div>
+              )}
+              <nav style={{ flex: 1, padding: "12px 12px", overflowY: "auto" }}>
+                {[
+                  { icon: "▦", label: "Overview", href: "/dashboard", active: true },
+                  { icon: "📝", label: "Free Trial", href: "/tryout/free-trial", active: false },
+                  { icon: "📦", label: "Paket TO", href: "/price", active: false },
+                  { icon: "📚", label: "Ebook", href: "/ebook", active: false },
+                  { icon: "🏆", label: "Leaderboard", href: "/leaderboard/global", active: false },
+                ].map((link) => (
+                  <Link key={link.label} href={link.href} onClick={() => setSidebarOpen(false)} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 8, marginBottom: 2, textDecoration: "none", background: link.active ? "#eff6ff" : "transparent", borderLeft: link.active ? "3px solid #172554" : "3px solid transparent", transition: "all 0.15s" }}
+                    onMouseEnter={e => { if (!link.active) e.currentTarget.style.background = "#f8fafc" }}
+                    onMouseLeave={e => { if (!link.active) e.currentTarget.style.background = "transparent" }}
+                  >
+                    <span style={{ fontSize: "0.85rem" }}>{link.icon}</span>
+                    <span style={{ fontSize: "0.875rem", fontWeight: link.active ? 600 : 400, color: link.active ? "#172554" : "#475569" }}>{link.label}</span>
+                  </Link>
+                ))}
+              </nav>
+              <div style={{ padding: "12px", borderTop: "1px solid #e2e8f0" }}>
+                <button onClick={logout} style={{ display: "flex", alignItems: "center", gap: 10, width: "100%", padding: "10px 12px", borderRadius: 8, border: "none", background: "none", cursor: "pointer", transition: "background 0.15s" }}
+                  onMouseEnter={e => e.currentTarget.style.background = "#fef2f2"}
+                  onMouseLeave={e => e.currentTarget.style.background = "none"}
+                >
+                  <span style={{ fontSize: "0.85rem" }}>🚪</span>
+                  <span style={{ fontSize: "0.875rem", fontWeight: 500, color: "#dc2626" }}>Logout</span>
+                </button>
+              </div>
+            </aside>
+          </>
+        )}
 
         <main className="dashboard-content" style={{ padding: "32px 32px" }}>
 
@@ -354,6 +418,7 @@ export default function Dashboard() {
       </div>
       <style>{`
         @media (max-width: 1024px) {
+          .dashboard-sidebar { display: none !important; }
           .dashboard-main { margin-left: 0 !important; }
           .dashboard-content { padding: 16px !important; }
         }
