@@ -100,6 +100,19 @@ export default function Home() {
                 </div>
               ))}
             </div>
+
+            <div style={{ display: "flex", gap: 0, border: "1px solid #e2e8f0", borderRadius: 12, overflow: "hidden", background: "white", width: "fit-content", marginTop: 20 }}>
+              {[
+                { val: "100", label: "Paket TO", color: "#172554" },
+                { val: "SKD+SKB", label: "Tersedia", color: "#6366f1" },
+                { val: "Free", label: "Trial", color: "#22c55e" },
+              ].map((s, i) => (
+                <div key={s.label} style={{ padding: "10px 20px", textAlign: "center", borderRight: i < 2 ? "1px solid #e2e8f0" : "none" }}>
+                  <div style={{ fontSize: 18, fontWeight: 800, color: s.color, lineHeight: 1 }}>{s.val}</div>
+                  <div style={{ fontSize: 10, color: "#94a3b8", marginTop: 3 }}>{s.label}</div>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Right cards */}
