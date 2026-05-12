@@ -213,67 +213,117 @@ export default function Home() {
       </div>
 
       {/* ===== HALAMAN 2 ===== */}
-      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", position: "relative", overflow: "hidden" }}>
+<div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", position: "relative", overflow: "hidden" }}>
 
-        <div style={{ position: "absolute", inset: 0, background: "#fafbff" }} />
-        <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice">
-          <defs>
-            <pattern id="dots2" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
-              <circle cx="2" cy="2" r="1.2" fill="#6366f1" opacity="0.07" />
-            </pattern>
-          </defs>
-          <rect width="800" height="450" fill="url(#dots2)" />
-        </svg>
-        <div style={{ position: "absolute", top: -60, right: -60, width: 280, height: 280, borderRadius: "50%", background: "radial-gradient(circle, rgba(251,191,36,0.08) 0%, transparent 70%)" }} />
-        <div style={{ position: "absolute", bottom: -40, left: -40, width: 240, height: 240, borderRadius: "50%", background: "radial-gradient(circle, rgba(99,102,241,0.07) 0%, transparent 70%)" }} />
+  <div style={{ position: "absolute", inset: 0, background: "#fafbff" }} />
+  <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }} viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <pattern id="dots2" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+        <circle cx="2" cy="2" r="1.2" fill="#6366f1" opacity="0.07" />
+      </pattern>
+    </defs>
+    <rect width="800" height="450" fill="url(#dots2)" />
+  </svg>
+  <div style={{ position: "absolute", top: -80, right: -60, width: 340, height: 340, borderRadius: "50%", background: "radial-gradient(circle, rgba(251,191,36,0.09) 0%, transparent 70%)" }} />
+  <div style={{ position: "absolute", bottom: -60, left: -40, width: 280, height: 280, borderRadius: "50%", background: "radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%)" }} />
+  <div style={{ position: "absolute", top: "40%", right: "20%", width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle, rgba(34,197,94,0.05) 0%, transparent 70%)" }} />
 
-        {/* Content halaman 2 */}
-        <div style={{ position: "relative", zIndex: 1, flex: 1, padding: "80px 48px 0", display: "flex", flexDirection: "column", justifyContent: "center", gap: 28 }}>
+  <div style={{ position: "relative", zIndex: 1, flex: 1, padding: "64px 48px 56px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 20 }}>
 
-          <div style={{ textAlign: "center" }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "white", border: "1px solid #e0e7ff", borderRadius: 999, padding: "4px 14px", marginBottom: 10, boxShadow: "0 2px 6px rgba(99,102,241,0.08)" }}>
-              <span style={{ fontSize: 11, fontWeight: 600, color: "#6366f1" }}>Kenapa CPNS Path?</span>
-            </div>
-            <h2 style={{ fontSize: "clamp(1.4rem, 2.5vw, 1.8rem)", fontWeight: 800, color: "#0f172a", margin: 0, letterSpacing: "-0.02em" }}>
-              Platform Terlengkap untuk Lolos CPNS
-            </h2>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
-            {[
-              { icon: "📝", title: "100 Paket TO", desc: "SKD & SKB lengkap per tryout", border: "#e0e7ff", bg: "#eff6ff", shadow: "rgba(99,102,241,0.06)" },
-              { icon: "⚡", title: "Analisis Instan", desc: "Hasil langsung setelah ujian", border: "#fde68a", bg: "#fffbeb", shadow: "rgba(251,191,36,0.06)" },
-              { icon: "🏆", title: "Leaderboard", desc: "Ranking nasional real-time", border: "#bbf7d0", bg: "#f0fdf4", shadow: "rgba(34,197,94,0.06)" },
-              { icon: "📚", title: "Ebook Gratis", desc: "Panduan SKD & SKB lengkap", border: "#e9d5ff", bg: "#faf5ff", shadow: "rgba(124,58,237,0.06)" },
-            ].map(item => (
-              <div key={item.title} style={{ background: "white", border: `1px solid ${item.border}`, borderRadius: 14, padding: "20px 18px", textAlign: "center", boxShadow: `0 2px 10px ${item.shadow}` }}>
-                <div style={{ width: 44, height: 44, borderRadius: 12, background: item.bg, margin: "0 auto 12px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>{item.icon}</div>
-                <div style={{ fontSize: 14, fontWeight: 700, color: "#0f172a", marginBottom: 6 }}>{item.title}</div>
-                <div style={{ fontSize: 12, color: "#94a3b8", lineHeight: 1.5 }}>{item.desc}</div>
-              </div>
-            ))}
-          </div>
-
-          <div style={{ background: "#172554", borderRadius: 16, padding: "22px 36px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "relative", overflow: "hidden" }}>
-            <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.06 }} viewBox="0 0 600 80" preserveAspectRatio="xMidYMid slice">
-              <defs><pattern id="dotsb" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="white" /></pattern></defs>
-              <rect width="600" height="80" fill="url(#dotsb)" />
-            </svg>
-            <div style={{ position: "relative", zIndex: 1 }}>
-              <div style={{ fontSize: 18, fontWeight: 800, color: "white", marginBottom: 4 }}>Siap mulai perjalananmu?</div>
-              <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)" }}>Daftar gratis dan coba free trial sekarang — tidak perlu kartu kredit</div>
-            </div>
-            <div style={{ display: "flex", gap: 12, position: "relative", zIndex: 1 }}>
-              <Link href="/register" style={{ background: "#fbbf24", color: "#78350f", padding: "12px 24px", borderRadius: 9, fontSize: 13, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap" }}>Mulai Free Trial →</Link>
-              <Link href="/price" style={{ background: "rgba(255,255,255,0.08)", color: "rgba(255,255,255,0.7)", padding: "12px 24px", borderRadius: 9, fontSize: 13, fontWeight: 500, border: "1px solid rgba(255,255,255,0.12)", textDecoration: "none", whiteSpace: "nowrap" }}>Lihat Pricing</Link>
-            </div>
-          </div>
-
-        </div>
-        {/* END Content halaman 2 */}
-
+    {/* Header */}
+    <div style={{ textAlign: "center", marginBottom: 8 }}>
+      <div style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "white", border: "1px solid #e0e7ff", borderRadius: 999, padding: "5px 16px", marginBottom: 14, boxShadow: "0 2px 8px rgba(99,102,241,0.08)" }}>
+        <span style={{ fontSize: 12, fontWeight: 600, color: "#6366f1" }}>✦ Kenapa CPNS Path?</span>
       </div>
-      {/* END HALAMAN 2 */}
+      <h2 style={{ fontSize: "clamp(1.6rem, 2.8vw, 2.2rem)", fontWeight: 800, color: "#0f172a", letterSpacing: "-0.03em", lineHeight: 1.2, marginBottom: 10 }}>
+        Bukan sekadar latihan soal.<br />
+        <span style={{ color: "#6366f1" }}>Ini sistem persiapan yang terarah.</span>
+      </h2>
+      <p style={{ fontSize: 14, color: "#64748b", maxWidth: 480, margin: "0 auto", lineHeight: 1.65 }}>
+        Dirancang khusus untuk kamu yang serius lolos — bukan yang sekadar mencoba.
+      </p>
+    </div>
+
+    {/* Feature Cards 2x2 */}
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+      {[
+        {
+          icon: "📝", title: "100 Paket TO Lengkap",
+          desc: "SKD & SKB terstruktur per sesi. Bukan soal acak — setiap paket dirancang mengikuti pola ujian resmi CPNS.",
+          badge: "SKD + SKB",
+          bg: "linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%)", border: "#bfdbfe",
+          iconBg: "#dbeafe", titleColor: "#1e40af", descColor: "#3b82f6", badgeBg: "#1e40af", cornerBg: "rgba(59,130,246,0.12)"
+        },
+        {
+          icon: "⚡", title: "Hasil & Analisis Instan",
+          desc: "Langsung tahu skor TWK, TIU, TKP setelah submit. Tahu di mana lemahmu — bukan hanya berapa nilaimu.",
+          badge: "Real-time",
+          bg: "linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)", border: "#fde68a",
+          iconBg: "#fef9c3", titleColor: "#92400e", descColor: "#b45309", badgeBg: "#d97706", cornerBg: "rgba(245,158,11,0.12)"
+        },
+        {
+          icon: "🏆", title: "Leaderboard Nasional",
+          desc: "Bandingkan posisimu dengan peserta dari seluruh Indonesia. Kompetisi nyata = motivasi nyata.",
+          badge: "Ranking Nasional",
+          bg: "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)", border: "#bbf7d0",
+          iconBg: "#d1fae5", titleColor: "#14532d", descColor: "#16a34a", badgeBg: "#16a34a", cornerBg: "rgba(34,197,94,0.12)"
+        },
+        {
+          icon: "📚", title: "Ebook Panduan Gratis",
+          desc: "Materi SKD & SKB dikurasi oleh tim yang paham pola soal. Gratis — karena ilmu seharusnya tidak jadi hambatan.",
+          badge: "100% Gratis",
+          bg: "linear-gradient(135deg, #fdf4ff 0%, #f3e8ff 100%)", border: "#e9d5ff",
+          iconBg: "#ede9fe", titleColor: "#581c87", descColor: "#7c3aed", badgeBg: "#7c3aed", cornerBg: "rgba(139,92,246,0.12)"
+        },
+      ].map(item => (
+        <div key={item.title} style={{ background: item.bg, border: `1.5px solid ${item.border}`, borderRadius: 14, padding: "22px 20px", position: "relative", overflow: "hidden" }}>
+          <div style={{ position: "absolute", bottom: -20, right: -20, width: 80, height: 80, borderRadius: "50%", background: item.cornerBg }} />
+          <div style={{ width: 44, height: 44, borderRadius: 12, background: item.iconBg, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, marginBottom: 14 }}>{item.icon}</div>
+          <div style={{ fontSize: 15, fontWeight: 800, color: item.titleColor, marginBottom: 6 }}>{item.title}</div>
+          <div style={{ fontSize: 12, color: item.descColor, lineHeight: 1.6 }}>{item.desc}</div>
+          <span style={{ display: "inline-block", marginTop: 10, fontSize: 10, fontWeight: 700, background: item.badgeBg, color: "#fff", padding: "3px 10px", borderRadius: 999 }}>{item.badge}</span>
+        </div>
+      ))}
+    </div>
+
+    {/* Quote */}
+    <div style={{ background: "#172554", borderRadius: 16, padding: "28px 36px", display: "flex", alignItems: "center", gap: 32, position: "relative", overflow: "hidden" }}>
+      <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.05 }} viewBox="0 0 800 120" preserveAspectRatio="xMidYMid slice">
+        <defs><pattern id="qdots" x="0" y="0" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="white" /></pattern></defs>
+        <rect width="800" height="120" fill="url(#qdots)" />
+      </svg>
+      <div style={{ fontSize: 80, fontWeight: 900, color: "#fbbf24", lineHeight: 0.8, flexShrink: 0, fontFamily: "Georgia, serif", position: "relative", zIndex: 1 }}>"</div>
+      <div style={{ position: "relative", zIndex: 1 }}>
+        <div style={{ fontSize: "clamp(1rem, 1.6vw, 1.2rem)", fontWeight: 700, color: "#fff", lineHeight: 1.5, marginBottom: 8, letterSpacing: "-0.01em" }}>
+          Orang yang <span style={{ color: "#fbbf24" }}>berlatih keras</span> setiap hari akan mengalahkan orang yang <span style={{ color: "#fbbf24" }}>berbakat</span> tapi bermalas-malasan.
+        </div>
+        <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", fontStyle: "italic" }}>— Prinsip yang dibuktikan oleh ribuan peserta yang lolos CPNS</div>
+      </div>
+    </div>
+
+    {/* CTA */}
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+      <div style={{ background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)", borderRadius: 14, padding: "20px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>Mulai sekarang — gratis</div>
+          <div style={{ fontSize: 20, fontWeight: 800, color: "#fff", marginBottom: 4 }}>Free Trial SKD</div>
+          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.5)" }}>TWK · TIU · TKP · Tidak perlu kartu kredit</div>
+        </div>
+        <Link href="/tryout/free-trial" style={{ background: "#fbbf24", color: "#78350f", padding: "10px 18px", borderRadius: 8, fontSize: 12, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap" }}>Coba Gratis →</Link>
+      </div>
+      <div style={{ background: "white", border: "1.5px solid #e0e7ff", borderRadius: 14, padding: "20px 24px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+        <div>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>Siap serius?</div>
+          <div style={{ fontSize: 16, fontWeight: 800, color: "#0f172a", marginBottom: 4 }}>Lihat Semua Paket TO</div>
+          <div style={{ fontSize: 11, color: "#64748b", lineHeight: 1.5 }}>100 paket SKD & SKB mulai Rp 15.000/TO. Bayar sesuai kebutuhan.</div>
+        </div>
+        <Link href="/price" style={{ background: "#172554", color: "#fff", padding: "9px 16px", borderRadius: 8, fontSize: 11, fontWeight: 700, textDecoration: "none", width: "fit-content", marginTop: 12 }}>Lihat Pricing →</Link>
+      </div>
+    </div>
+
+  </div>
+</div>
+{/* END HALAMAN 2 */}
 
     </div>
   )
