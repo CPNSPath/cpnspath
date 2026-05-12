@@ -381,48 +381,34 @@ const TryoutDropdown = () => (
             </svg>
           </Link>
 
-          {/* Menu desktop */}
-          <div className="hidden lg:flex items-center gap-6 xl:gap-10">
-
-            {/* Tryout dropdown trigger */}
-<div className="relative" ref={tryoutRef}>
-  <button
-    onClick={() => setTryoutOpen((v) => !v)}
-    aria-expanded={tryoutOpen}
-    className={`${linkClass} flex items-center gap-1`}
-  >
-    Tryout
-    <ChevronDown
-      size={14}
-      className={`transition-transform duration-200 ${tryoutOpen ? "rotate-180" : ""}`}
-    />
-  </button>
-  {tryoutOpen && <TryoutDropdown />}
-</div>
-
-            {/* Other nav links */}
-            {OTHER_NAV_LINKS.map((link) => (
-              <Link key={link.label} href={link.href} className={linkClass}>
-                {link.label}
-              </Link>
-            ))}
-          </div>
-
-          {/* Icons desktop */}
-          <div className="hidden lg:flex items-center gap-4 flex-shrink-0" style={{ marginRight: "24px" }}>
+          {/* Desktop nav */}
+          <div className="hidden lg:flex items-center gap-6 ml-auto" style={{ marginRight: "24px" }}>
             {!loading && !user && (
               <>
+                {/* Links */}
+                <div ref={tryoutRef} className="relative">
+                  <button
+                    onClick={() => setTryoutOpen((v) => !v)}
+                    aria-expanded={tryoutOpen}
+                    className={`${linkClass} flex items-center gap-1`}
+                  >
+                    Tryout
+                    <ChevronDown size={14} className={`transition-transform duration-200 ${tryoutOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  {tryoutOpen && <TryoutDropdown />}
+                </div>
+                <Link href="/ebook" className={linkClass}>Ebook</Link>
+                <Link href="/price" className={linkClass}>Pricing</Link>
+                <div style={{ width: 1, height: 16, background: "rgba(255,255,255,0.2)" }} />
                 <Link
                   href="/login"
-                  style={{ background: "transparent", border: "1px solid rgba(255,255,255,0.2)", color: "white", padding: "5px 14px", borderRadius: 7, fontSize: "0.75rem", fontWeight: 500, textDecoration: "none", transition: "all 0.15s" }}
-                  onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.08)" }}
-                  onMouseLeave={e => { e.currentTarget.style.background = "transparent" }}
+                  style={{ border: "1px solid rgba(255,255,255,0.2)", color: "white", padding: "6px 16px", borderRadius: 7, fontSize: "0.75rem", fontWeight: 500, textDecoration: "none", background: "rgba(255,255,255,0.05)" }}
                 >
                   Masuk
                 </Link>
                 <Link
                   href="/register"
-                  style={{ background: "#fbbf24", color: "#78350f", padding: "5px 14px", borderRadius: 7, fontSize: "0.75rem", fontWeight: 700, textDecoration: "none" }}
+                  style={{ background: "#fbbf24", color: "#78350f", padding: "6px 16px", borderRadius: 7, fontSize: "0.75rem", fontWeight: 700, textDecoration: "none" }}
                 >
                   Daftar
                 </Link>
@@ -430,22 +416,42 @@ const TryoutDropdown = () => (
             )}
 
             {!loading && user && (
-              <div className="relative" ref={dropdownRef}>
-                <button
-                  onClick={() => setDropdownOpen((v) => !v)}
-                  aria-expanded={dropdownOpen}
-                  aria-label="User menu"
-                  className={`w-9 h-9 rounded-full font-bold text-sm flex items-center justify-center transition-colors ${
-                    isTransparent
-                      ? "bg-white/20 text-white hover:bg-white/30"
-                      : "bg-gray-700 text-white hover:bg-gray-600"
-                  }`}
-                >
-                  {getInitial(user.email)}
+              <>
+                <div ref={tryoutRef} className="relative">
+                  <button
+                    onClick={() => setTryoutOpen((v) => !v)}
+                    aria-expanded={tryoutOpen}
+                    className={`${linkClass} flex items-center gap-1`}
+                  >
+                    Tryout
+                    <ChevronDown size={14} className={`transition-transform duration-200 ${tryoutOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  {tryoutOpen && <TryoutDropdown />}
+                </div>
+                {OTHER_NAV_LINKS.map((link) => (
+                  <Link key={link.label} href={link.href} className={linkClass}>{link.label}</Link>
+                ))}
+                <button aria-label="Help" className={`transition-colors duration-150 ${isTransparent ? "text-white hover:text-yellow-400" : "text-gray-300 hover:text-yellow-400"}`}>
+                  <HelpCircle size={22} strokeWidth={1.5} />
                 </button>
-                {dropdownOpen && <UserDropdown />}
-              </div>
+                <div className="relative" ref={dropdownRef}>
+                  <button
+                    onClick={() => setDropdownOpen((v) => !v)}
+                    aria-expanded={dropdownOpen}
+                    aria-label="User menu"
+                    className={`w-9 h-9 rounded-full font-bold text-sm flex items-center justify-center transition-colors ${isTransparent ? "bg-white/20 text-white hover:bg-white/30" : "bg-gray-700 text-white hover:bg-gray-600"}`}
+                  >
+                    {getInitial(user.email)}
+                  </button>
+                  {dropdownOpen && <UserDropdown />}
+                </div>
+                <Link href="/cart" aria-label="Cart" className={`transition-colors duration-150 ${isTransparent ? "text-white hover:text-yellow-400" : "text-gray-300 hover:text-yellow-400"}`}>
+                  <ShoppingBag size={22} strokeWidth={1.5} />
+                </Link>
+              </>
             )}
+
+            {loading && <div className="h-8 w-32 rounded bg-gray-700 animate-pulse" />}
           </div>
 
           {/* Hamburger mobile */}

@@ -4,6 +4,8 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { supabase } from "@/lib/supabase"
+import Navbar from "@/components/Navbar"
+
 export default function Home() {
   const router = useRouter()
   const [checking, setChecking] = useState(true)
@@ -51,32 +53,7 @@ export default function Home() {
         <div style={{ position: "absolute", bottom: -60, left: "35%", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(251,191,36,0.1) 0%, transparent 70%)" }} />
         <div style={{ position: "absolute", top: 80, left: -40, width: 220, height: 220, borderRadius: "50%", background: "radial-gradient(circle, rgba(16,185,129,0.06) 0%, transparent 70%)" }} />
 
-        <nav style={{ position: "relative", zIndex: 10, padding: "0 48px", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between", background: "#0f172a", flexShrink: 0 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ background: "#1e3a8a", borderRadius: 8, width: 34, height: 34, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <svg width="20" height="20" viewBox="0 0 36 36" fill="none">
-                <rect x="4" y="6" width="11" height="22" rx="2" fill="#fbbf24" />
-                <rect x="17" y="6" width="11" height="22" rx="2" fill="white" opacity="0.9" />
-                <line x1="16" y1="6" x2="16" y2="28" stroke="#172554" strokeWidth="1.5" />
-                <polyline points="19,15 21,19 27,12" fill="none" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-            <div>
-              <div style={{ fontSize: 13, fontWeight: 800, color: "white", letterSpacing: "2.5px", lineHeight: 1.1 }}>CPNS</div>
-              <div style={{ fontSize: 8, color: "#fbbf24", letterSpacing: "5px", lineHeight: 1 }}>PATH</div>
-            </div>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
-            <Link href="/tryout/free-trial" style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", letterSpacing: "1.5px", fontWeight: 500, textDecoration: "none" }}>TRYOUT</Link>
-            <Link href="/ebook" style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", letterSpacing: "1.5px", fontWeight: 500, textDecoration: "none" }}>EBOOK</Link>
-            <Link href="/price" style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", letterSpacing: "1.5px", fontWeight: 500, textDecoration: "none" }}>PRICING</Link>
-            <div style={{ width: 1, height: 16, background: "rgba(255,255,255,0.15)" }} />
-            <div style={{ display: "flex", gap: 8 }}>
-              <Link href="/login" style={{ border: "1px solid rgba(255,255,255,0.2)", color: "white", padding: "6px 16px", borderRadius: 7, fontSize: 11, fontWeight: 500, textDecoration: "none", background: "rgba(255,255,255,0.05)" }}>Masuk</Link>
-              <Link href="/register" style={{ background: "#fbbf24", color: "#78350f", padding: "6px 16px", borderRadius: 7, fontSize: 11, fontWeight: 700, textDecoration: "none" }}>Daftar</Link>
-            </div>
-          </div>
-        </nav>
+        <Navbar />
 
         {/* Hero content */}
         <div style={{ position: "relative", zIndex: 1, flex: 1, padding: "80px 48px 0", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 32 }}>
