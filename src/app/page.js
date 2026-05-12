@@ -4,8 +4,6 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { supabase } from "@/lib/supabase"
-import Navbar from "@/components/Navbar"
-
 export default function Home() {
   const router = useRouter()
   const [checking, setChecking] = useState(true)
@@ -25,18 +23,6 @@ export default function Home() {
   if (checking) {
     return <div style={{ minHeight: "100vh", background: "#fff" }} />
   }
-
-  const NavLogo = () => (
-    <svg width="120" height="32" viewBox="0 0 140 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="36" height="36" rx="8" fill="#172554"/>
-      <rect x="8" y="9" width="9" height="18" rx="2" fill="#fbbf24"/>
-      <rect x="19" y="9" width="9" height="18" rx="2" fill="white" opacity="0.9"/>
-      <line x1="18" y1="9" x2="18" y2="27" stroke="#172554" strokeWidth="1.5"/>
-      <polyline points="21,17 23,20 28,14" fill="none" stroke="#fbbf24" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-      <text x="44" y="16" fontFamily="system-ui, sans-serif" fontSize="13" fontWeight="700" fill="#172554" letterSpacing="1.5">CPNS</text>
-      <text x="44" y="29" fontFamily="system-ui, sans-serif" fontSize="9" fontWeight="400" fill="#172554" letterSpacing="4">PATH</text>
-    </svg>
-  )
 
   return (
     <div style={{ fontFamily: "'Segoe UI', system-ui, sans-serif" }}>
@@ -65,7 +51,32 @@ export default function Home() {
         <div style={{ position: "absolute", bottom: -60, left: "35%", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(251,191,36,0.1) 0%, transparent 70%)" }} />
         <div style={{ position: "absolute", top: 80, left: -40, width: 220, height: 220, borderRadius: "50%", background: "radial-gradient(circle, rgba(16,185,129,0.06) 0%, transparent 70%)" }} />
 
-        <Navbar />
+        <nav style={{ position: "relative", zIndex: 10, padding: "0 48px", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between", background: "#0f172a", flexShrink: 0 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div style={{ background: "#1e3a8a", borderRadius: 8, width: 34, height: 34, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <svg width="20" height="20" viewBox="0 0 36 36" fill="none">
+                <rect x="4" y="6" width="11" height="22" rx="2" fill="#fbbf24" />
+                <rect x="17" y="6" width="11" height="22" rx="2" fill="white" opacity="0.9" />
+                <line x1="16" y1="6" x2="16" y2="28" stroke="#172554" strokeWidth="1.5" />
+                <polyline points="19,15 21,19 27,12" fill="none" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 800, color: "white", letterSpacing: "2.5px", lineHeight: 1.1 }}>CPNS</div>
+              <div style={{ fontSize: 8, color: "#fbbf24", letterSpacing: "5px", lineHeight: 1 }}>PATH</div>
+            </div>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
+            <Link href="/tryout/free-trial" style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", letterSpacing: "1.5px", fontWeight: 500, textDecoration: "none" }}>TRYOUT</Link>
+            <Link href="/ebook" style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", letterSpacing: "1.5px", fontWeight: 500, textDecoration: "none" }}>EBOOK</Link>
+            <Link href="/price" style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", letterSpacing: "1.5px", fontWeight: 500, textDecoration: "none" }}>PRICING</Link>
+            <div style={{ width: 1, height: 16, background: "rgba(255,255,255,0.15)" }} />
+            <div style={{ display: "flex", gap: 8 }}>
+              <Link href="/login" style={{ border: "1px solid rgba(255,255,255,0.2)", color: "white", padding: "6px 16px", borderRadius: 7, fontSize: 11, fontWeight: 500, textDecoration: "none", background: "rgba(255,255,255,0.05)" }}>Masuk</Link>
+              <Link href="/register" style={{ background: "#fbbf24", color: "#78350f", padding: "6px 16px", borderRadius: 7, fontSize: 11, fontWeight: 700, textDecoration: "none" }}>Daftar</Link>
+            </div>
+          </div>
+        </nav>
 
         {/* Hero content */}
         <div style={{ position: "relative", zIndex: 1, flex: 1, padding: "80px 48px 0", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 32 }}>
@@ -115,65 +126,72 @@ export default function Home() {
           </div>
 
           {/* Right cards */}
-          <div style={{ flexShrink: 0, width: 340, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <div style={{ flexShrink: 0, flex: 1, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12, maxWidth: 560 }}>
 
             {/* SKD */}
-            <div style={{ background: "white", border: "1px solid #e0e7ff", borderRadius: 14, padding: 16, boxShadow: "0 2px 8px rgba(99,102,241,0.08)" }}>
+            <div style={{ background: "white", border: "1.5px solid #e0e7ff", borderRadius: 14, padding: 16, boxShadow: "0 2px 10px rgba(99,102,241,0.08)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 12 }}>
                 <span style={{ fontSize: 14 }}>📋</span>
-                <span style={{ fontSize: 9, fontWeight: 700, color: "#6366f1", textTransform: "uppercase", letterSpacing: "0.12em" }}>Passing Grade SKD</span>
+                <span style={{ fontSize: 9, fontWeight: 700, color: "#6366f1", textTransform: "uppercase", letterSpacing: "0.1em" }}>SKD</span>
               </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
                 {[{ label: "TWK", val: "≥ 65", color: "#3b82f6" }, { label: "TIU", val: "≥ 80", color: "#8b5cf6" }, { label: "TKP", val: "≥ 166", color: "#22c55e" }].map((item, i) => (
                   <div key={item.label}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                        <div style={{ width: 7, height: 7, borderRadius: "50%", background: item.color }} />
-                        <span style={{ fontSize: 12, color: "#64748b", fontWeight: 500 }}>{item.label}</span>
+                      <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                        <div style={{ width: 6, height: 6, borderRadius: "50%", background: item.color }} />
+                        <span style={{ fontSize: 11, color: "#64748b" }}>{item.label}</span>
                       </div>
                       <span style={{ fontSize: 14, fontWeight: 800, color: "#172554" }}>{item.val}</span>
                     </div>
-                    {i < 2 && <div style={{ height: 1, background: "#f1f5f9", marginTop: 8 }} />}
+                    {i < 2 && <div style={{ height: 0.5, background: "#f1f5f9", marginTop: 7 }} />}
                   </div>
                 ))}
               </div>
             </div>
 
             {/* SKB */}
-            <div style={{ background: "white", border: "1px solid #ede9fe", borderRadius: 14, padding: 16, boxShadow: "0 2px 8px rgba(124,58,237,0.06)" }}>
+            <div style={{ background: "white", border: "1.5px solid #ede9fe", borderRadius: 14, padding: 16, boxShadow: "0 2px 10px rgba(124,58,237,0.07)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10 }}>
                 <span style={{ fontSize: 14 }}>🎯</span>
-                <span style={{ fontSize: 9, fontWeight: 700, color: "#7c3aed", textTransform: "uppercase", letterSpacing: "0.12em" }}>Paket SKB</span>
+                <span style={{ fontSize: 9, fontWeight: 700, color: "#7c3aed", textTransform: "uppercase", letterSpacing: "0.1em" }}>SKB</span>
               </div>
               <p style={{ fontSize: 11, color: "#64748b", margin: "0 0 10px", lineHeight: 1.5 }}>Sesuai formasi & bidang jabatan</p>
-              <div style={{ background: "#f5f3ff", border: "1px solid #ede9fe", borderRadius: 7, padding: "7px 10px", textAlign: "center", marginBottom: 7 }}>
-                <span style={{ fontSize: 13, fontWeight: 800, color: "#7c3aed" }}>100 Tryout</span>
+              <div style={{ background: "#f5f3ff", borderRadius: 7, padding: "6px 8px", textAlign: "center", marginBottom: 6 }}>
+                <span style={{ fontSize: 12, fontWeight: 800, color: "#7c3aed" }}>100 Tryout</span>
               </div>
-              <div style={{ background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 7, padding: "7px 10px", textAlign: "center" }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: "#b45309" }}>Rp 15.000 / TO</span>
+              <div style={{ background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 7, padding: "6px 8px", textAlign: "center" }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#b45309" }}>Rp 15.000/TO</span>
               </div>
             </div>
 
-            {/* Free trial full width */}
-            <div style={{ gridColumn: "span 2", background: "#172554", borderRadius: 14, padding: "14px 18px", display: "flex", alignItems: "center", justifyContent: "space-between", border: "1px solid #1e3a8a" }}>
-              <div>
-                <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>🎯 Free Trial SKD</div>
-                <div style={{ fontSize: 16, fontWeight: 800, color: "#fbbf24", letterSpacing: "0.05em" }}>TWK · TIU · TKP</div>
-                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", marginTop: 3 }}>Gratis, tanpa kartu kredit</div>
+            {/* Ebook */}
+            <div style={{ background: "#f0fdf4", border: "1.5px solid #bbf7d0", borderRadius: 14, padding: 16, boxShadow: "0 2px 10px rgba(34,197,94,0.07)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10 }}>
+                <span style={{ fontSize: 14 }}>📚</span>
+                <span style={{ fontSize: 9, fontWeight: 700, color: "#16a34a", textTransform: "uppercase", letterSpacing: "0.1em" }}>Ebook Gratis</span>
               </div>
-              <Link href="/tryout/free-trial" style={{ background: "#fbbf24", color: "#78350f", padding: "9px 16px", borderRadius: 9, fontSize: 12, fontWeight: 700, textDecoration: "none", flexShrink: 0 }}>Coba Sekarang →</Link>
+              <p style={{ fontSize: 12, fontWeight: 700, color: "#166534", margin: "0 0 4px" }}>Panduan SKD & SKB</p>
+              <p style={{ fontSize: 11, color: "#16a34a", margin: "0 0 10px" }}>Download langsung</p>
+              <Link href="/ebook" style={{ display: "block", background: "#22c55e", borderRadius: 7, padding: "7px 8px", textAlign: "center", textDecoration: "none" }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "white" }}>↓ Download</span>
+              </Link>
             </div>
 
-            {/* Ebook full width */}
-            <div style={{ gridColumn: "span 2", background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 14, padding: "13px 18px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 0 }}>
-                <span style={{ fontSize: 22, flexShrink: 0 }}>📚</span>
-                <div style={{ minWidth: 0 }}>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: "#166534", marginBottom: 2 }}>Ebook Panduan SKD & SKB</div>
-                  <div style={{ fontSize: 11, color: "#16a34a" }}>Download gratis sekarang</div>
-                </div>
+            {/* Free Trial full width */}
+            <div style={{ gridColumn: "span 3", background: "#172554", borderRadius: 14, padding: "16px 22px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "relative", overflow: "hidden" }}>
+              <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.05 }} viewBox="0 0 560 60" preserveAspectRatio="xMidYMid slice">
+                <defs><pattern id="dotsft" x="0" y="0" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="white" /></pattern></defs>
+                <rect width="560" height="60" fill="url(#dotsft)" />
+              </svg>
+              <div style={{ position: "relative", zIndex: 1 }}>
+                <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 5 }}>🎯 Free Trial SKD — Gratis</div>
+                <div style={{ fontSize: 18, fontWeight: 800, color: "#fbbf24", letterSpacing: "0.05em" }}>TWK · TIU · TKP</div>
+                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", marginTop: 4 }}>Tidak perlu kartu kredit · Mulai sekarang</div>
               </div>
-              <Link href="/ebook" style={{ background: "#22c55e", color: "white", padding: "9px 14px", borderRadius: 9, fontSize: 11, fontWeight: 700, textDecoration: "none", flexShrink: 0, whiteSpace: "nowrap" }}>↓ Download</Link>
+              <Link href="/tryout/free-trial" style={{ position: "relative", zIndex: 1, background: "#fbbf24", color: "#78350f", padding: "10px 20px", borderRadius: 9, fontSize: 12, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap", flexShrink: 0 }}>
+                Coba Sekarang →
+              </Link>
             </div>
 
           </div>
