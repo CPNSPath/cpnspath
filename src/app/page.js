@@ -111,15 +111,18 @@ export default function Home() {
           <div style={{ flex: 1, padding: "40px 48px 40px 32px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 8 }}>
 
             {/* Feature pills */}
-            <div style={{ display: "flex", gap: 6, marginBottom: 4, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 8 }}>
               {[
-                { icon: "🏆", label: "Leaderboard Nasional", bg: "#eff6ff", border: "#bfdbfe", color: "#1d4ed8" },
-                { icon: "📊", label: "Analisis Hasil Detail", bg: "#f0fdf4", border: "#bbf7d0", color: "#16a34a" },
-                { icon: "⚡", label: "Hasil Instan", bg: "#fdf4ff", border: "#e9d5ff", color: "#7c3aed" },
+                { icon: "🏆", label: "Leaderboard Nasional", desc: "Lihat posisi rankingmu secara real-time", bg: "#eff6ff", border: "#bfdbfe", color: "#1d4ed8" },
+                { icon: "📊", label: "Analisis Hasil Detail", desc: "Rincian skor TWK, TIU, TKP tiap tryout", bg: "#f0fdf4", border: "#bbf7d0", color: "#16a34a" },
+                { icon: "⚡", label: "Hasil Instan", desc: "Langsung tahu skor setelah submit ujian", bg: "#fdf4ff", border: "#e9d5ff", color: "#7c3aed" },
               ].map(p => (
-                <div key={p.label} style={{ display: "flex", alignItems: "center", gap: 4, background: p.bg, border: `1px solid ${p.border}`, borderRadius: 999, padding: "3px 10px" }}>
-                  <span style={{ fontSize: 9 }}>{p.icon}</span>
-                  <span style={{ fontSize: 9, fontWeight: 600, color: p.color }}>{p.label}</span>
+                <div key={p.label} style={{ display: "flex", alignItems: "center", gap: 12, background: p.bg, border: `1px solid ${p.border}`, borderRadius: 12, padding: "10px 14px" }}>
+                  <span style={{ fontSize: 20, flexShrink: 0 }}>{p.icon}</span>
+                  <div>
+                    <div style={{ fontSize: 12, fontWeight: 700, color: p.color }}>{p.label}</div>
+                    <div style={{ fontSize: 10, color: "#94a3b8", marginTop: 1 }}>{p.desc}</div>
+                  </div>
                 </div>
               ))}
             </div>
