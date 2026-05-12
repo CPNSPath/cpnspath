@@ -10,7 +10,24 @@
       "Bash(Remove-Item -Recurse -Force \"src\\\\app\\\\price\\\\bundling-5\")",
       "Bash(Remove-Item -Recurse -Force \"src\\\\app\\\\price\\\\bundling-10\")",
       "Bash(Write-Host \"Deleted\")",
-      "Bash(exist C:\\\\Users\\\\titom\\\\Downloads\\\\website pertama\\\\belajar-web\\\\src\\\\app\\\\tryout\\\\paket-to\\\\[to_number]\\\\exam *)"
+      "Bash(exist C:\\\\Users\\\\titom\\\\Downloads\\\\website pertama\\\\belajar-web\\\\src\\\\app\\\\tryout\\\\paket-to\\\\[to_number]\\\\exam *)",
+      "Bash(curl -L -o kemenkeu.png \"https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Logo_kementerian_keuangan_republik_indonesia.png/120px-Logo_kementerian_keuangan_republik_indonesia.png\")",
+      "Bash(curl -L -o kumham.png \"https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Logo_kemenkumham.png/120px-Logo_kemenkumham.png\")",
+      "Bash(curl -L -o kemenkes.png \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Logo_Kementerian_Kesehatan_Republik_Indonesia_%282024_rev%29.svg/120px-Logo_Kementerian_Kesehatan_Republik_Indonesia_%282024_rev%29.svg.png\")",
+      "Bash(curl -L -o kemendikbud.png \"https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/New_Logo_Kemendikbud_RI.svg/120px-New_Logo_Kemendikbud_RI.svg.png\")",
+      "Bash(curl -L -o pupr.png \"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Logo_Kementerian_PUPR.png/120px-Logo_Kementerian_PUPR.png\")",
+      "Bash(curl -L -o bps.png \"https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Lambang_BPS.svg/120px-Lambang_BPS.svg.png\")",
+      "Bash(curl -L -o bkn.png \"https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Logo_BKN.svg/120px-Logo_BKN.svg.png\")",
+      "Bash(curl -L -o kpk.png \"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Logo_KPK.svg/120px-Logo_KPK.svg.png\")",
+      "Bash(curl -L -o ojk.png \"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Logo_OJK.svg/120px-Logo_OJK.svg.png\")",
+      "Bash(curl -L -o bpkp.png \"https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Logo_BPKP.png/120px-Logo_BPKP.png\")",
+      "Bash(curl -L -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/120.0.0.0 Safari/537.36\" -o kemenkeu.png \"https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Logo_kementerian_keuangan_republik_indonesia.png/120px-Logo_kementerian_keuangan_republik_indonesia.png\")",
+      "Bash(xxd)",
+      "Bash(curl -L -A \"Mozilla/5.0\" -o public/logos/kumham.png \"https://www.kemenkumham.go.id/images/logo.png\")",
+      "Bash(curl -L -A \"Mozilla/5.0\" -o public/logos/kemenkes.png \"https://www.kemkes.go.id/assets/upload/dir_519d41d8cd98ab68/images/logo-kemkes.png\")",
+      "Bash(curl -L -A \"Mozilla/5.0\" -o public/logos/kemendikbud.png \"https://www.kemdikbud.go.id/main/images/logo_kemdikbud_new.png\")",
+      "Bash(curl -L -A \"Mozilla/5.0\" -o public/logos/pupr.png \"https://www.pu.go.id/assets/images/logo-pu.png\")",
+      "Bash(curl -L -A \"Mozilla/5.0\" -o public/logos/kemendagri.png \"https://www.kemendagri.go.id/assets/images/logo.png\")"
     ]
   }
 }

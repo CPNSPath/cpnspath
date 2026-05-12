@@ -116,83 +116,86 @@ export default function Home() {
       <span style={{ fontSize: 9, fontWeight: 600, color: "#6366f1" }}>🏛️ Instansi Tujuan Populer</span>
     </div>
     <div style={{ fontSize: 13, fontWeight: 800, color: "#0f172a", letterSpacing: "-0.02em" }}>Raih posisi di instansi impianmu</div>
-    <div style={{ fontSize: 9, color: "#94a3b8", marginTop: 2 }}>Instansi paling banyak dituju peserta CPNS</div>
+    <div style={{ fontSize: 9, color: "#94a3b8", marginTop: 2 }}>Instansi paling banyak dituju peserta CPNS Path</div>
   </div>
 
   {/* Kementerian */}
-  <div style={{ background: "white", border: "1px solid #e8edf5", borderRadius: 10, padding: "10px 12px" }}>
+  <div style={{ background: "white", border: "1px solid #dbeafe", borderRadius: 10, padding: "10px 12px" }}>
     <div style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 8 }}>
       <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#172554" }} />
       <span style={{ fontSize: 8, fontWeight: 700, color: "#172554", textTransform: "uppercase", letterSpacing: "0.08em" }}>Kementerian Favorit</span>
     </div>
     <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 5 }}>
       {[
-        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Logo_kementerian_keuangan_republik_indonesia.png/120px-Logo_kementerian_keuangan_republik_indonesia.png", name: "Kemenkeu" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Logo_kemenkumham.png/120px-Logo_kemenkumham.png", name: "Kumham" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Logo_Kementerian_Kesehatan_Republik_Indonesia_%282024_rev%29.svg/120px-Logo_Kementerian_Kesehatan_Republik_Indonesia_%282024_rev%29.svg.png", name: "Kemenkes" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/New_Logo_Kemendikbud_RI.svg/120px-New_Logo_Kemendikbud_RI.svg.png", name: "Kemendikbud" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Logo_Kementerian_PUPR.png/120px-Logo_Kementerian_PUPR.png", name: "Kemen PUPR" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Logo_Kementerian_Dalam_Negeri_Republik_Indonesia.svg/120px-Logo_Kementerian_Dalam_Negeri_Republik_Indonesia.svg.png", name: "Kemendagri" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Logo_Kemenpan.svg/120px-Logo_Kemenpan.svg.png", name: "KemenPAN RB" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Logo_of_the_Ministry_of_State-Owned_Enterprises_of_the_Republic_of_Indonesia_%28Indonesian_version_2020%29.svg/120px-Logo_of_the_Ministry_of_State-Owned_Enterprises_of_the_Republic_of_Indonesia_%28Indonesian_version_2020%29.svg.png", name: "Kemen BUMN" },
+        { abbr: "KEM\nKEU", name: "Keuangan", rank: 1, color: "#172554", bg: "#eff6ff" },
+        { abbr: "KEM\nHUK", name: "Kumham", rank: 2, color: "#172554", bg: "#eff6ff" },
+        { abbr: "KEM\nKES", name: "Kesehatan", rank: 3, color: "#172554", bg: "#eff6ff" },
+        { abbr: "KEM\nDIK", name: "Dikbud", rank: 4, color: "#172554", bg: "#eff6ff" },
+        { abbr: "KEM\nPU", name: "PUPR", rank: 5, color: "#172554", bg: "#eff6ff" },
+        { abbr: "KEM\nDAG", name: "Dagri", rank: 6, color: "#172554", bg: "#eff6ff" },
+        { abbr: "KEM\nPAN", name: "PAN RB", rank: 7, color: "#172554", bg: "#eff6ff" },
+        { abbr: "KEM\nBUMN", name: "BUMN", rank: 8, color: "#172554", bg: "#eff6ff" },
       ].map(item => (
-        <div key={item.name} style={{ background: "#f8fafc", border: "1px solid #f1f5f9", borderRadius: 8, padding: "8px 4px 6px", display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-          <img src={item.src} alt={item.name} style={{ width: 32, height: 32, objectFit: "contain" }} />
-          <span style={{ fontSize: 6, color: "#64748b", textAlign: "center", lineHeight: 1.3, fontWeight: 500 }}>{item.name}</span>
+        <div key={item.name} style={{ background: item.bg, border: "1px solid #bfdbfe", borderRadius: 8, padding: "7px 4px 6px", display: "flex", flexDirection: "column", alignItems: "center", gap: 3, position: "relative" }}>
+          <div style={{ position: "absolute", top: 3, left: 5, fontSize: 7, fontWeight: 800, color: "#93c5fd" }}>#{item.rank}</div>
+          <div style={{ fontSize: 10, fontWeight: 800, color: item.color, textAlign: "center", lineHeight: 1.2, whiteSpace: "pre-line", marginTop: 6 }}>{item.abbr}</div>
+          <span style={{ fontSize: 6.5, color: "#64748b", textAlign: "center", lineHeight: 1.3 }}>{item.name}</span>
         </div>
       ))}
     </div>
   </div>
 
   {/* Lembaga Independen */}
-  <div style={{ background: "white", border: "1px solid #e8edf5", borderRadius: 10, padding: "10px 12px" }}>
+  <div style={{ background: "white", border: "1px solid #ede9fe", borderRadius: 10, padding: "10px 12px" }}>
     <div style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 8 }}>
       <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#6366f1" }} />
       <span style={{ fontSize: 8, fontWeight: 700, color: "#6366f1", textTransform: "uppercase", letterSpacing: "0.08em" }}>Lembaga Independen</span>
     </div>
     <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 5 }}>
       {[
-        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Lambang_BPS.svg/120px-Lambang_BPS.svg.png", name: "BPS" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Logo_BKN.svg/120px-Logo_BKN.svg.png", name: "BKN" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Logo_KPK.svg/120px-Logo_KPK.svg.png", name: "KPK" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Logo_OJK.svg/120px-Logo_OJK.svg.png", name: "OJK" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Logo_BPKP.png/120px-Logo_BPKP.png", name: "BPKP" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Logo_BPK_RI.svg/120px-Logo_BPK_RI.svg.png", name: "BPK RI" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/ANRI_logo.svg/120px-ANRI_logo.svg.png", name: "ANRI" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Logo_LAN_RI.png/120px-Logo_LAN_RI.png", name: "LAN RI" },
+        { abbr: "BPS", name: "Statistik", rank: 1, bg: "#f5f3ff" },
+        { abbr: "BKN", name: "Kepegawaian", rank: 2, bg: "#f5f3ff" },
+        { abbr: "KPK", name: "Anti Korupsi", rank: 3, bg: "#f5f3ff" },
+        { abbr: "OJK", name: "Jasa Keuangan", rank: 4, bg: "#f5f3ff" },
+        { abbr: "BPKP", name: "Pengawasan", rank: 5, bg: "#f5f3ff" },
+        { abbr: "BPK", name: "Pemeriksa Keu.", rank: 6, bg: "#f5f3ff" },
+        { abbr: "ANRI", name: "Arsip Nasional", rank: 7, bg: "#f5f3ff" },
+        { abbr: "LAN", name: "Adm. Negara", rank: 8, bg: "#f5f3ff" },
       ].map(item => (
-        <div key={item.name} style={{ background: "#f8fafc", border: "1px solid #f1f5f9", borderRadius: 8, padding: "8px 4px 6px", display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-          <img src={item.src} alt={item.name} style={{ width: 32, height: 32, objectFit: "contain" }} />
-          <span style={{ fontSize: 6, color: "#64748b", textAlign: "center", lineHeight: 1.3, fontWeight: 500 }}>{item.name}</span>
+        <div key={item.abbr} style={{ background: item.bg, border: "1px solid #ddd6fe", borderRadius: 8, padding: "7px 4px 6px", display: "flex", flexDirection: "column", alignItems: "center", gap: 3, position: "relative" }}>
+          <div style={{ position: "absolute", top: 3, left: 5, fontSize: 7, fontWeight: 800, color: "#c4b5fd" }}>#{item.rank}</div>
+          <div style={{ fontSize: 11, fontWeight: 800, color: "#4f46e5", textAlign: "center", lineHeight: 1.2, marginTop: 6 }}>{item.abbr}</div>
+          <span style={{ fontSize: 6.5, color: "#64748b", textAlign: "center", lineHeight: 1.3 }}>{item.name}</span>
         </div>
       ))}
     </div>
   </div>
 
   {/* Pemda */}
-  <div style={{ background: "white", border: "1px solid #e8edf5", borderRadius: 10, padding: "10px 12px" }}>
+  <div style={{ background: "white", border: "1px solid #bbf7d0", borderRadius: 10, padding: "10px 12px" }}>
     <div style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 8 }}>
       <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#16a34a" }} />
       <span style={{ fontSize: 8, fontWeight: 700, color: "#16a34a", textTransform: "uppercase", letterSpacing: "0.08em" }}>Pemerintah Daerah Favorit</span>
     </div>
     <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 5 }}>
       {[
-        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Lambang_DKI_Jakarta.svg/120px-Lambang_DKI_Jakarta.svg.png", name: "DKI Jakarta" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/West_Java_Coat_of_Arms.svg/120px-West_Java_Coat_of_Arms.svg.png", name: "Jawa Barat" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Lambang_Provinsi_Jawa_Tengah.svg/120px-Lambang_Provinsi_Jawa_Tengah.svg.png", name: "Jawa Tengah" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/East_Java_Coat_of_Arms.svg/120px-East_Java_Coat_of_Arms.svg.png", name: "Jawa Timur" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Lambang_Kota_Surabaya.svg/120px-Lambang_Kota_Surabaya.svg.png", name: "Kota Surabaya" },
-        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Lambang_Kota_Bandung.svg/120px-Lambang_Kota_Bandung.svg.png", name: "Kota Bandung" },
+        { abbr: "DKI", name: "Jakarta", rank: 1, bg: "#f0fdf4" },
+        { abbr: "JBR", name: "Jawa Barat", rank: 2, bg: "#f0fdf4" },
+        { abbr: "JTG", name: "Jawa Tengah", rank: 3, bg: "#f0fdf4" },
+        { abbr: "JTM", name: "Jawa Timur", rank: 4, bg: "#f0fdf4" },
+        { abbr: "SBY", name: "Kota Surabaya", rank: 5, bg: "#f0fdf4" },
+        { abbr: "BDG", name: "Kota Bandung", rank: 6, bg: "#f0fdf4" },
       ].map(item => (
-        <div key={item.name} style={{ background: "#f8fafc", border: "1px solid #f1f5f9", borderRadius: 8, padding: "8px 4px 6px", display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-          <img src={item.src} alt={item.name} style={{ width: 32, height: 32, objectFit: "contain" }} />
-          <span style={{ fontSize: 6, color: "#64748b", textAlign: "center", lineHeight: 1.3, fontWeight: 500 }}>{item.name}</span>
+        <div key={item.abbr} style={{ background: item.bg, border: "1px solid #86efac", borderRadius: 8, padding: "7px 4px 6px", display: "flex", flexDirection: "column", alignItems: "center", gap: 3, position: "relative" }}>
+          <div style={{ position: "absolute", top: 3, left: 5, fontSize: 7, fontWeight: 800, color: "#86efac" }}>#{item.rank}</div>
+          <div style={{ fontSize: 11, fontWeight: 800, color: "#15803d", textAlign: "center", lineHeight: 1.2, marginTop: 6 }}>{item.abbr}</div>
+          <span style={{ fontSize: 6.5, color: "#64748b", textAlign: "center", lineHeight: 1.3 }}>{item.name}</span>
         </div>
       ))}
     </div>
   </div>
 
-  {/* Tagline bawah */}
+  {/* Tagline */}
   <div style={{ background: "#172554", borderRadius: 8, padding: "10px 14px", textAlign: "center" }}>
     <div style={{ fontSize: 11, fontWeight: 700, color: "#fbbf24", marginBottom: 2 }}>500+ Instansi membuka formasi CPNS</div>
     <div style={{ fontSize: 9, color: "rgba(255,255,255,0.4)" }}>Persiapkan dirimu sekarang — sebelum terlambat</div>
