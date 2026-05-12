@@ -312,7 +312,7 @@ export default function Home() {
     </div>
 
     {/* CTA */}
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+    <div className="cta-grid-h2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
       <div style={{ background: "linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)", borderRadius: 14, padding: "20px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div>
           <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>Mulai sekarang — gratis</div>
@@ -341,6 +341,7 @@ export default function Home() {
           .hero-left { width: 100% !important; padding: 28px 20px !important; }
           .hero-divider { display: none !important; }
           .hero-right { width: 100% !important; padding: 20px 20px 32px !important; }
+          .cta-grid-h2 { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </div>

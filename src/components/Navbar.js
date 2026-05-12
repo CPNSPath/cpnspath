@@ -231,15 +231,11 @@ const TryoutDropdown = () => (
 
         {/* Header */}
         <div style={{ padding: "0 20px", height: 60, display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid rgba(255,255,255,0.08)", flexShrink: 0 }}>
-          <svg width="120" height="30" viewBox="0 0 140 36" fill="none">
-            <rect width="36" height="36" rx="8" fill="#172554"/>
-            <rect x="8" y="9" width="9" height="18" rx="2" fill="#fbbf24"/>
-            <rect x="19" y="9" width="9" height="18" rx="2" fill="white" opacity="0.9"/>
-            <line x1="18" y1="9" x2="18" y2="27" stroke="#172554" strokeWidth="1.5"/>
-            <polyline points="21,17 23,20 28,14" fill="none" stroke="#fbbf24" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-            <text x="44" y="16" fontFamily="system-ui" fontSize="13" fontWeight="700" fill="white" letterSpacing="1.5">CPNS</text>
-            <text x="44" y="29" fontFamily="system-ui" fontSize="9" fontWeight="400" fill="#fbbf24" letterSpacing="4">PATH</text>
-          </svg>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#fbbf24" }} />
+            <div style={{ width: 8, height: 8, borderRadius: "50%", background: "rgba(255,255,255,0.3)" }} />
+            <div style={{ width: 8, height: 8, borderRadius: "50%", background: "rgba(255,255,255,0.15)" }} />
+          </div>
           <button onClick={() => setDrawerOpen(false)} style={{ width: 34, height: 34, borderRadius: 8, background: "rgba(255,255,255,0.08)", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6L18 18" stroke="white" strokeWidth="2" strokeLinecap="round"/></svg>
           </button>
