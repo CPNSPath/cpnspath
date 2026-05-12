@@ -108,91 +108,98 @@ export default function Home() {
           </div>
 
           {/* RIGHT */}
-          <div style={{ flex: 1, padding: "32px 40px 32px 28px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 7 }}>
+<div style={{ flex: 1, padding: "28px 32px 28px 24px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 10 }}>
 
-            {/* Feature pills */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              {[
-                { icon: "🏆", label: "Leaderboard Nasional", desc: "Lihat posisi rankingmu secara real-time", bg: "#eff6ff", border: "#bfdbfe", color: "#1d4ed8" },
-                { icon: "📊", label: "Analisis Hasil Detail", desc: "Rincian skor TWK, TIU, TKP tiap tryout", bg: "#f0fdf4", border: "#bbf7d0", color: "#16a34a" },
-                { icon: "⚡", label: "Hasil Instan", desc: "Langsung tahu skor setelah submit ujian", bg: "#fdf4ff", border: "#e9d5ff", color: "#7c3aed" },
-              ].map(p => (
-                <div key={p.label} style={{ display: "flex", alignItems: "center", gap: 10, background: p.bg, border: `1px solid ${p.border}`, borderRadius: 10, padding: "9px 12px" }}>
-                  <span style={{ fontSize: 18, flexShrink: 0 }}>{p.icon}</span>
-                  <div>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: p.color }}>{p.label}</div>
-                    <div style={{ fontSize: 9, color: "#94a3b8", marginTop: 1 }}>{p.desc}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
+  {/* Header */}
+  <div style={{ textAlign: "center" }}>
+    <div style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "white", border: "1px solid #e0e7ff", borderRadius: 999, padding: "4px 12px", marginBottom: 6 }}>
+      <span style={{ fontSize: 9, fontWeight: 600, color: "#6366f1" }}>🏛️ Instansi Tujuan Populer</span>
+    </div>
+    <div style={{ fontSize: 13, fontWeight: 800, color: "#0f172a", letterSpacing: "-0.02em" }}>Raih posisi di instansi impianmu</div>
+    <div style={{ fontSize: 9, color: "#94a3b8", marginTop: 2 }}>Instansi paling banyak dituju peserta CPNS</div>
+  </div>
 
-            {/* SKD + SKB */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 7 }}>
-              <div style={{ background: "white", border: "1.5px solid #e0e7ff", borderRadius: 10, padding: 12 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 8 }}>
-                  <span style={{ fontSize: 11 }}>📋</span>
-                  <span style={{ fontSize: 7.5, fontWeight: 700, color: "#6366f1", textTransform: "uppercase", letterSpacing: "0.1em" }}>Passing Grade SKD</span>
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-                  {[{ label: "TWK", val: "≥ 65", color: "#3b82f6" }, { label: "TIU", val: "≥ 80", color: "#8b5cf6" }, { label: "TKP", val: "≥ 166", color: "#22c55e" }].map((item, i) => (
-                    <div key={item.label}>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                          <div style={{ width: 6, height: 6, borderRadius: "50%", background: item.color }} />
-                          <span style={{ fontSize: 11, color: "#64748b" }}>{item.label}</span>
-                        </div>
-                        <span style={{ fontSize: 13, fontWeight: 800, color: "#172554" }}>{item.val}</span>
-                      </div>
-                      {i < 2 && <div style={{ height: 0.5, background: "#f1f5f9", marginTop: 5 }} />}
-                    </div>
-                  ))}
-                </div>
-              </div>
+  {/* Kementerian */}
+  <div style={{ background: "white", border: "1px solid #e8edf5", borderRadius: 10, padding: "10px 12px" }}>
+    <div style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 8 }}>
+      <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#172554" }} />
+      <span style={{ fontSize: 8, fontWeight: 700, color: "#172554", textTransform: "uppercase", letterSpacing: "0.08em" }}>Kementerian Favorit</span>
+    </div>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 5 }}>
+      {[
+        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bd/Logo_kementerian_keuangan_republik_indonesia.png/120px-Logo_kementerian_keuangan_republik_indonesia.png", name: "Kemenkeu" },
+        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Logo_kemenkumham.png/120px-Logo_kemenkumham.png", name: "Kumham" },
+        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Logo_Kementerian_Kesehatan_Republik_Indonesia_%282024_rev%29.svg/120px-Logo_Kementerian_Kesehatan_Republik_Indonesia_%282024_rev%29.svg.png", name: "Kemenkes" },
+        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/New_Logo_Kemendikbud_RI.svg/120px-New_Logo_Kemendikbud_RI.svg.png", name: "Kemendikbud" },
+        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Logo_Kementerian_PUPR.png/120px-Logo_Kementerian_PUPR.png", name: "Kemen PUPR" },
+        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Logo_Kementerian_Dalam_Negeri_Republik_Indonesia.svg/120px-Logo_Kementerian_Dalam_Negeri_Republik_Indonesia.svg.png", name: "Kemendagri" },
+        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Logo_Kemenpan.svg/120px-Logo_Kemenpan.svg.png", name: "KemenPAN RB" },
+        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Logo_of_the_Ministry_of_State-Owned_Enterprises_of_the_Republic_of_Indonesia_%28Indonesian_version_2020%29.svg/120px-Logo_of_the_Ministry_of_State-Owned_Enterprises_of_the_Republic_of_Indonesia_%28Indonesian_version_2020%29.svg.png", name: "Kemen BUMN" },
+      ].map(item => (
+        <div key={item.name} style={{ background: "#f8fafc", border: "1px solid #f1f5f9", borderRadius: 8, padding: "8px 4px 6px", display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+          <img src={item.src} alt={item.name} style={{ width: 32, height: 32, objectFit: "contain" }} />
+          <span style={{ fontSize: 6, color: "#64748b", textAlign: "center", lineHeight: 1.3, fontWeight: 500 }}>{item.name}</span>
+        </div>
+      ))}
+    </div>
+  </div>
 
-              <div style={{ background: "white", border: "1.5px solid #ede9fe", borderRadius: 10, padding: 12 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 6 }}>
-                  <span style={{ fontSize: 11 }}>🎯</span>
-                  <span style={{ fontSize: 7.5, fontWeight: 700, color: "#7c3aed", textTransform: "uppercase", letterSpacing: "0.1em" }}>Paket SKB</span>
-                </div>
-                <p style={{ fontSize: 9, color: "#64748b", margin: "0 0 6px", lineHeight: 1.5 }}>Sesuai formasi & bidang jabatan</p>
-                <div style={{ background: "#f5f3ff", borderRadius: 6, padding: "4px 8px", textAlign: "center", marginBottom: 4 }}>
-                  <span style={{ fontSize: 12, fontWeight: 800, color: "#7c3aed" }}>100 Tryout</span>
-                </div>
-                <div style={{ background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 6, padding: "4px 8px", textAlign: "center" }}>
-                  <span style={{ fontSize: 9, fontWeight: 700, color: "#b45309" }}>Rp 15.000 / TO</span>
-                </div>
-              </div>
-            </div>
+  {/* Lembaga Independen */}
+  <div style={{ background: "white", border: "1px solid #e8edf5", borderRadius: 10, padding: "10px 12px" }}>
+    <div style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 8 }}>
+      <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#6366f1" }} />
+      <span style={{ fontSize: 8, fontWeight: 700, color: "#6366f1", textTransform: "uppercase", letterSpacing: "0.08em" }}>Lembaga Independen</span>
+    </div>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 5 }}>
+      {[
+        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Lambang_BPS.svg/120px-Lambang_BPS.svg.png", name: "BPS" },
+        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Logo_BKN.svg/120px-Logo_BKN.svg.png", name: "BKN" },
+        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Logo_KPK.svg/120px-Logo_KPK.svg.png", name: "KPK" },
+        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Logo_OJK.svg/120px-Logo_OJK.svg.png", name: "OJK" },
+        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Logo_BPKP.png/120px-Logo_BPKP.png", name: "BPKP" },
+        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Logo_BPK_RI.svg/120px-Logo_BPK_RI.svg.png", name: "BPK RI" },
+        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/ANRI_logo.svg/120px-ANRI_logo.svg.png", name: "ANRI" },
+        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Logo_LAN_RI.png/120px-Logo_LAN_RI.png", name: "LAN RI" },
+      ].map(item => (
+        <div key={item.name} style={{ background: "#f8fafc", border: "1px solid #f1f5f9", borderRadius: 8, padding: "8px 4px 6px", display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+          <img src={item.src} alt={item.name} style={{ width: 32, height: 32, objectFit: "contain" }} />
+          <span style={{ fontSize: 6, color: "#64748b", textAlign: "center", lineHeight: 1.3, fontWeight: 500 }}>{item.name}</span>
+        </div>
+      ))}
+    </div>
+  </div>
 
-            {/* Free Trial */}
-            <div style={{ background: "#172554", borderRadius: 10, padding: "10px 14px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "relative", overflow: "hidden" }}>
-              <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.05 }} viewBox="0 0 400 50" preserveAspectRatio="xMidYMid slice">
-                <defs><pattern id="dotsft" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="white" /></pattern></defs>
-                <rect width="400" height="50" fill="url(#dotsft)" />
-              </svg>
-              <div style={{ position: "relative", zIndex: 1 }}>
-                <div style={{ fontSize: 7.5, fontWeight: 700, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 2 }}>Free Trial SKD — Gratis</div>
-                <div style={{ fontSize: 14, fontWeight: 800, color: "#fbbf24" }}>TWK · TIU · TKP</div>
-                <div style={{ fontSize: 8, color: "rgba(255,255,255,0.35)", marginTop: 1 }}>Tidak perlu kartu kredit</div>
-              </div>
-              <Link href="/tryout/free-trial" style={{ position: "relative", zIndex: 1, background: "#fbbf24", color: "#78350f", padding: "7px 13px", borderRadius: 7, fontSize: 10, fontWeight: 700, textDecoration: "none", whiteSpace: "nowrap" }}>Coba →</Link>
-            </div>
+  {/* Pemda */}
+  <div style={{ background: "white", border: "1px solid #e8edf5", borderRadius: 10, padding: "10px 12px" }}>
+    <div style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 8 }}>
+      <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#16a34a" }} />
+      <span style={{ fontSize: 8, fontWeight: 700, color: "#16a34a", textTransform: "uppercase", letterSpacing: "0.08em" }}>Pemerintah Daerah Favorit</span>
+    </div>
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 5 }}>
+      {[
+        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Lambang_DKI_Jakarta.svg/120px-Lambang_DKI_Jakarta.svg.png", name: "DKI Jakarta" },
+        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/West_Java_Coat_of_Arms.svg/120px-West_Java_Coat_of_Arms.svg.png", name: "Jawa Barat" },
+        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Lambang_Provinsi_Jawa_Tengah.svg/120px-Lambang_Provinsi_Jawa_Tengah.svg.png", name: "Jawa Tengah" },
+        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/East_Java_Coat_of_Arms.svg/120px-East_Java_Coat_of_Arms.svg.png", name: "Jawa Timur" },
+        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Lambang_Kota_Surabaya.svg/120px-Lambang_Kota_Surabaya.svg.png", name: "Kota Surabaya" },
+        { src: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Lambang_Kota_Bandung.svg/120px-Lambang_Kota_Bandung.svg.png", name: "Kota Bandung" },
+      ].map(item => (
+        <div key={item.name} style={{ background: "#f8fafc", border: "1px solid #f1f5f9", borderRadius: 8, padding: "8px 4px 6px", display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+          <img src={item.src} alt={item.name} style={{ width: 32, height: 32, objectFit: "contain" }} />
+          <span style={{ fontSize: 6, color: "#64748b", textAlign: "center", lineHeight: 1.3, fontWeight: 500 }}>{item.name}</span>
+        </div>
+      ))}
+    </div>
+  </div>
 
-            {/* Ebook */}
-            <div style={{ background: "#f0fdf4", border: "1.5px solid #bbf7d0", borderRadius: 10, padding: "9px 12px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ width: 28, height: 28, borderRadius: 7, background: "#dcfce7", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, flexShrink: 0 }}>📚</div>
-                <div>
-                  <div style={{ fontSize: 10, fontWeight: 700, color: "#166534" }}>Ebook Panduan SKD & SKB</div>
-                  <div style={{ fontSize: 8, color: "#16a34a" }}>Download gratis sekarang</div>
-                </div>
-              </div>
-              <Link href="/ebook" style={{ background: "#22c55e", color: "white", padding: "5px 11px", borderRadius: 6, fontSize: 9, fontWeight: 700, textDecoration: "none", flexShrink: 0 }}>↓ Download</Link>
-            </div>
+  {/* Tagline bawah */}
+  <div style={{ background: "#172554", borderRadius: 8, padding: "10px 14px", textAlign: "center" }}>
+    <div style={{ fontSize: 11, fontWeight: 700, color: "#fbbf24", marginBottom: 2 }}>500+ Instansi membuka formasi CPNS</div>
+    <div style={{ fontSize: 9, color: "rgba(255,255,255,0.4)" }}>Persiapkan dirimu sekarang — sebelum terlambat</div>
+  </div>
 
-          </div>
-          {/* END RIGHT */}
+</div>
+{/* END RIGHT */}
 
         </div>
         {/* END Hero content */}
