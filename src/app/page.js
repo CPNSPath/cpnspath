@@ -54,36 +54,10 @@ export default function Home() {
         <div style={{ position: "absolute", bottom: -60, left: "35%", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, rgba(251,191,36,0.1) 0%, transparent 70%)" }} />
         <div style={{ position: "absolute", top: 80, left: -40, width: 220, height: 220, borderRadius: "50%", background: "radial-gradient(circle, rgba(16,185,129,0.06) 0%, transparent 70%)" }} />
 
-        {/* Navbar transparan */}
-        <nav style={{ position: "relative", zIndex: 10, padding: "0 48px", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.85)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(23,37,84,0.06)", flexShrink: 0 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ background: "#172554", borderRadius: 9, width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <svg width="20" height="20" viewBox="0 0 36 36" fill="none">
-                <rect x="4" y="6" width="11" height="22" rx="2" fill="#fbbf24" />
-                <rect x="17" y="6" width="11" height="22" rx="2" fill="white" opacity="0.9" />
-                <line x1="16" y1="6" x2="16" y2="28" stroke="#172554" strokeWidth="1.5" />
-                <polyline points="19,15 21,19 27,12" fill="none" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-            <div>
-              <div style={{ fontSize: 13, fontWeight: 800, color: "#172554", letterSpacing: "2.5px", lineHeight: 1.1 }}>CPNS</div>
-              <div style={{ fontSize: 8, color: "#fbbf24", letterSpacing: "5px", lineHeight: 1 }}>PATH</div>
-            </div>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
-            <Link href="/tryout/free-trial" style={{ fontSize: 11, color: "#64748b", letterSpacing: "1.5px", fontWeight: 500, textDecoration: "none" }}>TRYOUT</Link>
-            <Link href="/ebook" style={{ fontSize: 11, color: "#64748b", letterSpacing: "1.5px", fontWeight: 500, textDecoration: "none" }}>EBOOK</Link>
-            <Link href="/price" style={{ fontSize: 11, color: "#64748b", letterSpacing: "1.5px", fontWeight: 500, textDecoration: "none" }}>PRICING</Link>
-            <div style={{ width: 1, height: 16, background: "#e2e8f0" }} />
-            <div style={{ display: "flex", gap: 8 }}>
-              <Link href="/login" style={{ border: "1px solid #e2e8f0", color: "#334155", padding: "7px 18px", borderRadius: 8, fontSize: 12, fontWeight: 500, textDecoration: "none" }}>Masuk</Link>
-              <Link href="/register" style={{ background: "#172554", color: "white", padding: "7px 18px", borderRadius: 8, fontSize: 12, fontWeight: 700, textDecoration: "none" }}>Daftar</Link>
-            </div>
-          </div>
-        </nav>
+        <Navbar transparent />
 
         {/* Hero content */}
-        <div style={{ position: "relative", zIndex: 1, flex: 1, padding: "0 48px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 48 }}>
+        <div style={{ position: "relative", zIndex: 1, flex: 1, padding: "80px 48px 0", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 48 }}>
 
           {/* Left */}
           <div style={{ flex: 1, maxWidth: 500 }}>
@@ -201,36 +175,8 @@ export default function Home() {
         <div style={{ position: "absolute", top: -60, right: -60, width: 280, height: 280, borderRadius: "50%", background: "radial-gradient(circle, rgba(251,191,36,0.08) 0%, transparent 70%)" }} />
         <div style={{ position: "absolute", bottom: -40, left: -40, width: 240, height: 240, borderRadius: "50%", background: "radial-gradient(circle, rgba(99,102,241,0.07) 0%, transparent 70%)" }} />
 
-        {/* Navbar putih */}
-        <nav style={{ position: "relative", zIndex: 10, background: "rgba(255,255,255,0.9)", borderBottom: "1px solid #f1f5f9", padding: "0 48px", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between", flexShrink: 0 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ background: "#172554", borderRadius: 9, width: 36, height: 36, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <svg width="20" height="20" viewBox="0 0 36 36" fill="none">
-                <rect x="4" y="6" width="11" height="22" rx="2" fill="#fbbf24" />
-                <rect x="17" y="6" width="11" height="22" rx="2" fill="white" opacity="0.9" />
-                <line x1="16" y1="6" x2="16" y2="28" stroke="#172554" strokeWidth="1.5" />
-                <polyline points="19,15 21,19 27,12" fill="none" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-            <div>
-              <div style={{ fontSize: 13, fontWeight: 800, color: "#172554", letterSpacing: "2.5px", lineHeight: 1.1 }}>CPNS</div>
-              <div style={{ fontSize: 8, color: "#fbbf24", letterSpacing: "5px", lineHeight: 1 }}>PATH</div>
-            </div>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 28 }}>
-            <Link href="/tryout/free-trial" style={{ fontSize: 11, color: "#64748b", letterSpacing: "1.5px", fontWeight: 500, textDecoration: "none" }}>TRYOUT</Link>
-            <Link href="/ebook" style={{ fontSize: 11, color: "#64748b", letterSpacing: "1.5px", fontWeight: 500, textDecoration: "none" }}>EBOOK</Link>
-            <Link href="/price" style={{ fontSize: 11, color: "#64748b", letterSpacing: "1.5px", fontWeight: 500, textDecoration: "none" }}>PRICING</Link>
-            <div style={{ width: 1, height: 16, background: "#e2e8f0" }} />
-            <div style={{ display: "flex", gap: 8 }}>
-              <Link href="/login" style={{ border: "1px solid #e2e8f0", color: "#334155", padding: "7px 18px", borderRadius: 8, fontSize: 12, fontWeight: 500, textDecoration: "none" }}>Masuk</Link>
-              <Link href="/register" style={{ background: "#172554", color: "white", padding: "7px 18px", borderRadius: 8, fontSize: 12, fontWeight: 700, textDecoration: "none" }}>Daftar</Link>
-            </div>
-          </div>
-        </nav>
-
         {/* Content halaman 2 */}
-        <div style={{ position: "relative", zIndex: 1, flex: 1, padding: "0 48px", display: "flex", flexDirection: "column", justifyContent: "center", gap: 28 }}>
+        <div style={{ position: "relative", zIndex: 1, flex: 1, padding: "80px 48px 0", display: "flex", flexDirection: "column", justifyContent: "center", gap: 28 }}>
 
           <div style={{ textAlign: "center" }}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "white", border: "1px solid #e0e7ff", borderRadius: 999, padding: "4px 14px", marginBottom: 10, boxShadow: "0 2px 6px rgba(99,102,241,0.08)" }}>
