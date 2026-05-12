@@ -104,56 +104,65 @@ export default function Home() {
           </div>
 
           {/* Right cards */}
-          <div style={{ flexShrink: 0, width: 340, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <div style={{ flexShrink: 0, width: 420, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
 
             {/* SKD */}
-            <div style={{ background: "white", border: "1px solid #e0e7ff", borderRadius: 14, padding: 16, boxShadow: "0 2px 12px rgba(99,102,241,0.08)" }}>
-              <div style={{ fontSize: 9, fontWeight: 700, color: "#6366f1", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 12 }}>📋 Passing Grade SKD</div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                {[{ label: "TWK", val: "≥ 65" }, { label: "TIU", val: "≥ 80" }, { label: "TKP", val: "≥ 166" }].map((item, i) => (
+            <div style={{ background: "white", border: "2px solid #e0e7ff", borderRadius: 16, padding: 20, boxShadow: "0 4px 16px rgba(99,102,241,0.1)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 14 }}>
+                <span style={{ fontSize: 16 }}>📋</span>
+                <span style={{ fontSize: 10, fontWeight: 700, color: "#6366f1", textTransform: "uppercase", letterSpacing: "0.12em" }}>Passing Grade SKD</span>
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {[{ label: "TWK", val: "≥ 65", color: "#3b82f6" }, { label: "TIU", val: "≥ 80", color: "#8b5cf6" }, { label: "TKP", val: "≥ 166", color: "#22c55e" }].map((item, i) => (
                   <div key={item.label}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                      <span style={{ fontSize: 12, color: "#64748b" }}>{item.label}</span>
-                      <span style={{ fontSize: 14, fontWeight: 800, color: "#172554" }}>{item.val}</span>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <div style={{ width: 8, height: 8, borderRadius: "50%", background: item.color }} />
+                        <span style={{ fontSize: 13, color: "#64748b", fontWeight: 500 }}>{item.label}</span>
+                      </div>
+                      <span style={{ fontSize: 16, fontWeight: 800, color: "#172554" }}>{item.val}</span>
                     </div>
-                    {i < 2 && <div style={{ height: 0.5, background: "#f1f5f9", marginTop: 8 }} />}
+                    {i < 2 && <div style={{ height: 1, background: "#f1f5f9", marginTop: 10 }} />}
                   </div>
                 ))}
               </div>
             </div>
 
             {/* SKB */}
-            <div style={{ background: "white", border: "1px solid #ede9fe", borderRadius: 14, padding: 16, boxShadow: "0 2px 12px rgba(124,58,237,0.07)" }}>
-              <div style={{ fontSize: 9, fontWeight: 700, color: "#7c3aed", textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 10 }}>🎯 Paket SKB</div>
-              <p style={{ fontSize: 12, color: "#64748b", margin: "0 0 10px", lineHeight: 1.5 }}>Sesuai formasi & jabatan</p>
-              <div style={{ background: "#f5f3ff", borderRadius: 7, padding: "5px 8px", textAlign: "center", marginBottom: 6 }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: "#7c3aed" }}>100 Tryout</span>
+            <div style={{ background: "white", border: "2px solid #ede9fe", borderRadius: 16, padding: 20, boxShadow: "0 4px 16px rgba(124,58,237,0.08)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 14 }}>
+                <span style={{ fontSize: 16 }}>🎯</span>
+                <span style={{ fontSize: 10, fontWeight: 700, color: "#7c3aed", textTransform: "uppercase", letterSpacing: "0.12em" }}>Paket SKB</span>
               </div>
-              <div style={{ background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 7, padding: "5px 8px", textAlign: "center" }}>
-                <span style={{ fontSize: 11, fontWeight: 600, color: "#b45309" }}>Rp 15.000/TO</span>
+              <p style={{ fontSize: 12, color: "#64748b", margin: "0 0 12px", lineHeight: 1.6 }}>Sesuai formasi & bidang jabatan yang kamu pilih</p>
+              <div style={{ background: "#f5f3ff", border: "1px solid #ede9fe", borderRadius: 8, padding: "8px 12px", textAlign: "center", marginBottom: 8 }}>
+                <span style={{ fontSize: 14, fontWeight: 800, color: "#7c3aed" }}>100 Tryout</span>
+              </div>
+              <div style={{ background: "#fffbeb", border: "1px solid #fde68a", borderRadius: 8, padding: "8px 12px", textAlign: "center" }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#b45309" }}>Rp 15.000 / TO</span>
               </div>
             </div>
 
-            {/* Free trial */}
-            <div style={{ gridColumn: "span 2", background: "#172554", borderRadius: 14, padding: "14px 18px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            {/* Free trial full width */}
+            <div style={{ gridColumn: "span 2", background: "#172554", borderRadius: 16, padding: "18px 22px", display: "flex", alignItems: "center", justifyContent: "space-between", border: "2px solid #1e3a8a" }}>
               <div>
-                <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 4 }}>Free Trial SKD</div>
-                <div style={{ fontSize: 16, fontWeight: 800, color: "#fbbf24" }}>TWK · TIU · TKP</div>
-                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", marginTop: 3 }}>Gratis, tanpa kartu kredit</div>
+                <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.4)", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 6 }}>🎯 Free Trial SKD</div>
+                <div style={{ fontSize: 18, fontWeight: 800, color: "#fbbf24", letterSpacing: "0.05em" }}>TWK · TIU · TKP</div>
+                <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 4 }}>Gratis, tanpa kartu kredit</div>
               </div>
-              <Link href="/tryout/free-trial" style={{ background: "#fbbf24", color: "#78350f", padding: "8px 14px", borderRadius: 8, fontSize: 12, fontWeight: 700, textDecoration: "none" }}>Coba →</Link>
+              <Link href="/tryout/free-trial" style={{ background: "#fbbf24", color: "#78350f", padding: "10px 20px", borderRadius: 10, fontSize: 13, fontWeight: 700, textDecoration: "none", flexShrink: 0 }}>Coba Sekarang →</Link>
             </div>
 
-            {/* Ebook */}
-            <div style={{ gridColumn: "span 2", background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: 14, padding: "13px 18px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <span style={{ fontSize: 22 }}>📚</span>
-                <div>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: "#166534" }}>Ebook Panduan SKD & SKB</div>
-                  <div style={{ fontSize: 11, color: "#16a34a" }}>Download gratis sekarang</div>
+            {/* Ebook full width */}
+            <div style={{ gridColumn: "span 2", background: "#f0fdf4", border: "2px solid #bbf7d0", borderRadius: 16, padding: "16px 22px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 14, minWidth: 0 }}>
+                <span style={{ fontSize: 28, flexShrink: 0 }}>📚</span>
+                <div style={{ minWidth: 0 }}>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: "#166534", marginBottom: 3 }}>Ebook Panduan SKD & SKB</div>
+                  <div style={{ fontSize: 12, color: "#16a34a" }}>Download gratis sekarang</div>
                 </div>
               </div>
-              <Link href="/ebook" style={{ background: "#22c55e", color: "white", padding: "7px 14px", borderRadius: 7, fontSize: 11, fontWeight: 700, textDecoration: "none" }}>↓ Download</Link>
+              <Link href="/ebook" style={{ background: "#22c55e", color: "white", padding: "10px 18px", borderRadius: 10, fontSize: 12, fontWeight: 700, textDecoration: "none", flexShrink: 0, whiteSpace: "nowrap" }}>↓ Download</Link>
             </div>
 
           </div>
