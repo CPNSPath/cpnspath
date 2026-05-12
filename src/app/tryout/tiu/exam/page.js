@@ -425,10 +425,10 @@ if (checking) {
 }
 
 return (
-  <div style={{ minHeight: "100vh", background: "#F8FAFC", display: "flex", flexDirection: "row", height: "100vh", overflow: "hidden" }}>
+  <div className="exam-wrap" style={{ minHeight: "100vh", background: "#F8FAFC", display: "flex", flexDirection: "row", height: "100vh", overflow: "hidden" }}>
 
     {/* Area Soal */}
-    <div style={{ flex: 1, display: "flex", flexDirection: "column", background: "#F8FAFC", overflowY: "auto", minWidth: 0 }}>
+    <div className="exam-question" style={{ flex: 1, display: "flex", flexDirection: "column", background: "#F8FAFC", overflowY: "auto", minWidth: 0 }}>
 
       {/* Header */}
       <div style={{ background: "#fff", borderBottom: "1px solid #e2e8f0", padding: "16px 32px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 10 }}>
@@ -537,7 +537,7 @@ return (
     </div>
 
     {/* Sidebar */}
-    <div style={{ width: "280px", flexShrink: 0, background: "#fff", borderLeft: "1px solid #e2e8f0", display: "flex", flexDirection: "column", padding: "24px", overflowY: "auto" }}>
+    <div className="exam-sidebar" style={{ width: "280px", flexShrink: 0, background: "#fff", borderLeft: "1px solid #e2e8f0", display: "flex", flexDirection: "column", padding: "24px", overflowY: "auto" }}>
 
       {/* Timer besar */}
       <div style={{ background: time <= 300 ? "rgba(220,38,38,0.06)" : "#f8fafc", border: `1px solid ${time <= 300 ? "rgba(220,38,38,0.2)" : "#e2e8f0"}`, borderRadius: 12, padding: "16px", marginBottom: 16, textAlign: "center" }}>
@@ -600,6 +600,13 @@ return (
       </div>
     </div>
 
+  <style>{`
+    @media (max-width: 768px) {
+      .exam-wrap { flex-direction: column !important; height: auto !important; overflow: visible !important; min-height: 100vh; }
+      .exam-question { overflow-y: visible !important; height: auto !important; }
+      .exam-sidebar { width: 100% !important; border-left: none !important; border-top: 1px solid #e2e8f0 !important; }
+    }
+  `}</style>
   </div>
 )
 

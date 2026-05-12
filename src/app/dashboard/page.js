@@ -143,7 +143,7 @@ export default function Dashboard() {
       </aside>
 
       {/* Main */}
-      <div style={{ flex: 1, minWidth: 0, marginLeft: 240 }} className="lg:ml-[240px]">
+      <div style={{ flex: 1, minWidth: 0, marginLeft: 240 }} className="lg:ml-[240px] dashboard-main">
 
         {/* Mobile header */}
         <header style={{ background: "#fff", borderBottom: "1px solid #e2e8f0", height: 56, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 16px", position: "sticky", top: 0, zIndex: 30 }} className="lg:hidden">
@@ -196,7 +196,7 @@ export default function Dashboard() {
           </div>
         </header>
 
-        <main style={{ padding: "32px 32px" }}>
+        <main className="dashboard-content" style={{ padding: "32px 32px" }}>
 
           {/* Greeting */}
           <div style={{ marginBottom: 32 }}>
@@ -209,7 +209,7 @@ export default function Dashboard() {
           </div>
 
           {/* Stats */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16, marginBottom: 32 }}>
+          <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16, marginBottom: 32 }}>
             {[
               { label: "Tryout Selesai", value: results.length, color: "#172554", bg: "rgba(23,37,84,0.06)" },
               { label: "Rata-rata Skor", value: results.length > 0 ? avgScore : "—", color: "#16a34a", bg: "rgba(22,163,74,0.06)" },
@@ -229,7 +229,7 @@ export default function Dashboard() {
               <h2 style={{ fontSize: "1rem", fontWeight: 700, color: "#0f172a", margin: 0 }}>📊 Progress Free Trial SKD</h2>
               <Link href="/tryout/free-trial/skd" style={{ fontSize: "0.8rem", color: "#172554", fontWeight: 600, textDecoration: "none" }}>Lihat semua →</Link>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
+            <div className="progress-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
               {[
                 { code: "TWK", name: "Tes Wawasan Kebangsaan", result: twkResult, passing: 65, href: "/tryout/twk" },
                 { code: "TIU", name: "Tes Intelegensi Umum", result: tiuResult, passing: 80, href: "/tryout/tiu" },
@@ -352,6 +352,16 @@ export default function Dashboard() {
 
         </main>
       </div>
+      <style>{`
+        @media (max-width: 1024px) {
+          .dashboard-main { margin-left: 0 !important; }
+          .dashboard-content { padding: 16px !important; }
+        }
+        @media (max-width: 768px) {
+          .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+          .progress-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </div>
   )
 }

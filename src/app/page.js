@@ -56,10 +56,10 @@ export default function Home() {
         <Navbar />
 
         {/* Hero content */}
-        <div style={{ position: "relative", zIndex: 1, flex: 1, display: "flex", alignItems: "stretch" }}>
+        <div className="hero-wrap" style={{ position: "relative", zIndex: 1, flex: 1, display: "flex", alignItems: "stretch" }}>
 
           {/* LEFT */}
-          <div style={{ width: "50%", padding: "32px 40px 32px 48px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <div className="hero-left" style={{ width: "50%", padding: "32px 40px 32px 48px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: 999, padding: "4px 12px", marginBottom: 12, width: "fit-content" }}>
               <div style={{ width: 5, height: 5, borderRadius: "50%", background: "#3b82f6" }} />
               <span style={{ fontSize: 10, fontWeight: 600, color: "#1d4ed8" }}>Persiapan CPNS Terpercaya</span>
@@ -99,7 +99,7 @@ export default function Home() {
           </div>
 
           {/* DIVIDER */}
-          <div style={{ width: 1, background: "linear-gradient(to bottom, transparent, #e2e8f0 20%, #e2e8f0 80%, transparent)", margin: "0", flexShrink: 0, position: "relative" }}>
+          <div className="hero-divider" style={{ width: 1, background: "linear-gradient(to bottom, transparent, #e2e8f0 20%, #e2e8f0 80%, transparent)", margin: "0", flexShrink: 0, position: "relative" }}>
             <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 28, height: 28, borderRadius: "50%", background: "white", border: "1px solid #e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 2px 6px rgba(0,0,0,0.06)" }}>
               <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
                 <path d="M8 2v12M2 8h12" stroke="#cbd5e1" strokeWidth="1.5" strokeLinecap="round"/>
@@ -108,7 +108,7 @@ export default function Home() {
           </div>
 
           {/* RIGHT */}
-<div style={{ flex: 1, padding: "40px 32px 32px 24px", display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 10 }}>
+<div className="hero-right" style={{ flex: 1, padding: "40px 32px 32px 24px", display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 10 }}>
 
   {/* Header */}
   <div style={{ textAlign: "center" }}>
@@ -335,6 +335,14 @@ export default function Home() {
 </div>
 {/* END HALAMAN 2 */}
 
+      <style>{`
+        @media (max-width: 768px) {
+          .hero-wrap { flex-direction: column !important; }
+          .hero-left { width: 100% !important; padding: 28px 20px !important; }
+          .hero-divider { display: none !important; }
+          .hero-right { width: 100% !important; padding: 20px 20px 32px !important; }
+        }
+      `}</style>
     </div>
   )
 }
