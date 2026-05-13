@@ -28,6 +28,8 @@ export default function GlobalLeaderboard() {
 
       if (error) { console.error(error); setLoading(false); return }
 
+      console.log("results raw:", results)
+      console.log("results length:", results?.length)
       const list = (results || []).map(r => ({
         user_id: r.user_id,
         name: r.users?.name || r.users?.email?.split("@")[0] || "User",
