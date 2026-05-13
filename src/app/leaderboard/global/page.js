@@ -22,22 +22,15 @@ export default function GlobalLeaderboard() {
 
       const { data: results, error } = await supabase
         .from("results")
-        .select("user_id, score, tryout_slug, twk, tiu, tkp")
+        .select("user_id, score, twk, tiu, tkp, users(id, email, name)")
         .eq("tryout_slug", toSlug)
         .order("score", { ascending: false })
 
       if (error) { console.error(error); setLoading(false); return }
 
-      const { data: users } = await supabase
-        .from("users")
-        .select("id, email, name")
-
-      const userMap = {}
-      users?.forEach(u => { userMap[u.id] = u })
-
       const list = (results || []).map(r => ({
         user_id: r.user_id,
-        name: userMap[r.user_id]?.name || userMap[r.user_id]?.email?.split("@")[0] || "User",
+        name: r.users?.name || r.users?.email?.split("@")[0] || "User",
         totalScore: r.score || 0,
         twk: r.twk || 0,
         tiu: r.tiu || 0,
