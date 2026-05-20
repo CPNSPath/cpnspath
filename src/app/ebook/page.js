@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
 import { supabase } from "@/lib/supabase"
+import DashboardLayout from "@/components/DashboardLayout"
 
 export default function EbookPage() {
   const router = useRouter()
@@ -60,58 +59,47 @@ export default function EbookPage() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#F8FAFC", flexDirection: "column", gap: 16 }}>
-        <div style={{ width: 40, height: 40, border: "4px solid #e2e8f0", borderTop: "4px solid #172554", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
-        <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
-      </div>
+      <DashboardLayout>
+        <div style={{ textAlign: "center", padding: 80, color: "#64748b" }}>Memuat ebook...</div>
+      </DashboardLayout>
     )
   }
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "#F8FAFC" }}>
-      <Navbar />
+    <DashboardLayout>
+      {/* Header */}
+      <div style={{ marginBottom: 32 }}>
+        <span style={{ display: "inline-block", padding: "4px 14px", borderRadius: 999, background: "rgba(23,37,84,0.08)", color: "#172554", fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12 }}>Perpustakaan Digital</span>
+        <h1 style={{ fontSize: "1.75rem", fontWeight: 700, color: "#0f172a", marginBottom: 4, letterSpacing: "-0.02em" }}>📚 Ebook CPNS</h1>
+        <p style={{ fontSize: "0.9rem", color: "#64748b" }}>Panduan lengkap SKD & SKB — gratis dan premium</p>
+      </div>
 
-      <section style={{ background: "#172554", padding: "56px 24px 40px", position: "relative", overflow: "hidden", marginTop: "72px" }}>
-        <div style={{ position: "absolute", top: -80, right: -80, width: 260, height: 260, borderRadius: "50%", background: "rgba(255,255,255,0.04)" }} />
-        <div style={{ maxWidth: 800, margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <span style={{ display: "inline-block", padding: "4px 14px", borderRadius: 999, background: "rgba(251,191,36,0.15)", color: "#fbbf24", fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12 }}>Perpustakaan Digital</span>
-          <h1 style={{ fontSize: "2rem", fontWeight: 700, color: "#fff", marginBottom: 8, letterSpacing: "-0.02em" }}>📚 Ebook CPNS</h1>
-          <p style={{ fontSize: "0.9rem", color: "#93C5FD" }}>Panduan lengkap SKD & SKB — gratis dan premium</p>
+      {/* Ebook SKD */}
+      <div style={{ marginBottom: 40 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+          <div style={{ width: 4, height: 24, background: "#172554", borderRadius: 2 }} />
+          <h2 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#0f172a", margin: 0 }}>Ebook SKD</h2>
         </div>
-      </section>
-
-      <section style={{ flex: 1, padding: "32px 24px 48px" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto" }}>
-
-          <div style={{ marginBottom: 40 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
-              <div style={{ width: 4, height: 24, background: "#172554", borderRadius: 2 }} />
-              <h2 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#0f172a", margin: 0 }}>Ebook SKD</h2>
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 16 }}>
-              {skdEbooks.map(ebook => (
-                <EbookCard key={ebook.id} ebook={ebook} owned={ebook.is_free || purchases.includes(ebook.id)} onDownload={() => handleDownload(ebook)} onBeli={() => handleBeli(ebook)} downloading={downloadLoading === ebook.id} />
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
-              <div style={{ width: 4, height: 24, background: "#7c3aed", borderRadius: 2 }} />
-              <h2 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#0f172a", margin: 0 }}>Ebook SKB</h2>
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 16 }}>
-              {skbEbooks.map(ebook => (
-                <EbookCard key={ebook.id} ebook={ebook} owned={ebook.is_free || purchases.includes(ebook.id)} onDownload={() => handleDownload(ebook)} onBeli={() => handleBeli(ebook)} downloading={downloadLoading === ebook.id} />
-              ))}
-            </div>
-          </div>
-
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 16 }}>
+          {skdEbooks.map(ebook => (
+            <EbookCard key={ebook.id} ebook={ebook} owned={ebook.is_free || purchases.includes(ebook.id)} onDownload={() => handleDownload(ebook)} onBeli={() => handleBeli(ebook)} downloading={downloadLoading === ebook.id} />
+          ))}
         </div>
-      </section>
+      </div>
 
-      <Footer />
-    </div>
+      {/* Ebook SKB */}
+      <div>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+          <div style={{ width: 4, height: 24, background: "#7c3aed", borderRadius: 2 }} />
+          <h2 style={{ fontSize: "1.1rem", fontWeight: 700, color: "#0f172a", margin: 0 }}>Ebook SKB</h2>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 16 }}>
+          {skbEbooks.map(ebook => (
+            <EbookCard key={ebook.id} ebook={ebook} owned={ebook.is_free || purchases.includes(ebook.id)} onDownload={() => handleDownload(ebook)} onBeli={() => handleBeli(ebook)} downloading={downloadLoading === ebook.id} />
+          ))}
+        </div>
+      </div>
+    </DashboardLayout>
   )
 }
 

@@ -1,16 +1,16 @@
 "use client"
 
-import { useState } from "react"
+import { useState, use } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
+import DashboardLayout from "@/components/DashboardLayout"
 import { supabase } from "@/lib/supabase"
 
 export default function BeliTOPage({ params }) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const toNumber = params.to_number
+  const resolvedParams = use(params)
+  const toNumber = resolvedParams.to_number
 
   async function handleBeli() {
     setLoading(true)
@@ -26,7 +26,7 @@ export default function BeliTOPage({ params }) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${session.access_token}`,
         },
-        body: JSON.stringify({ packageSlug: "skd", toNumber: parseInt(toNumber) }),
+        body: JSON.stringify({ packageSlug: "skd", toNumber: parseInt(toNumber, 10) }),
       })
 
       const data = await res.json()
@@ -50,20 +50,18 @@ export default function BeliTOPage({ params }) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
-      <Navbar />
+    <DashboardLayout>
+      {/* Back link + header */}
+      <div style={{ marginBottom: 24 }}>
+        <Link href={`/tryout/paket-to/${toNumber}`} style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "4px 14px", borderRadius: 999, background: "#f1f5f9", color: "#475569", fontSize: "0.75rem", fontWeight: 500, marginBottom: 12, textDecoration: "none" }}>
+          ← Kembali ke TO #{toNumber}
+        </Link>
+        <h1 style={{ fontSize: "1.75rem", fontWeight: 700, color: "#0f172a", marginBottom: 4, letterSpacing: "-0.02em" }}>Beli TO SKD #{toNumber}</h1>
+        <p style={{ fontSize: "0.9rem", color: "#64748b" }}>Akses penuh TWK + TIU + TKP untuk tryout ini</p>
+      </div>
 
-      <section style={{ background: "#172554", padding: "56px 24px", position: "relative", overflow: "hidden", marginTop: "72px" }}>
-        <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-          <Link href={`/tryout/paket-to/${toNumber}`} style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "4px 14px", borderRadius: 999, background: "rgba(255,255,255,0.1)", color: "#93C5FD", fontSize: "0.75rem", fontWeight: 500, marginBottom: 12, textDecoration: "none" }}>
-            ← Kembali ke TO #{toNumber}
-          </Link>
-          <h1 style={{ fontSize: "2rem", fontWeight: 700, color: "#fff", marginBottom: 8 }}>Beli TO SKD #{toNumber}</h1>
-          <p style={{ fontSize: "0.95rem", color: "#93C5FD" }}>Akses penuh TWK + TIU + TKP untuk tryout ini</p>
-        </div>
-      </section>
-
-      <section style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "48px 24px" }}>
+      {/* Card beli */}
+      <div style={{ display: "flex", justifyContent: "center" }}>
         <div style={{ background: "#fff", borderRadius: 20, overflow: "hidden", width: "100%", maxWidth: 400, border: "1px solid #e2e8f0", boxShadow: "0 4px 6px rgba(0,0,0,0.05)" }}>
           <div style={{ background: "#0f1d3a", padding: "24px 20px", textAlign: "center" }}>
             <span style={{ fontSize: "2.5rem", display: "block", marginBottom: 8 }}>📋</span>
@@ -92,9 +90,7 @@ export default function BeliTOPage({ params }) {
             </button>
           </div>
         </div>
-      </section>
-
-      <Footer />
-    </div>
+      </div>
+    </DashboardLayout>
   )
 }

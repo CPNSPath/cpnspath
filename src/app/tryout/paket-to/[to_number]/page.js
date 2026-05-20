@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import Link from "next/link"
-import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
+import DashboardLayout from "@/components/DashboardLayout"
 import { supabase } from "@/lib/supabase"
 
 export default function TODetailPage() {
@@ -42,20 +41,17 @@ export default function TODetailPage() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#F8FAFC", flexDirection: "column", gap: 16 }}>
-        <div style={{ width: 40, height: 40, border: "4px solid #e2e8f0", borderTop: "4px solid #172554", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
-        <p style={{ color: "#64748b", fontSize: "0.9rem" }}>Memeriksa akses...</p>
-        <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
-      </div>
+      <DashboardLayout>
+        <div style={{ textAlign: "center", padding: 80, color: "#64748b" }}>Memeriksa akses...</div>
+      </DashboardLayout>
     )
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
-      <Navbar />
-
+    <DashboardLayout>
+      {/* Banner kalau belum dibeli */}
       {!hasAccess && (
-        <div style={{ background: "#fbbf24", padding: "14px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12, marginTop: 72 }}>
+        <div style={{ background: "#fbbf24", padding: "14px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 12, borderRadius: 14, marginBottom: 24 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <span style={{ fontSize: "1.25rem" }}>🔒</span>
             <div>
@@ -69,19 +65,17 @@ export default function TODetailPage() {
         </div>
       )}
 
-      <section style={{ background: "#172554", padding: "56px 24px", position: "relative", overflow: "hidden", marginTop: hasAccess ? "72px" : "0" }}>
-        <div style={{ position: "absolute", top: -80, right: -80, width: 260, height: 260, borderRadius: "50%", background: "rgba(255,255,255,0.04)" }} />
-        <div style={{ position: "absolute", bottom: -60, left: -60, width: 160, height: 160, borderRadius: "50%", background: "rgba(251,191,36,0.05)" }} />
-        <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-          <Link href="/tryout/paket-to" style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "4px 14px", borderRadius: 999, background: "rgba(255,255,255,0.1)", color: "#93C5FD", fontSize: "0.75rem", fontWeight: 500, marginBottom: 12, textDecoration: "none" }}>
-            ← Kembali ke daftar TO
-          </Link>
-          <h1 style={{ fontSize: "2rem", fontWeight: 700, color: "#fff", marginBottom: 8, letterSpacing: "-0.02em" }}>TO SKD #{toNumber}</h1>
-          <p style={{ fontSize: "0.9rem", color: "#93C5FD" }}>TWK + TIU + TKP — 100 soal dalam 1 sesi</p>
-        </div>
-      </section>
+      {/* Back link + header */}
+      <div style={{ marginBottom: 24 }}>
+        <Link href="/tryout/paket-to" style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "4px 14px", borderRadius: 999, background: "#f1f5f9", color: "#475569", fontSize: "0.75rem", fontWeight: 500, marginBottom: 12, textDecoration: "none" }}>
+          ← Kembali ke daftar TO
+        </Link>
+        <h1 style={{ fontSize: "1.75rem", fontWeight: 700, color: "#0f172a", marginBottom: 4, letterSpacing: "-0.02em" }}>TO SKD #{toNumber}</h1>
+        <p style={{ fontSize: "0.9rem", color: "#64748b" }}>TWK + TIU + TKP — 100 soal dalam 1 sesi</p>
+      </div>
 
-      <section style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "48px 24px" }}>
+      {/* Card detail TO */}
+      <div style={{ display: "flex", justifyContent: "center" }}>
         <div style={{ width: "100%", maxWidth: 480 }}>
           <div style={{ background: "#fff", borderRadius: 20, overflow: "hidden", border: "1px solid #e2e8f0", boxShadow: "0 4px 6px rgba(0,0,0,0.05)" }}>
             <div style={{ background: "#0f1d3a", padding: "24px 20px", textAlign: "center" }}>
@@ -137,9 +131,7 @@ export default function TODetailPage() {
             )}
           </div>
         </div>
-      </section>
-
-      <Footer />
-    </div>
+      </div>
+    </DashboardLayout>
   )
 }

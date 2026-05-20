@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { supabase } from "@/lib/supabase"
 import Navbar from "@/components/Navbar"
@@ -13,6 +13,8 @@ const PACKAGES = [
     name: "Paket SKD",
     price: 15000,
     priceLabel: "Rp 15.000",
+    bundlePrice: 65000,
+    bundlePriceLabel: "Rp 65.000",
     icon: "📋",
     badge: null,
     features: ["100 Tryout SKD","TWK + TIU + TKP","Pembahasan lengkap","Akses selamanya","Analisis hasil"],
@@ -22,6 +24,8 @@ const PACKAGES = [
     name: "Paket SKB",
     price: 15000,
     priceLabel: "Rp 15.000",
+    bundlePrice: 65000,
+    bundlePriceLabel: "Rp 65.000",
     icon: "🏆",
     badge: "Terlaris",
     features: ["100 Tryout SKB","Sesuai bidang formasi","Pembahasan lengkap","Akses selamanya","Analisis hasil"],
@@ -30,26 +34,35 @@ const PACKAGES = [
 
 export default function PricePage() {
   const router = useRouter()
-  const [loading, setLoading] = useState(null)
   const [showLoginPopup, setShowLoginPopup] = useState(false)
   const [targetPackage, setTargetPackage] = useState(null)
+  const [checkingAuth, setCheckingAuth] = useState(true)
 
-  async function handleBuy(packageSlug) {
-    setLoading(packageSlug)
-    try {
+  // Auto-redirect kalo udah login
+  useEffect(() => {
+    async function check() {
       const { data: { session } } = await supabase.auth.getSession()
-      if (!session) {
-        setShowLoginPopup(true)
-        setTargetPackage(packageSlug)
-        setLoading(null)
+      if (session) {
+        router.replace("/tryout/paket-to")
         return
       }
-      router.push("/tryout/paket-to")
-    } catch (err) {
-      console.error(err)
-    } finally {
-      setLoading(null)
+      setCheckingAuth(false)
     }
+    check()
+  }, [])
+
+  function handleBuy(packageSlug) {
+    setShowLoginPopup(true)
+    setTargetPackage(packageSlug)
+  }
+
+  if (checkingAuth) {
+    return (
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#F8FAFC" }}>
+        <div style={{ width: 40, height: 40, border: "4px solid #e2e8f0", borderTop: "4px solid #172554", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
+        <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
+      </div>
+    )
   }
 
   return (
@@ -79,7 +92,7 @@ export default function PricePage() {
                 <p style={{ fontSize: "0.8rem", color: "#78350f", fontWeight: 500 }}>Daftar gratis — proses pembelian selesai dalam 2 menit!</p>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                <Link href={`/login?redirect=/price`}>
+                <Link href={`/login?redirect=/tryout/paket-to`}>
                   <button
                     style={{ width: "100%", padding: "13px 20px", borderRadius: 12, fontSize: "0.9rem", fontWeight: 700, border: "none", background: "#172554", color: "#fff", cursor: "pointer", transition: "background 0.2s" }}
                     onMouseEnter={e => e.currentTarget.style.background = "#1e3a5f"}
@@ -88,7 +101,7 @@ export default function PricePage() {
                     Login ke Akun Saya
                   </button>
                 </Link>
-                <Link href={`/register?redirect=/price`}>
+                <Link href={`/register?redirect=/tryout/paket-to`}>
                   <button
                     style={{ width: "100%", padding: "13px 20px", borderRadius: 12, fontSize: "0.9rem", fontWeight: 700, border: "2px solid #fbbf24", background: "#fbbf24", color: "#78350f", cursor: "pointer", transition: "background 0.2s" }}
                     onMouseEnter={e => e.currentTarget.style.background = "#f59e0b"}
@@ -147,7 +160,10 @@ export default function PricePage() {
               </div>
               <div style={{ textAlign: "center", padding: "20px 20px 16px", borderBottom: "1px solid #f1f5f9" }}>
                 <div style={{ fontSize: "2.75rem", fontWeight: 800, color: "#0f172a", letterSpacing: "-0.03em", lineHeight: 1 }}>{pkg.priceLabel}</div>
-                <p style={{ fontSize: "0.85rem", color: "#94a3b8", marginTop: 4 }}>satu kali bayar</p>
+                <p style={{ fontSize: "0.85rem", color: "#94a3b8", marginTop: 4 }}>per Tryout</p>
+                <p style={{ fontSize: "0.8rem", color: "#64748b", marginTop: 8 }}>
+                  atau <strong style={{ color: "#172554" }}>Bundle 5 — {pkg.bundlePriceLabel}</strong>
+                </p>
               </div>
               <ul style={{ flex: 1, padding: "18px 24px 10px", listStyle: "none", display: "flex", flexDirection: "column", gap: 10 }}>
                 {pkg.features.map((f) => (
@@ -160,12 +176,11 @@ export default function PricePage() {
               <div style={{ padding: "8px 24px 24px" }}>
                 <button
                   onClick={() => handleBuy(pkg.slug)}
-                  disabled={loading === pkg.slug}
-                  style={{ display: "block", width: "100%", padding: "13px 20px", borderRadius: 12, fontSize: "0.9rem", fontWeight: 600, textAlign: "center", cursor: loading === pkg.slug ? "not-allowed" : "pointer", border: "none", background: "#fbbf24", color: "#78350f", transition: "background 0.2s, transform 0.2s", opacity: loading === pkg.slug ? 0.55 : 1 }}
-                  onMouseEnter={e => { if (loading !== pkg.slug) e.currentTarget.style.background = "#f59e0b" }}
-                  onMouseLeave={e => { e.currentTarget.style.background = "#fbbf24" }}
+                  style={{ display: "block", width: "100%", padding: "13px 20px", borderRadius: 12, fontSize: "0.9rem", fontWeight: 700, textAlign: "center", cursor: "pointer", border: "none", background: "#fbbf24", color: "#78350f", transition: "background 0.2s" }}
+                  onMouseEnter={e => e.currentTarget.style.background = "#f59e0b"}
+                  onMouseLeave={e => e.currentTarget.style.background = "#fbbf24"}
                 >
-                  {loading === pkg.slug ? "Memproses..." : "Beli Sekarang"}
+                  Beli Sekarang
                 </button>
               </div>
             </div>

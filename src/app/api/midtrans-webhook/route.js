@@ -20,7 +20,7 @@ export async function POST(request) {
     return NextResponse.json({ error: "Invalid body" }, { status: 400 })
   }
 
-  // Verify notification authenticity via Midtrans library
+  // Verify with Midtrans
   let statusResponse
   try {
     statusResponse = await coreApi.transaction.notification(notification)
@@ -31,7 +31,7 @@ export async function POST(request) {
 
   const { order_id, transaction_status, fraud_status } = statusResponse
 
-  // Map Midtrans status ke payment_status internal
+  // Determine new status
   let newStatus = "pending"
   let paidAt = null
 
@@ -46,20 +46,30 @@ export async function POST(request) {
     newStatus = "failed"
   }
 
-  // Update user_packages — match by order_id
-  const updateData = { payment_status: newStatus }
-  if (paidAt) updateData.paid_at = paidAt
+  // Update user_packages (audit trail)
+  const pkgUpdateData = { payment_status: newStatus }
+  if (paidAt) pkgUpdateData.paid_at = paidAt
 
-  const { error } = await supabaseAdmin
+  const { error: pkgError } = await supabaseAdmin
     .from("user_packages")
-    .update(updateData)
+    .update(pkgUpdateData)
     .eq("order_id", order_id)
 
-  if (error) {
-    console.error("Webhook DB update error:", error)
-    // Tetap return 200 agar Midtrans tidak retry terus
-    return NextResponse.json({ ok: false, error: error.message }, { status: 200 })
+  if (pkgError) {
+    console.error("user_packages update error:", pkgError)
   }
 
+  // Update user_tryouts (THIS IS THE KEY FIX — buat unlock akses)
+  const { error: tryoutError } = await supabaseAdmin
+    .from("user_tryouts")
+    .update({ payment_status: newStatus })
+    .eq("order_id", order_id)
+
+  if (tryoutError) {
+    console.error("user_tryouts update error:", tryoutError)
+    return NextResponse.json({ ok: false, error: tryoutError.message }, { status: 200 })
+  }
+
+  console.log(`Webhook OK: ${order_id} → ${newStatus}`)
   return NextResponse.json({ ok: true })
 }

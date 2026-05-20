@@ -2,6 +2,7 @@ import "./globals.css";
 
 import { Inter, Plus_Jakarta_Sans } from "next/font/google"
 import Script from "next/script"
+import { AuthProvider } from "@/contexts/AuthContext"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -50,7 +51,7 @@ export default function RootLayout({ children }) {
           strategy="afterInteractive"
         />
 
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

@@ -1,32 +1,21 @@
 import { supabase } from "./supabase"
 import { getCurrentUser } from "./auth"
 
-export async function getMyPackages(){
+export async function getMyPackages() {
+  const user = await getCurrentUser()
+  if (!user) return []
 
-const user = await getCurrentUser()
+  const { data, error } = await supabase
+    .from("user_tryouts")
+    .select("to_number, package_slug, payment_status, order_id, created_at")
+    .eq("user_id", user.id)
+    .eq("payment_status", "paid")
+    .order("created_at", { ascending: false })
 
-if(!user) return []
+  if (error) {
+    console.error("getMyPackages error:", error.message)
+    return []
+  }
 
-const { data, error } = await supabase
-  .from("purchases")
-  .select(`
-    package_id,
-    packages(
-      id,
-      name,
-      description,
-      price,
-      slug,
-      exam_type
-    )
-  `)
-  .eq("user_id", user.id)
-
-if(error){
-console.error("getMyPackages error:", JSON.stringify(error), error?.message, error?.details, error?.hint)
-return []
-}
-
-return data
-
+  return data || []
 }
