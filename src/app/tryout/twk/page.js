@@ -3,8 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState, Suspense } from "react"
 import Link from "next/link"
-import Navbar from "@/components/Navbar"
-import Footer from "@/components/Footer"
+import DashboardLayout from "@/components/DashboardLayout"
 import { supabase } from "@/lib/supabase"
 
 const INFO = [
@@ -19,7 +18,6 @@ function TWKIntroContent() {
   const searchParams = useSearchParams()
   const toId = searchParams.get("to_id")
 
-  const [accessChecked, setAccessChecked] = useState(!toId)
   const [checking, setChecking] = useState(!!toId)
   const [alreadyDone, setAlreadyDone] = useState(false)
   const [checkingDone, setCheckingDone] = useState(true)
@@ -43,7 +41,6 @@ function TWKIntroContent() {
         router.replace("/price")
         return
       }
-      setAccessChecked(true)
       setChecking(false)
     }
     checkAccess()
@@ -66,19 +63,11 @@ function TWKIntroContent() {
     checkAlreadyDone()
   }, [toId])
 
-  if (checking) {
+  if (checking || checkingDone) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC]">
-        <p className="text-[#64748B]">Memverifikasi akses...</p>
-      </div>
-    )
-  }
-
-  if (checkingDone) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#F8FAFC]">
-        <p style={{ color: "#64748b" }}>Memeriksa status tryout...</p>
-      </div>
+      <DashboardLayout>
+        <div style={{ textAlign: "center", padding: 80, color: "#64748b" }}>Memuat tryout...</div>
+      </DashboardLayout>
     )
   }
 
@@ -87,24 +76,20 @@ function TWKIntroContent() {
   const examHref = toId ? `/tryout/twk/exam?to_id=${toId}` : "/tryout/twk/exam"
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
-      <Navbar />
+    <DashboardLayout>
+      {/* Back link + header */}
+      <div style={{ marginBottom: 24 }}>
+        <Link href={backHref} style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "4px 14px", borderRadius: 999, background: "#f1f5f9", color: "#475569", fontSize: "0.75rem", fontWeight: 500, marginBottom: 12, textDecoration: "none" }}>
+          {backLabel}
+        </Link>
+        <h1 style={{ fontSize: "1.75rem", fontWeight: 700, color: "#0f172a", marginBottom: 4, letterSpacing: "-0.02em" }}>
+          {toId ? `TO SKD #${toId} — TWK` : "Free Trial TWK"}
+        </h1>
+        <p style={{ fontSize: "0.9rem", color: "#64748b" }}>Tes Wawasan Kebangsaan</p>
+      </div>
 
-      <section style={{ background: "#172554", padding: "56px 24px", position: "relative", overflow: "hidden", marginTop: "72px" }}>
-        <div style={{ position: "absolute", top: -80, right: -80, width: 260, height: 260, borderRadius: "50%", background: "rgba(255,255,255,0.04)" }} />
-        <div style={{ position: "absolute", bottom: -60, left: -60, width: 160, height: 160, borderRadius: "50%", background: "rgba(251,191,36,0.05)" }} />
-        <div style={{ maxWidth: 640, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-          <Link href={backHref} style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "4px 14px", borderRadius: 999, background: "rgba(255,255,255,0.1)", color: "#93C5FD", fontSize: "0.75rem", fontWeight: 500, marginBottom: 12, cursor: "pointer", textDecoration: "none" }}>
-            {backLabel}
-          </Link>
-          <h1 style={{ fontSize: "2rem", fontWeight: 700, color: "#fff", marginBottom: 8, letterSpacing: "-0.02em" }}>
-            {toId ? `TO SKD #${toId} — TWK` : "Free Trial TWK"}
-          </h1>
-          <p style={{ fontSize: "0.95rem", color: "#93C5FD", lineHeight: 1.6 }}>Tes Wawasan Kebangsaan</p>
-        </div>
-      </section>
-
-      <section style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "48px 24px" }}>
+      {/* Card */}
+      <div style={{ display: "flex", justifyContent: "center" }}>
         <div style={{ width: "100%", maxWidth: 420 }}>
           <div style={{ background: "#fff", borderRadius: 20, overflow: "hidden", border: "1px solid #e2e8f0", boxShadow: "0 4px 6px rgba(0,0,0,0.05)" }}>
             <div style={{ background: "#0f1d3a", padding: "24px 20px 20px", textAlign: "center" }}>
@@ -142,9 +127,9 @@ function TWKIntroContent() {
               ) : (
                 <button
                   onClick={() => router.push(examHref)}
-                  style={{ display: "block", width: "100%", padding: "13px 20px", borderRadius: 12, fontSize: "0.9rem", fontWeight: 600, textAlign: "center", cursor: "pointer", border: "none", background: "#fbbf24", color: "#78350f", transition: "background 0.2s, transform 0.2s" }}
-                  onMouseEnter={e => { e.currentTarget.style.background = "#f59e0b"; e.currentTarget.style.transform = "translateY(-1px)" }}
-                  onMouseLeave={e => { e.currentTarget.style.background = "#fbbf24"; e.currentTarget.style.transform = "translateY(0)" }}
+                  style={{ display: "block", width: "100%", padding: "13px 20px", borderRadius: 12, fontSize: "0.9rem", fontWeight: 600, textAlign: "center", cursor: "pointer", border: "none", background: "#fbbf24", color: "#78350f", transition: "background 0.2s" }}
+                  onMouseEnter={e => e.currentTarget.style.background = "#f59e0b"}
+                  onMouseLeave={e => e.currentTarget.style.background = "#fbbf24"}
                 >
                   Mulai Tryout
                 </button>
@@ -152,16 +137,18 @@ function TWKIntroContent() {
             </div>
           </div>
         </div>
-      </section>
-
-      <Footer />
-    </div>
+      </div>
+    </DashboardLayout>
   )
 }
 
 export default function TWKIntro() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#F8FAFC]" />}>
+    <Suspense fallback={
+      <DashboardLayout>
+        <div style={{ textAlign: "center", padding: 80, color: "#64748b" }}>Loading...</div>
+      </DashboardLayout>
+    }>
       <TWKIntroContent />
     </Suspense>
   )

@@ -1,17 +1,19 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
+import Navbar from "@/components/Navbar"
+import Footer from "@/components/Footer"
 import DashboardLayout from "@/components/DashboardLayout"
+import LoginPopup from "@/components/LoginPopup"
 
 export default function EbookPage() {
-  const router = useRouter()
   const [ebooks, setEbooks] = useState([])
   const [user, setUser] = useState(null)
   const [purchases, setPurchases] = useState([])
   const [loading, setLoading] = useState(true)
   const [downloadLoading, setDownloadLoading] = useState(null)
+  const [showLoginPopup, setShowLoginPopup] = useState(false)
 
   useEffect(() => {
     async function init() {
@@ -37,7 +39,7 @@ export default function EbookPage() {
   }, [])
 
   async function handleDownload(ebook) {
-    if (!user) { router.push("/login?redirect=/ebook"); return }
+    if (!user) { setShowLoginPopup(true); return }
     setDownloadLoading(ebook.id)
     try {
       const { data } = supabase.storage.from("Ebooks").getPublicUrl(ebook.file_path)
@@ -50,31 +52,15 @@ export default function EbookPage() {
   }
 
   async function handleBeli(ebook) {
-    if (!user) { router.push("/login?redirect=/ebook"); return }
+    if (!user) { setShowLoginPopup(true); return }
     alert("Fitur pembelian segera hadir!")
   }
 
   const skdEbooks = ebooks.filter(e => e.category === "skd")
   const skbEbooks = ebooks.filter(e => e.category === "skb")
 
-  if (loading) {
-    return (
-      <DashboardLayout>
-        <div style={{ textAlign: "center", padding: 80, color: "#64748b" }}>Memuat ebook...</div>
-      </DashboardLayout>
-    )
-  }
-
-  return (
-    <DashboardLayout>
-      {/* Header */}
-      <div style={{ marginBottom: 32 }}>
-        <span style={{ display: "inline-block", padding: "4px 14px", borderRadius: 999, background: "rgba(23,37,84,0.08)", color: "#172554", fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12 }}>Perpustakaan Digital</span>
-        <h1 style={{ fontSize: "1.75rem", fontWeight: 700, color: "#0f172a", marginBottom: 4, letterSpacing: "-0.02em" }}>📚 Ebook CPNS</h1>
-        <p style={{ fontSize: "0.9rem", color: "#64748b" }}>Panduan lengkap SKD & SKB — gratis dan premium</p>
-      </div>
-
-      {/* Ebook SKD */}
+  const EbookList = (
+    <>
       <div style={{ marginBottom: 40 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
           <div style={{ width: 4, height: 24, background: "#172554", borderRadius: 2 }} />
@@ -87,7 +73,6 @@ export default function EbookPage() {
         </div>
       </div>
 
-      {/* Ebook SKB */}
       <div>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
           <div style={{ width: 4, height: 24, background: "#7c3aed", borderRadius: 2 }} />
@@ -99,7 +84,63 @@ export default function EbookPage() {
           ))}
         </div>
       </div>
-    </DashboardLayout>
+    </>
+  )
+
+  const popupComponent = (
+    <LoginPopup
+      isOpen={showLoginPopup}
+      onClose={() => setShowLoginPopup(false)}
+      redirectTo="/ebook"
+      message="Silakan login atau buat akun untuk mengakses ebook"
+    />
+  )
+
+  if (loading) {
+    return (
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#F8FAFC" }}>
+        <div style={{ width: 40, height: 40, border: "4px solid #e2e8f0", borderTop: "4px solid #172554", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
+        <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
+      </div>
+    )
+  }
+
+  if (user) {
+    return (
+      <DashboardLayout>
+        <div style={{ marginBottom: 32 }}>
+          <span style={{ display: "inline-block", padding: "4px 14px", borderRadius: 999, background: "rgba(23,37,84,0.08)", color: "#172554", fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12 }}>Perpustakaan Digital</span>
+          <h1 style={{ fontSize: "1.75rem", fontWeight: 700, color: "#0f172a", marginBottom: 4, letterSpacing: "-0.02em" }}>📚 Ebook CPNS</h1>
+          <p style={{ fontSize: "0.9rem", color: "#64748b" }}>Panduan lengkap SKD & SKB — gratis dan premium</p>
+        </div>
+        {EbookList}
+        {popupComponent}
+      </DashboardLayout>
+    )
+  }
+
+  return (
+    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "#F8FAFC" }}>
+      <Navbar />
+
+      <section style={{ background: "#172554", padding: "56px 24px 40px", position: "relative", overflow: "hidden", marginTop: "72px" }}>
+        <div style={{ position: "absolute", top: -80, right: -80, width: 260, height: 260, borderRadius: "50%", background: "rgba(255,255,255,0.04)" }} />
+        <div style={{ maxWidth: 800, margin: "0 auto", position: "relative", zIndex: 1 }}>
+          <span style={{ display: "inline-block", padding: "4px 14px", borderRadius: 999, background: "rgba(251,191,36,0.15)", color: "#fbbf24", fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 12 }}>Perpustakaan Digital</span>
+          <h1 style={{ fontSize: "2rem", fontWeight: 700, color: "#fff", marginBottom: 8, letterSpacing: "-0.02em" }}>📚 Ebook CPNS</h1>
+          <p style={{ fontSize: "0.9rem", color: "#93C5FD" }}>Panduan lengkap SKD & SKB — gratis dan premium</p>
+        </div>
+      </section>
+
+      <section style={{ flex: 1, padding: "32px 24px 48px" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          {EbookList}
+        </div>
+      </section>
+
+      <Footer />
+      {popupComponent}
+    </div>
   )
 }
 

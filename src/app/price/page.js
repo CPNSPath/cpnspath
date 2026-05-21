@@ -2,10 +2,10 @@
 
 import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
-import Link from "next/link"
 import { supabase } from "@/lib/supabase"
 import Navbar from "@/components/Navbar"
 import Footer from "@/components/Footer"
+import LoginPopup from "@/components/LoginPopup"
 
 const PACKAGES = [
   {
@@ -69,55 +69,12 @@ export default function PricePage() {
     <div className="min-h-screen flex flex-col bg-[#F8FAFC]">
       <Navbar />
 
-      {showLoginPopup && (
-        <div
-          style={{ position: "fixed", inset: 0, zIndex: 100, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }}
-          onClick={(e) => { if (e.target === e.currentTarget) setShowLoginPopup(false) }}
-        >
-          <div style={{ background: "#fff", borderRadius: 24, width: "100%", maxWidth: 420, overflow: "hidden", boxShadow: "0 25px 60px rgba(0,0,0,0.2)" }}>
-            <div style={{ background: "#0f1d3a", padding: "28px 28px 24px", textAlign: "center", position: "relative" }}>
-              <button
-                onClick={() => setShowLoginPopup(false)}
-                style={{ position: "absolute", top: 16, right: 16, background: "rgba(255,255,255,0.1)", border: "none", color: "#fff", width: 32, height: 32, borderRadius: "50%", cursor: "pointer", fontSize: "1rem", display: "flex", alignItems: "center", justifyContent: "center" }}
-              >✕</button>
-              <div style={{ fontSize: "2.5rem", marginBottom: 12 }}>📦</div>
-              <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "#fff", marginBottom: 6 }}>Login Diperlukan</h2>
-              <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.65)", lineHeight: 1.5 }}>
-                Silakan login atau buat akun untuk membeli {targetPackage === "skd" ? "Paket SKD" : "Paket SKB"}
-              </p>
-            </div>
-            <div style={{ padding: "24px 28px 28px" }}>
-              <div style={{ background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.2)", borderRadius: 12, padding: "12px 16px", marginBottom: 20, display: "flex", alignItems: "center", gap: 10 }}>
-                <span style={{ fontSize: "1.1rem" }}>✨</span>
-                <p style={{ fontSize: "0.8rem", color: "#78350f", fontWeight: 500 }}>Daftar gratis — proses pembelian selesai dalam 2 menit!</p>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                <Link href={`/login?redirect=/tryout/paket-to`}>
-                  <button
-                    style={{ width: "100%", padding: "13px 20px", borderRadius: 12, fontSize: "0.9rem", fontWeight: 700, border: "none", background: "#172554", color: "#fff", cursor: "pointer", transition: "background 0.2s" }}
-                    onMouseEnter={e => e.currentTarget.style.background = "#1e3a5f"}
-                    onMouseLeave={e => e.currentTarget.style.background = "#172554"}
-                  >
-                    Login ke Akun Saya
-                  </button>
-                </Link>
-                <Link href={`/register?redirect=/tryout/paket-to`}>
-                  <button
-                    style={{ width: "100%", padding: "13px 20px", borderRadius: 12, fontSize: "0.9rem", fontWeight: 700, border: "2px solid #fbbf24", background: "#fbbf24", color: "#78350f", cursor: "pointer", transition: "background 0.2s" }}
-                    onMouseEnter={e => e.currentTarget.style.background = "#f59e0b"}
-                    onMouseLeave={e => e.currentTarget.style.background = "#fbbf24"}
-                  >
-                    Daftar Akun Gratis
-                  </button>
-                </Link>
-              </div>
-              <p style={{ textAlign: "center", fontSize: "0.75rem", color: "#94a3b8", marginTop: 16 }}>
-                Dengan mendaftar, kamu menyetujui syarat & ketentuan CPNS Path
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
+      <LoginPopup
+        isOpen={showLoginPopup}
+        onClose={() => setShowLoginPopup(false)}
+        redirectTo="/tryout/paket-to"
+        message={`Silakan login atau buat akun untuk membeli ${targetPackage === "skd" ? "Paket SKD" : "Paket SKB"}`}
+      />
 
       <section style={{ background: "#172554", padding: "56px 24px", position: "relative", overflow: "hidden", marginTop: "72px" }}>
         <div style={{ position: "absolute", top: -80, right: -80, width: 260, height: 260, borderRadius: "50%", background: "rgba(255,255,255,0.04)" }} />
