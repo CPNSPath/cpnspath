@@ -45,7 +45,7 @@ export default function DashboardLayout({ children }) {
 
   const logout = async () => {
     await supabase.auth.signOut()
-    router.push("/")
+    window.location.href = "/"
   }
 
   function isActive(href) {
