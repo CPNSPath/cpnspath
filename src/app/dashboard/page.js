@@ -14,6 +14,7 @@ export default function Dashboard() {
   const [packages, setPackages] = useState([])
   const [results, setResults] = useState([])
   const [userTryouts, setUserTryouts] = useState([])
+  const [rank, setRank] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -31,11 +32,31 @@ export default function Dashboard() {
         setResults(myResults)
         const { data: myTryouts } = await supabase
           .from("user_tryouts")
-          .select("to_number, package_slug, payment_status")
+          .select("to_number, package_slug, payment_status, exam_status")
           .eq("user_id", data.user.id)
           .eq("payment_status", "paid")
           .order("to_number", { ascending: true })
         setUserTryouts(myTryouts || [])
+        // Rata-rata ranking dari semua Paket TO (skd-to-* dan skb-to-*)
+        const { data: myLb } = await supabase
+          .from("leaderboard")
+          .select("to_slug, total")
+          .eq("user_id", data.user.id)
+          .like("to_slug", "%-to-%")
+
+        if (myLb && myLb.length > 0) {
+          const ranks = []
+          for (const lb of myLb) {
+            const { count: higherCount } = await supabase
+              .from("leaderboard")
+              .select("*", { count: "exact", head: true })
+              .eq("to_slug", lb.to_slug)
+              .gt("total", lb.total)
+            ranks.push((higherCount ?? 0) + 1)
+          }
+          const avg = Math.round(ranks.reduce((a, b) => a + b, 0) / ranks.length)
+          setRank(avg)
+        }
       } catch (err) {
         console.error("Dashboard error:", err)
       } finally {
@@ -93,18 +114,26 @@ export default function Dashboard() {
             <span style={{ fontWeight: 700, color: "#172554" }}>{list.length}</span> TO dimiliki
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(60px, 1fr))", gap: 6 }}>
-            {list.slice(0, 12).map((t) => (
-              <Link
-                key={t.to_number}
-                href={`/tryout/paket-to/${t.to_number}?exam=${examSlug}`}
-                style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "10px 6px", borderRadius: 8, background: "#f0fdf4", border: "1px solid #bbf7d0", textDecoration: "none", transition: "all 0.15s" }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = "#dcfce7" }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = "#f0fdf4" }}
-              >
-                <span style={{ fontSize: "0.9rem", fontWeight: 800, color: "#172554" }}>{t.to_number}</span>
-                <span style={{ fontSize: "0.55rem", color: "#16a34a", fontWeight: 600 }}>{label}</span>
-              </Link>
-            ))}
+            {list.slice(0, 12).map((t) => {
+              const done = t.exam_status === "completed"
+              const href = done ? `/tryout/paket-to/${t.to_number}/result` : `/tryout/paket-to/${t.to_number}?exam=${examSlug}`
+              return (
+                <Link
+                  key={t.to_number}
+                  href={href}
+                  title={done ? "Sudah dikerjakan — Klik untuk preview hasil" : "Klik untuk mulai mengerjakan"}
+                  style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "10px 6px", borderRadius: 8, background: done ? "#eff6ff" : "#f0fdf4", border: done ? "1px solid #bfdbfe" : "1px solid #bbf7d0", textDecoration: "none", transition: "all 0.15s", position: "relative" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = done ? "#dbeafe" : "#dcfce7" }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = done ? "#eff6ff" : "#f0fdf4" }}
+                >
+                  {done && (
+                    <span style={{ position: "absolute", top: 3, right: 3, fontSize: "0.6rem" }}>✓</span>
+                  )}
+                  <span style={{ fontSize: "0.9rem", fontWeight: 800, color: "#172554" }}>{t.to_number}</span>
+                  <span style={{ fontSize: "0.55rem", color: done ? "#172554" : "#16a34a", fontWeight: 600 }}>{done ? "Selesai" : label}</span>
+                </Link>
+              )
+            })}
             {list.length > 12 && (
               <Link
                 href={`/tryout/paket-to?exam=${examSlug}`}
@@ -136,8 +165,8 @@ export default function Dashboard() {
         {[
           { label: "Tryout Selesai", value: results.length, color: "#172554" },
           { label: "Rata-rata Skor", value: results.length > 0 ? avgScore : "—", color: "#16a34a" },
-          { label: "Paket Aktif", value: packages.length, color: "#d97706" },
-          { label: "Ranking Nasional", value: "—", color: "#7c3aed" },
+          { label: "TO Dimiliki", value: userTryouts.length, color: "#d97706" },
+          { label: "Ranking Nasional", value: rank ? `#${rank}` : "—", color: "#7c3aed" },
         ].map((stat) => (
           <div key={stat.label} style={{ background: "#fff", borderRadius: 14, padding: "20px", border: "1px solid #e2e8f0", boxShadow: "0 2px 4px rgba(0,0,0,0.03)" }}>
             <div style={{ fontSize: "2rem", fontWeight: 800, color: stat.color, marginBottom: 4 }}>{stat.value}</div>
@@ -150,7 +179,6 @@ export default function Dashboard() {
       <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #e2e8f0", padding: "24px", marginBottom: 24, boxShadow: "0 2px 4px rgba(0,0,0,0.03)" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
           <h2 style={{ fontSize: "1rem", fontWeight: 700, color: "#0f172a", margin: 0 }}>📊 Progress Free Trial SKD</h2>
-          <Link href="/tryout/free-trial/skd" style={{ fontSize: "0.8rem", color: "#172554", fontWeight: 600, textDecoration: "none" }}>Lihat semua →</Link>
         </div>
         <div className="progress-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
           {[
@@ -178,9 +206,13 @@ export default function Dashboard() {
                   <div style={{ height: "100%", borderRadius: 999, background: item.result.score >= item.passing ? "#16a34a" : "#ef4444", width: `${Math.min(100, Math.round((item.result.score / (item.passing * 1.5)) * 100))}%`, transition: "width 0.8s ease" }} />
                 </div>
               )}
-              {!item.result && (
-                <Link href={item.href} style={{ display: "block", textAlign: "center", padding: "8px", borderRadius: 8, background: "#fbbf24", color: "#78350f", fontSize: "0.8rem", fontWeight: 600, textDecoration: "none" }}>
+              {!item.result ? (
+                <Link href={item.href} style={{ display: "block", textAlign: "center", padding: "8px", borderRadius: 8, background: "#fbbf24", color: "#78350f", fontSize: "0.8rem", fontWeight: 600, textDecoration: "none", marginTop: 10 }}>
                   Mulai Sekarang
+                </Link>
+              ) : (
+                <Link href={`${item.href}/result`} style={{ display: "block", textAlign: "center", padding: "8px", borderRadius: 8, background: "#172554", color: "#fff", fontSize: "0.8rem", fontWeight: 600, textDecoration: "none", marginTop: 10 }}>
+                  Preview Hasil
                 </Link>
               )}
             </div>
@@ -201,10 +233,13 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Riwayat Tryout */}
+      {/* Riwayat Tryout — Paket TO doang */}
+      {(() => {
+        const paketResults = results.filter(r => !r.tryout_slug?.startsWith("free-trial-"))
+        return (
       <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #e2e8f0", padding: "24px", marginBottom: 24, boxShadow: "0 2px 4px rgba(0,0,0,0.03)" }}>
         <h2 style={{ fontSize: "1rem", fontWeight: 700, color: "#0f172a", marginBottom: 20 }}>📋 Riwayat Tryout</h2>
-        {results.length === 0 ? (
+        {paketResults.length === 0 ? (
           <div style={{ textAlign: "center", padding: "32px 0" }}>
             <div style={{ fontSize: "2.5rem", marginBottom: 12 }}>📭</div>
             <p style={{ fontSize: "0.9rem", fontWeight: 600, color: "#334155", marginBottom: 6 }}>Belum ada riwayat tryout</p>
@@ -215,7 +250,7 @@ export default function Dashboard() {
           </div>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {results.map((r, i) => {
+            {paketResults.map((r, i) => {
               const slugLabel = r.tryout_slug?.replace("free-trial-", "").toUpperCase() || r.tryout_slug
               const passing = r.tryout_slug?.includes("twk") ? 65 : r.tryout_slug?.includes("tiu") ? 80 : 166
               const lulus = r.score >= passing
@@ -242,6 +277,8 @@ export default function Dashboard() {
           </div>
         )}
       </div>
+        )
+      })()}
 
       {/* Paket TO Saya */}
       <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #e2e8f0", padding: "24px", boxShadow: "0 2px 4px rgba(0,0,0,0.03)" }}>

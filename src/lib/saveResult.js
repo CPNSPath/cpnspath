@@ -20,7 +20,7 @@ if(!user) return
 
 const { error } = await supabase
   .from("results")
-  .insert([{
+  .upsert([{
     user_id: user.id,
     tryout_slug: toSlug,
     score: score,
@@ -31,7 +31,9 @@ const { error } = await supabase
     lulus_twk: lulus_twk,
     lulus_tiu: lulus_tiu,
     lulus_tkp: lulus_tkp
-  }])
+  }], {
+    onConflict: "user_id,tryout_slug"
+  })
 
 if(error){
 console.error("Save result error:", error)

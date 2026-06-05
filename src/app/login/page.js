@@ -4,6 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { supabase } from "@/lib/supabase"
 import { useRouter } from "next/navigation"
+const ADMIN_EMAILS = ["3082240019_tito@pknstan.ac.id"]
 
 export default function LoginPage() {
   const router = useRouter()
@@ -32,7 +33,12 @@ export default function LoginPage() {
       return
     }
 
-    router.push("/")
+    // Admin → langsung ke panel admin, user biasa → homepage seperti biasa
+    if (ADMIN_EMAILS.includes(email.trim().toLowerCase())) {
+      router.push("/admin")
+    } else {
+      router.push("/")
+    }
   }
 
   return (

@@ -88,6 +88,10 @@ export default function BeliTOPage({ params }) {
             >
               {loading ? "Memproses..." : `Beli TO #${toNumber} Sekarang`}
             </button>
+            <div style={{ marginTop: 12, padding: "12px 14px", background: "#F8FAFC", border: "1px solid #e2e8f0", borderRadius: 10 }}>
+              <p style={{ fontSize: "0.8rem", fontWeight: 700, color: "#172554", margin: "0 0 2px" }}>Pembayaran via QRIS</p>
+              <p style={{ fontSize: "0.8rem", color: "#64748b", margin: 0 }}>Scan dengan GoPay, DANA, OVO, ShopeePay, atau m-banking apa saja.</p>
+            </div>
           </div>
         </div>
       </div>

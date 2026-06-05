@@ -129,10 +129,11 @@ export async function POST(request) {
         id: pkg.slug,
         price: pkg.price,
         quantity: 1,
-        name: isBundle 
+        name: isBundle
           ? `${pkg.name} - TO #${targetNumbers.join(", #")}`
           : `${pkg.name} - TO #${targetNumbers[0]}`,
       }],
+      enabled_payments: ["other_qris"],
     })
   } catch (err) {
     console.error("Midtrans error:", err)

@@ -1,11 +1,11 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter, useParams } from "next/navigation"
 import { supabase } from "@/lib/supabase"
 import { saveTryoutResult } from "@/lib/saveResult"
 
-// Soal TWK (35 soal placeholder)
+// Soal TWK (30 soal — sesuai BKN)
 const TWK_QUESTIONS = [
   { question: "Pembukaan UUD 1945 dalam kaitannya dengan HAM adalah ...", options: ["Piagam HAM Indonesia", "Sumber HAM Indonesia", "Pedoman pelaksanaan jaminan HAM Indonesia", "Penjelasan pelaksanaan HAM Indonesia", "Rumusan pelaksanaan HAM"], answer: 0 },
   { question: "Yang menjadi causal final dari Pancasila adalah ...", options: ["Piagam Jakarta", "Bangsa Indonesia", "Warga Negara Indonesia", "BPUPKI", "PPKI"], answer: 0 },
@@ -37,14 +37,9 @@ const TWK_QUESTIONS = [
   { question: "PBI adalah organisasi nasional untuk olahraga ...", options: ["Bowling", "Bridge", "Bulu tangkis", "Baseball", "Berkuda"], answer: 0 },
   { question: "Kerajaan Sriwijaya terkenal sebagai kerajaan maritim karena ...", options: ["Mempunyai armada laut kuat", "Mengadakan hubungan dagang", "Menjadi pusat perdagangan Asia Tenggara", "Letak persimpangan perdagangan", "Memiliki raja berkuasa"], answer: 0 },
   { question: "Tujuan diselenggarakannya Konferensi Asia Afrika di antaranya ...", options: ["Ikut mengawasi perdamaian dunia", "Mempererat persatuan Asia", "Mempersatukan kerja sama Asia", "Mempererat persatuan dan mengawasi perdamaian dunia", "Meredakan ketegangan blok Barat dan Timur"], answer: 2 },
-  { question: "Setelah Perang Dunia II berakhir muncul dua kekuatan yaitu Blok Barat dan Blok Timur. Blok Barat dipimpin oleh ...", options: ["Inggris", "Perancis", "Amerika Serikat", "Kanada", "Belanda"], answer: 2 },
-  { question: "Sebagian naskah kuno dari Provinsi Lampung diketahui tersimpan di lembaga luar negeri. Unsur what pada teks tersebut adalah ...", options: ["Keprihatinan terhadap naskah kuno Lampung", "Museum Negeri Lampung menyimpan naskah kuno", "Naskah kuno Lampung sebagian tersimpan di luar negeri", "Naskah kuno Lampung memakai bahasa kuno", "Penyesalan karena naskah kuno Lampung ada di luar negeri"], answer: 2 },
-  { question: "Kalimat berikut ini adalah baku, kecuali ...", options: ["Berdasarkan data Pemprov Lampung naskah kuno tersebar di Belanda Denmark Inggris dan Jerman", "Di Leiden setidaknya ada 5 naskah kuno", "Anggaran pengadaan koleksi baru benda bersejarah di museum hanya Rp 40-70 juta setahun", "Penambahan koleksi benda bersejarah di museum negeri Lampung terkendala dana", "Ia mencontohkan suatu ketika pernah membeli uang kuno eks Karasidenan Lampung"], answer: 2 },
-  { question: "Akar tanaman bakau melengkung besar-besar. Kata reduplikasi yang bermakna sama adalah ...", options: ["Program KB membatasi jumlah anak-anak dalam keluarga", "Lulusan Perguruan Tinggi dalam negeri tidak kalah pintar", "Aku tidak menerima telepon malam-malam", "Pada jam istirahat kami makan-makan", "Bila ada uang adik kecil itu berbelanja"], answer: 1 },
-  { question: "Penulisan nama dan gelar yang benar adalah ...", options: ["Sutinah Pertiwi, S.E", "Moh Indrawan Setyo Hadi M.Pd", "Hj Rusti Saringsih", "Dr Laila Sari Devi", "Rusti Hadiningrat, S.S"], answer: 3 },
 ]
 
-// Soal TIU (30 soal placeholder)
+// Soal TIU (35 soal — sesuai BKN)
 const TIU_QUESTIONS = [
   { question: "GETIR = ...", options: ["Manis", "Sakit", "Pedas", "Nyeri", "Pahit"], answer: 4 },
   { question: "BANDELA = ...", options: ["Peti kemas", "Bendera", "Lambang", "Simbol", "Umbul-umbul"], answer: 0 },
@@ -76,9 +71,14 @@ const TIU_QUESTIONS = [
   { question: "Semua wanita senang perhiasan dan kosmetik. A tidak senang kosmetik tetapi senang perhiasan. Maka ...", options: ["A wanita tidak senang kosmetik", "A wanita senang perhiasan", "A wanita tidak senang kosmetik meskipun senang perhiasan", "A bukan wanita meskipun senang perhiasan", "A bukan wanita tetapi senang kosmetik"], answer: 3 },
   { question: "Ada ada kecil pun ada. Makna peribahasa adalah ...", options: ["Harta benda bukan yang utama", "Bersenang hati dengan apa yang didapat", "Uang sedikit lebih baik daripada tidak ada", "Memberi manfaat walaupun sedikit", "Bersyukur atas nikmat"], answer: 1 },
   { question: "Seperti anjing menggonggong tulang. Maknanya ...", options: ["Orang loba tidak pernah puas", "Keserakahan membuat manusia seperti hewan", "Manusia selalu tidak puas", "Manusia selalu ingin mendapatkan sesuatu", "Orang yang ingin menunjukkan kelebihan"], answer: 0 },
+  { question: "Sebuah toko memberikan diskon 25%. Jika harga awal Rp 200.000, berapa harga setelah diskon?", options: ["Rp 175.000", "Rp 150.000", "Rp 165.000", "Rp 145.000", "Rp 155.000"], answer: 1 },
+  { question: "Jika 5 pekerja menyelesaikan tugas dalam 12 hari, berapa hari untuk 10 pekerja?", options: ["6 hari", "8 hari", "5 hari", "10 hari", "4 hari"], answer: 0 },
+  { question: "Sebuah segitiga memiliki alas 14 cm dan tinggi 10 cm. Luasnya adalah ...", options: ["70 cm²", "140 cm²", "100 cm²", "120 cm²", "80 cm²"], answer: 0 },
+  { question: "2, 5, 11, 23, 47, ...", options: ["95", "94", "93", "96", "92"], answer: 0 },
+  { question: "Semua dokter pintar. Sebagian dokter pelupa. Kesimpulan yang benar ...", options: ["Semua orang pintar pelupa", "Sebagian orang pintar pelupa", "Tidak ada dokter yang pelupa", "Semua pelupa adalah dokter", "Tidak ada kesimpulan"], answer: 1 },
 ]
 
-// Soal TKP (35 soal placeholder)
+// Soal TKP (45 soal — sesuai BKN)
 const TKP_QUESTIONS = [
   { question: "Ketika saya mengalami kegagalan, saya cenderung ...", options: ["Merasa bodoh dan putus asa", "Merasa sedih dan marah", "Mencari sumber kegagalan saya", "Biasa saja seperti tidak terjadi apa-apa", "Melupakan kegagalan dan menatap ke depan"], score: [2,3,5,4,1] },
   { question: "Teman-teman senang menceritakan masalah mereka kepada saya karena menurut mereka saya ...", options: ["Mampu menjaga rahasia", "Pendengar yang baik", "Memberikan solusi terbaik", "Bisa melihat masalah dari berbagai sudut pandang", "Mampu menumbuhkan semangat mereka"], score: [4,5,3,2,1] },
@@ -115,18 +115,24 @@ const TKP_QUESTIONS = [
   { question: "Ketika tugas menumpuk saya ...", options: ["Panik", "Mengeluh", "Menyusun prioritas", "Menunda", "Mengerjakan sedikit"], score: [1,2,5,3,4] },
   { question: "Jika rekan kerja kesulitan pekerjaan saya ...", options: ["Membantu jika sempat", "Membiarkan", "Membantu sampai selesai", "Menyarankan solusi", "Menyuruhnya belajar sendiri"], score: [3,1,5,4,2] },
   { question: "Jika target kerja sulit dicapai saya ...", options: ["Menyerah", "Mencari alasan", "Berusaha lebih keras", "Mencari bantuan", "Mengerjakan seadanya"], score: [1,2,5,4,3] },
+  { question: "Saya mendapat tugas yang belum pernah saya kerjakan. Saya ...", options: ["Menolak", "Mengerjakan ala kadarnya", "Belajar dulu", "Minta pelatihan dari atasan", "Mempelajari dengan sungguh-sungguh"], score: [1,2,3,4,5] },
+  { question: "Rekan satu tim malas bekerja. Saya ...", options: ["Membiarkan", "Melaporkan ke atasan", "Mengajak diskusi", "Menggantikan tugasnya", "Mengingatkan dengan baik"], score: [1,3,4,2,5] },
+  { question: "Saya melihat rekan kerja melakukan kecurangan. Saya akan ...", options: ["Diam saja", "Menegur langsung", "Melaporkan ke atasan", "Mengingatkan dan jika tidak berubah lapor atasan", "Mengikutinya"], score: [1,3,4,5,1] },
+  { question: "Atasan memberi target tinggi yang sulit dicapai. Saya ...", options: ["Mengeluh", "Mencoba semampu saya", "Berusaha mencapai target", "Meminta keringanan", "Membuat strategi untuk mencapainya"], score: [1,3,4,2,5] },
+  { question: "Saat saya berhasil dalam pekerjaan, saya ...", options: ["Merayakannya", "Bercerita ke semua orang", "Bersyukur dan terus bekerja", "Meminta penghargaan", "Bersikap biasa saja"], score: [2,1,5,3,4] },
+  { question: "Pendapat saya berbeda dengan kelompok. Saya akan ...", options: ["Mengikuti mayoritas", "Memaksakan pendapat", "Memaparkan dengan baik", "Diam", "Keluar dari kelompok"], score: [3,1,5,2,1] },
+  { question: "Pekerjaan di kantor saya banyak yang harus diselesaikan. Saya ...", options: ["Panik", "Bekerja terus tanpa istirahat", "Membuat skala prioritas", "Meminta bantuan", "Menunda yang tidak penting"], score: [1,2,5,4,3] },
+  { question: "Saya menemukan dompet di jalan dengan identitas lengkap. Saya ...", options: ["Mengambil uangnya saja", "Membiarkan saja", "Membawa ke kantor polisi", "Mencari pemiliknya", "Mengembalikan ke pemilik"], score: [1,1,4,4,5] },
+  { question: "Saya diundang ke acara pernikahan saat sedang sibuk kerja. Saya ...", options: ["Tidak datang", "Datang sebentar", "Mengirim kado saja", "Menghadiri dengan tepat waktu", "Mengatur waktu agar bisa hadir"], score: [1,3,2,5,4] },
+  { question: "Saya diminta menjadi panitia kegiatan kantor. Saya ...", options: ["Menolak karena sibuk", "Menerima terpaksa", "Menerima dan kerjakan baik", "Mempelajari tugas dulu", "Menerima dan kontribusi maksimal"], score: [1,2,4,3,5] },
 ]
 
-// Gabungkan semua soal dengan label subtest
+// Gabungkan semua soal jadi 1 array urut: TWK (30) + TIU (35) + TKP (45) = 110
 const ALL_QUESTIONS = [
-  ...TWK_QUESTIONS.map((q, i) => ({ ...q, subtest: "TWK", subtestIndex: i, type: "twk" })),
-  ...TIU_QUESTIONS.map((q, i) => ({ ...q, subtest: "TIU", subtestIndex: i, type: "tiu" })),
-  ...TKP_QUESTIONS.map((q, i) => ({ ...q, subtest: "TKP", subtestIndex: i, type: "tkp" })),
+  ...TWK_QUESTIONS.map(q => ({ ...q, type: "twk" })),
+  ...TIU_QUESTIONS.map(q => ({ ...q, type: "tiu" })),
+  ...TKP_QUESTIONS.map(q => ({ ...q, type: "tkp" })),
 ]
-
-const TWK_COUNT = TWK_QUESTIONS.length  // 35
-const TIU_START = TWK_COUNT             // 35
-const TKP_START = TWK_COUNT + TIU_QUESTIONS.length  // 65
 
 export default function PaketTOExam() {
   const router = useRouter()
@@ -138,21 +144,30 @@ export default function PaketTOExam() {
   const [doubts, setDoubts] = useState({})
   const [time, setTime] = useState(90 * 60)
   const [checking, setChecking] = useState(true)
+  const submittedRef = useRef(false)
+  const answersRef = useRef({})
 
-  // Cek akses
+  useEffect(() => { answersRef.current = answers }, [answers])
+
+  // Cek akses + status
   useEffect(() => {
     async function checkAccess() {
       const { data: { session } } = await supabase.auth.getSession()
       if (!session) { router.replace(`/login?redirect=/tryout/paket-to/${toNumber}/exam`); return }
       const { data } = await supabase
         .from("user_tryouts")
-        .select("id")
+        .select("id, exam_status")
         .eq("user_id", session.user.id)
         .eq("to_number", parseInt(toNumber))
         .eq("package_slug", "skd")
         .eq("payment_status", "paid")
         .maybeSingle()
       if (!data) { router.replace(`/tryout/paket-to/${toNumber}`); return }
+      // Kalau udah completed, gak boleh masuk lagi
+      if (data.exam_status === "completed") {
+        router.replace(`/tryout/paket-to/${toNumber}/result`)
+        return
+      }
       setChecking(false)
     }
     checkAccess()
@@ -181,13 +196,50 @@ export default function PaketTOExam() {
       })
     }, 1000)
     return () => clearInterval(timer)
-  }, [checking, answers])
+  }, [checking])
+
+// Anti refresh/close → confirmation + auto-submit kalau dipaksa keluar
+  useEffect(() => {
+    if (checking) return
+
+    let leaving = false
+
+    function handleBeforeUnload(e) {
+      if (submittedRef.current) return
+      leaving = true
+      e.preventDefault()
+      e.returnValue = "Jika Anda keluar, ujian akan otomatis diselesaikan dan dianggap submit. Yakin?"
+      return e.returnValue
+    }
+
+    function handlePageHide() {
+      if (submittedRef.current) return
+      if (!leaving) return // kalau bukan dari beforeunload, abaikan
+      // User beneran keluar — pake sendBeacon (non-blocking) buat tandai completed
+      try {
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+        const supabaseAnon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+        const accessToken = JSON.parse(localStorage.getItem('sb-' + supabaseUrl.split('//')[1].split('.')[0] + '-auth-token') || '{}')?.access_token
+        if (accessToken && supabaseUrl) {
+          const url = `${supabaseUrl}/rest/v1/user_tryouts?to_number=eq.${toNumber}&package_slug=eq.skd`
+          const body = JSON.stringify({ exam_status: 'completed' })
+          const headers = { 'Content-Type': 'application/json', 'apikey': supabaseAnon, 'Authorization': `Bearer ${accessToken}`, 'Prefer': 'return=minimal' }
+          fetch(url, { method: 'PATCH', headers, body, keepalive: true })
+        }
+      } catch (err) { console.error(err) }
+    }
+
+    window.addEventListener("beforeunload", handleBeforeUnload)
+    window.addEventListener("pagehide", handlePageHide)
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload)
+      window.removeEventListener("pagehide", handlePageHide)
+    }
+  }, [checking])
 
   function formatTime() {
-    const h = Math.floor(time / 3600)
-    const m = Math.floor((time % 3600) / 60)
+    const m = Math.floor(time / 60)
     const s = time % 60
-    if (h > 0) return `${h}:${m < 10 ? "0" + m : m}:${s < 10 ? "0" + s : s}`
     return `${m}:${s < 10 ? "0" + s : s}`
   }
 
@@ -200,27 +252,30 @@ export default function PaketTOExam() {
   }
 
   async function submitExam(force = false) {
+    if (submittedRef.current) return
     if (!force) {
       if (!confirm("Apakah Anda yakin ingin mengakhiri ujian?")) return
     }
+    submittedRef.current = true
 
-    // Hitung skor per subtest
+    const currentAnswers = answersRef.current
+
     let twkScore = 0, twkCorrect = 0, twkWrong = 0, twkEmpty = 0
     let tiuScore = 0, tiuCorrect = 0, tiuWrong = 0, tiuEmpty = 0
     let tkpScore = 0, tkpAnswered = 0, tkpEmpty = 0
 
     ALL_QUESTIONS.forEach((q, i) => {
-      const ans = answers[i]
+      const ans = currentAnswers[i]
       if (q.type === "twk") {
-        if (ans === undefined) { twkEmpty++ }
+        if (ans === undefined) twkEmpty++
         else if (ans === q.answer) { twkScore += 5; twkCorrect++ }
-        else { twkWrong++ }
+        else twkWrong++
       } else if (q.type === "tiu") {
-        if (ans === undefined) { tiuEmpty++ }
+        if (ans === undefined) tiuEmpty++
         else if (ans === q.answer) { tiuScore += 5; tiuCorrect++ }
-        else { tiuWrong++ }
+        else tiuWrong++
       } else if (q.type === "tkp") {
-        if (ans === undefined) { tkpEmpty++ }
+        if (ans === undefined) tkpEmpty++
         else { tkpScore += q.score[ans]; tkpAnswered++ }
       }
     })
@@ -237,7 +292,7 @@ export default function PaketTOExam() {
       tiuScore, tiuCorrect, tiuWrong, tiuEmpty,
       tkpScore, tkpAnswered, tkpEmpty,
       totalScore, lulusTwk, lulusTiu, lulusTkp, lulusSkd,
-      answers, questions: ALL_QUESTIONS
+      answers: currentAnswers, questions: ALL_QUESTIONS
     }
 
     localStorage.setItem(`to_${toNumber}_result`, JSON.stringify(resultData))
@@ -255,6 +310,17 @@ export default function PaketTOExam() {
       lulus_tkp: lulusTkp,
     })
 
+    // Set status completed di user_tryouts
+    const { data: { session } } = await supabase.auth.getSession()
+    if (session) {
+      await supabase
+        .from("user_tryouts")
+        .update({ exam_status: "completed" })
+        .eq("user_id", session.user.id)
+        .eq("to_number", parseInt(toNumber))
+        .eq("package_slug", "skd")
+    }
+
     localStorage.removeItem(`to_${toNumber}_answers`)
     router.push(`/tryout/paket-to/${toNumber}/result`)
   }
@@ -263,10 +329,6 @@ export default function PaketTOExam() {
   const doubtCount = Object.keys(doubts).length
   const emptyCount = ALL_QUESTIONS.length - answeredCount
   const progressPercent = Math.round((answeredCount / ALL_QUESTIONS.length) * 100)
-
-  // Subtest indicator
-  const currentSubtest = ALL_QUESTIONS[current]?.subtest || "TWK"
-  const subtestColor = { TWK: "#3b82f6", TIU: "#8b5cf6", TKP: "#22c55e" }
 
   if (checking) {
     return (
@@ -290,8 +352,8 @@ export default function PaketTOExam() {
             <div style={{ background: "#172554", color: "#fff", borderRadius: 8, padding: "5px 12px", fontSize: "0.78rem", fontWeight: 700 }}>
               TO SKD #{toNumber}
             </div>
-            <div style={{ background: subtestColor[currentSubtest] + "20", color: subtestColor[currentSubtest], borderRadius: 8, padding: "5px 12px", fontSize: "0.78rem", fontWeight: 700 }}>
-              {currentSubtest} — Soal {current + 1}
+            <div style={{ background: "rgba(23,37,84,0.08)", color: "#172554", borderRadius: 8, padding: "5px 12px", fontSize: "0.78rem", fontWeight: 700 }}>
+              Soal {current + 1} / {ALL_QUESTIONS.length}
             </div>
             {doubts[current] && (
               <span style={{ background: "rgba(234,179,8,0.15)", color: "#ca8a04", borderRadius: 999, padding: "4px 10px", fontSize: "0.7rem", fontWeight: 600 }}>⚠ Ragu</span>
@@ -303,42 +365,29 @@ export default function PaketTOExam() {
           </div>
         </div>
 
-        {/* Subtest progress bar */}
-        <div style={{ background: "#fff", padding: "10px 24px", borderBottom: "1px solid #f1f5f9", display: "flex", gap: 8, alignItems: "center" }}>
-          {[
-            { label: "TWK", start: 0, end: TWK_COUNT, color: "#3b82f6" },
-            { label: "TIU", start: TIU_START, end: TKP_START, color: "#8b5cf6" },
-            { label: "TKP", start: TKP_START, end: ALL_QUESTIONS.length, color: "#22c55e" },
-          ].map(s => {
-            const total = s.end - s.start
-            const answered = Object.keys(answers).filter(k => parseInt(k) >= s.start && parseInt(k) < s.end).length
-            const pct = Math.round((answered / total) * 100)
-            return (
-              <div key={s.label} style={{ flex: 1 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
-                  <span style={{ fontSize: "0.65rem", fontWeight: 700, color: s.color }}>{s.label}</span>
-                  <span style={{ fontSize: "0.65rem", color: "#94a3b8" }}>{answered}/{total}</span>
-                </div>
-                <div style={{ background: "#e2e8f0", borderRadius: 999, height: 5, overflow: "hidden" }}>
-                  <div style={{ height: "100%", background: s.color, borderRadius: 999, width: `${pct}%`, transition: "width 0.3s" }} />
-                </div>
-              </div>
-            )
-          })}
+        {/* Progress bar tunggal */}
+        <div style={{ background: "#fff", padding: "10px 24px", borderBottom: "1px solid #f1f5f9" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
+            <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "#172554" }}>Progress</span>
+            <span style={{ fontSize: "0.65rem", color: "#94a3b8" }}>{answeredCount}/{ALL_QUESTIONS.length}</span>
+          </div>
+          <div style={{ background: "#e2e8f0", borderRadius: 999, height: 5, overflow: "hidden" }}>
+            <div style={{ height: "100%", background: "#172554", borderRadius: 999, width: `${progressPercent}%`, transition: "width 0.3s" }} />
+          </div>
         </div>
 
         {/* Soal */}
         <div style={{ flex: 1, padding: "24px 32px" }}>
           <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #e2e8f0", padding: "28px", marginBottom: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
             <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 20 }}>
-              <span style={{ flexShrink: 0, width: 32, height: 32, borderRadius: "50%", background: subtestColor[currentSubtest], color: "#fff", fontSize: "0.8rem", fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center" }}>{current + 1}</span>
+              <span style={{ flexShrink: 0, width: 32, height: 32, borderRadius: "50%", background: "#172554", color: "#fff", fontSize: "0.8rem", fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center" }}>{current + 1}</span>
               <p style={{ fontSize: "1rem", color: "#0f172a", lineHeight: 1.7, fontWeight: 500, flex: 1, paddingTop: 4 }}>{ALL_QUESTIONS[current].question}</p>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {ALL_QUESTIONS[current].options.map((opt, i) => (
                 <button key={i} onClick={() => selectAnswer(i)}
-                  style={{ width: "100%", textAlign: "left", padding: "13px 18px", borderRadius: 10, border: answers[current] === i ? `2px solid ${subtestColor[currentSubtest]}` : "1.5px solid #e2e8f0", background: answers[current] === i ? subtestColor[currentSubtest] : "#fff", color: answers[current] === i ? "#fff" : "#334155", fontSize: "0.9rem", fontWeight: answers[current] === i ? 600 : 400, cursor: "pointer", transition: "all 0.15s", display: "flex", alignItems: "center", gap: 12 }}
-                  onMouseEnter={e => { if (answers[current] !== i) { e.currentTarget.style.borderColor = subtestColor[currentSubtest]; e.currentTarget.style.background = "#f8fafc" } }}
+                  style={{ width: "100%", textAlign: "left", padding: "13px 18px", borderRadius: 10, border: answers[current] === i ? `2px solid #172554` : "1.5px solid #e2e8f0", background: answers[current] === i ? "#172554" : "#fff", color: answers[current] === i ? "#fff" : "#334155", fontSize: "0.9rem", fontWeight: answers[current] === i ? 600 : 400, cursor: "pointer", transition: "all 0.15s", display: "flex", alignItems: "center", gap: 12 }}
+                  onMouseEnter={e => { if (answers[current] !== i) { e.currentTarget.style.borderColor = "#172554"; e.currentTarget.style.background = "#f8fafc" } }}
                   onMouseLeave={e => { if (answers[current] !== i) { e.currentTarget.style.borderColor = "#e2e8f0"; e.currentTarget.style.background = "#fff" } }}
                 >
                   <span style={{ flexShrink: 0, width: 26, height: 26, borderRadius: "50%", background: answers[current] === i ? "rgba(255,255,255,0.2)" : "#f1f5f9", color: answers[current] === i ? "#fff" : "#64748b", fontSize: "0.75rem", fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -353,21 +402,15 @@ export default function PaketTOExam() {
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
             <button onClick={() => setCurrent(c => Math.max(0, c - 1))}
               style={{ padding: "10px 20px", borderRadius: 10, border: "1.5px solid #e2e8f0", background: "#fff", color: "#334155", fontSize: "0.875rem", fontWeight: 500, cursor: "pointer" }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor = "#172554"; e.currentTarget.style.color = "#172554" }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor = "#e2e8f0"; e.currentTarget.style.color = "#334155" }}
             >← Previous</button>
             <button onClick={() => setCurrent(c => Math.min(ALL_QUESTIONS.length - 1, c + 1))}
               style={{ padding: "10px 20px", borderRadius: 10, border: "1.5px solid #172554", background: "#172554", color: "#fff", fontSize: "0.875rem", fontWeight: 500, cursor: "pointer" }}
-              onMouseEnter={e => e.currentTarget.style.background = "#1e3a5f"}
-              onMouseLeave={e => e.currentTarget.style.background = "#172554"}
             >Next →</button>
             <button onClick={toggleDoubt}
               style={{ padding: "10px 20px", borderRadius: 10, border: `1.5px solid ${doubts[current] ? "#ca8a04" : "#e2e8f0"}`, background: doubts[current] ? "rgba(234,179,8,0.1)" : "#fff", color: doubts[current] ? "#ca8a04" : "#64748b", fontSize: "0.875rem", fontWeight: 500, cursor: "pointer" }}
             >⚠ Ragu-ragu</button>
             <button onClick={() => submitExam(false)}
               style={{ padding: "10px 24px", borderRadius: 10, border: "1.5px solid #fbbf24", background: "#fbbf24", color: "#78350f", fontSize: "0.875rem", fontWeight: 700, cursor: "pointer", marginLeft: "auto" }}
-              onMouseEnter={e => e.currentTarget.style.background = "#f59e0b"}
-              onMouseLeave={e => e.currentTarget.style.background = "#fbbf24"}
             >Submit Ujian</button>
           </div>
         </div>
@@ -395,35 +438,29 @@ export default function PaketTOExam() {
           </div>
         </div>
 
-        {/* Daftar soal per subtest */}
-        {[
-          { label: "TWK", start: 0, end: TWK_COUNT, color: "#3b82f6" },
-          { label: "TIU", start: TIU_START, end: TKP_START, color: "#8b5cf6" },
-          { label: "TKP", start: TKP_START, end: ALL_QUESTIONS.length, color: "#22c55e" },
-        ].map(s => (
-          <div key={s.label} style={{ marginBottom: 14 }}>
-            <p style={{ fontSize: "0.7rem", fontWeight: 700, color: s.color, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8, paddingBottom: 6, borderBottom: `1px solid ${s.color}30` }}>{s.label}</p>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 4 }}>
-              {ALL_QUESTIONS.slice(s.start, s.end).map((q, idx) => {
-                const globalIdx = s.start + idx
-                let bg = "#f1f5f9", color = "#64748b", border = "1px solid #e2e8f0"
-                if (globalIdx === current) { bg = s.color; color = "#fff"; border = `1px solid ${s.color}` }
-                else if (doubts[globalIdx]) { bg = "rgba(234,179,8,0.15)"; color = "#ca8a04"; border = "1px solid rgba(234,179,8,0.3)" }
-                else if (answers[globalIdx] != null) { bg = s.color + "20"; color = s.color; border = `1px solid ${s.color}50` }
-                return (
-                  <button key={globalIdx} onClick={() => setCurrent(globalIdx)}
-                    style={{ background: bg, color, border, borderRadius: 5, padding: "5px 2px", fontSize: "0.65rem", fontWeight: 700, cursor: "pointer" }}
-                  >{idx + 1}</button>
-                )
-              })}
-            </div>
+        {/* Daftar Soal — 1-110 jadi 1 grid */}
+        <div style={{ marginBottom: 14 }}>
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, color: "#172554", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8, paddingBottom: 6, borderBottom: "1px solid #e2e8f0" }}>Daftar Soal</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 4 }}>
+            {ALL_QUESTIONS.map((q, i) => {
+              let bg = "#f1f5f9", color = "#64748b", border = "1px solid #e2e8f0"
+              if (i === current) { bg = "#172554"; color = "#fff"; border = "1px solid #172554" }
+              else if (doubts[i]) { bg = "rgba(234,179,8,0.15)"; color = "#ca8a04"; border = "1px solid rgba(234,179,8,0.3)" }
+              else if (answers[i] != null) { bg = "rgba(22,163,74,0.12)"; color = "#16a34a"; border = "1px solid rgba(22,163,74,0.3)" }
+              return (
+                <button key={i} onClick={() => setCurrent(i)}
+                  style={{ background: bg, color, border, borderRadius: 5, padding: "5px 2px", fontSize: "0.65rem", fontWeight: 700, cursor: "pointer" }}
+                >{i + 1}</button>
+              )
+            })}
           </div>
-        ))}
+        </div>
 
+        {/* Legend */}
         <div style={{ marginTop: 8, display: "flex", flexDirection: "column", gap: 4 }}>
           {[
-            { label: "Soal aktif", bg: "#3b82f6", color: "#3b82f6" },
-            { label: "Sudah dijawab", bg: "#3b82f620", color: "#3b82f6" },
+            { label: "Soal aktif", bg: "#172554", color: "#172554" },
+            { label: "Sudah dijawab", bg: "rgba(22,163,74,0.12)", color: "#16a34a" },
             { label: "Ragu-ragu", bg: "rgba(234,179,8,0.15)", color: "#ca8a04" },
             { label: "Belum dijawab", bg: "#f1f5f9", color: "#94a3b8" },
           ].map(item => (
@@ -434,13 +471,14 @@ export default function PaketTOExam() {
           ))}
         </div>
       </div>
-    <style>{`
-      @media (max-width: 768px) {
-        .exam-wrap { flex-direction: column !important; height: auto !important; overflow: visible !important; min-height: 100vh; }
-        .exam-question { overflow-y: visible !important; height: auto !important; }
-        .exam-sidebar { width: 100% !important; border-left: none !important; border-top: 1px solid #e2e8f0 !important; }
-      }
-    `}</style>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .exam-wrap { flex-direction: column !important; height: auto !important; overflow: visible !important; min-height: 100vh; }
+          .exam-question { overflow-y: visible !important; height: auto !important; }
+          .exam-sidebar { width: 100% !important; border-left: none !important; border-top: 1px solid #e2e8f0 !important; }
+        }
+      `}</style>
     </div>
   )
 }

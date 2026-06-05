@@ -43,20 +43,37 @@ export default function RegisterPage() {
 
     setLoading(true)
 
-    const { error } = await supabase.auth.signUp({ email, password })
+    const { data, error } = await supabase.auth.signUp({ email, password })
 
     if (error) {
+      // Deteksi email duplikat dari pesan error
+      const msg = (error.message || "").toLowerCase()
+      if (msg.includes("already") || msg.includes("registered") || msg.includes("exists")) {
+        setSuccessMsg("Akun sudah terdaftar. Mengarahkan ke halaman login...")
+        setLoading(false)
+        setTimeout(() => router.push("/login"), 1800)
+        return
+      }
       setErrorMsg(error.message)
       setLoading(false)
       return
     }
 
-    setSuccessMsg("Registrasi berhasil! Silakan login.")
+    // Supabase trik: kalau email sudah terdaftar tapi belum confirmed, signUp tetap return success
+    // tapi data.user.identities akan kosong. Cek di sini.
+    if (data?.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+      setSuccessMsg("Akun sudah terdaftar. Mengarahkan ke halaman login...")
+      setLoading(false)
+      setTimeout(() => router.push("/login"), 1800)
+      return
+    }
+
+    setSuccessMsg("Akun berhasil dibuat! Silakan cek email untuk verifikasi. Mengarahkan ke login...")
     setLoading(false)
 
     setTimeout(() => {
       router.push("/login")
-    }, 1500)
+    }, 2000)
   }
 
   return (
