@@ -17,6 +17,7 @@ const NAV_LINKS = [
   { icon: "📦", label: "Paket TO", href: "/tryout/paket-to" },
   { icon: "📚", label: "Ebook", href: "/ebook" },
   { icon: "🏆", label: "Leaderboard", href: "/leaderboard/global" },
+  { icon: "🧾", label: "Riwayat Pembelian", href: "/dashboard/riwayat-pembelian" },
 ]
 
 export default function DashboardLayout({ children }) {
