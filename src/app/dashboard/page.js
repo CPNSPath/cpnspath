@@ -17,6 +17,11 @@ export default function Dashboard() {
   const [rank, setRank] = useState(null)
   const [loading, setLoading] = useState(true)
 
+  // Data baru untuk dashboard profesional
+  const [lastScores, setLastScores] = useState(null) // { twk, tiu, tkp, total }
+  const [scoreHistory, setScoreHistory] = useState([]) // array of { date, total } untuk grafik
+  const [leaderboardMini, setLeaderboardMini] = useState({ top3: [], userRank: null, totalParticipants: 0 })
+
   useEffect(() => {
     const init = async () => {
       try {
@@ -26,10 +31,12 @@ export default function Dashboard() {
           return
         }
         setUser(data.user)
+
         const myPackages = await getMyPackages()
         const myResults = await getMyResults()
         setPackages(myPackages)
         setResults(myResults)
+
         const { data: myTryouts } = await supabase
           .from("user_tryouts")
           .select("to_number, package_slug, payment_status, exam_status")
@@ -37,7 +44,70 @@ export default function Dashboard() {
           .eq("payment_status", "paid")
           .order("to_number", { ascending: true })
         setUserTryouts(myTryouts || [])
-        // Rata-rata ranking dari semua Paket TO (skd-to-* dan skb-to-*)
+
+        // --- FILTER PAKET TO (exclude free trial) ---
+        const paketToOnly = myResults.filter(r => !r.tryout_slug?.startsWith("free-trial-"))
+
+        // --- RINGKASAN SKOR TERAKHIR ---
+        if (paketToOnly.length > 0) {
+          const latest = paketToOnly.reduce((a, r) =>
+            !a || new Date(r.created_at) > new Date(a.created_at) ? r : a
+          , null)
+          if (latest) {
+            setLastScores({
+              twk: latest.twk_score || 0,
+              tiu: latest.tiu_score || 0,
+              tkp: latest.tkp_score || 0,
+              total: latest.score || 0,
+            })
+          }
+        }
+
+        // --- GRAFIK PERKEMBANGAN (5 tryout terakhir, Paket TO only) ---
+        const recentResults = [...paketToOnly]
+          .sort((a, b) => new Date(a.created_at) - new Date(b.created_at))
+          .slice(-5)
+          .map(r => ({
+            date: new Date(r.created_at).toLocaleDateString("id-ID", { day: "numeric", month: "short" }),
+            total: r.score || 0,
+          }))
+        setScoreHistory(recentResults)
+
+        // --- LEADERBOARD MINI ---
+        // Ambil top 3 dari leaderboard terbaru (pakai TO terakhir atau global)
+        const { data: lbAll } = await supabase
+          .from("leaderboard")
+          .select("user_id, total, to_slug")
+          .not("to_slug", "like", "free-trial-%")
+          .order("total", { ascending: false })
+          .limit(500)
+
+        if (lbAll && lbAll.length > 0) {
+          // Ambil top 3 unique user
+          const seen = new Map()
+          const top3 = []
+          for (const lb of lbAll) {
+            if (!seen.has(lb.user_id)) {
+              seen.set(lb.user_id, true)
+              top3.push(lb)
+              if (top3.length === 3) break
+            }
+          }
+          const totalParticipants = new Set(lbAll.map(lb => lb.user_id)).size
+          // Cari user sendiri
+          const myEntry = lbAll.find(lb => lb.user_id === data.user.id)
+          const myRank = myEntry
+            ? lbAll.filter(lb => lb.total > myEntry.total).length + 1
+            : null
+          setLeaderboardMini({
+            top3,
+            userRank: myRank,
+            totalParticipants,
+            myTotal: myEntry?.total || null,
+          })
+        }
+
+        // Ranking rata-rata
         const { data: myLb } = await supabase
           .from("leaderboard")
           .select("to_slug, total")
@@ -66,8 +136,9 @@ export default function Dashboard() {
     init()
   }, [])
 
-  const avgScore = results.length > 0
-    ? Math.round(results.reduce((sum, r) => sum + (r.score || 0), 0) / results.length)
+  const paketToResults = results.filter(r => !r.tryout_slug?.startsWith("free-trial-"))
+  const avgScore = paketToResults.length > 0
+    ? Math.round(paketToResults.reduce((sum, r) => sum + (r.score || 0), 0) / paketToResults.length)
     : 0
 
   const twkResult = results.find((r) => r.tryout_slug === "free-trial-twk")
@@ -151,7 +222,7 @@ export default function Dashboard() {
   return (
     <DashboardLayout>
       {/* Greeting */}
-      <div style={{ marginBottom: 32 }}>
+      <div style={{ marginBottom: 24 }}>
         <h1 style={{ fontSize: "1.75rem", fontWeight: 700, color: "#0f172a", marginBottom: 4, letterSpacing: "-0.02em" }}>
           Halo, {user?.user_metadata?.name || user?.email?.split("@")[0]} 👋
         </h1>
@@ -160,11 +231,139 @@ export default function Dashboard() {
         </p>
       </div>
 
+      {/* ================================================================ */}
+      {/* BAGIAN BARU: Ringkasan Skor, Grafik, Leaderboard Mini            */}
+      {/* ================================================================ */}
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 20, marginBottom: 28 }}>
+          {/* Ringkasan Skor Terakhir */}
+          <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #e2e8f0", padding: "20px 22px", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
+            <h3 style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f172a", marginBottom: 16, display: "flex", alignItems: "center", gap: 6 }}>
+              📊 Ringkasan Skor Terakhir
+            </h3>
+            {lastScores ? (
+              <>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
+                  {[
+                    { label: "TWK", score: lastScores.twk, passing: 65 },
+                    { label: "TIU", score: lastScores.tiu, passing: 80 },
+                    { label: "TKP", score: lastScores.tkp, passing: 166 },
+                  ].map((item) => {
+                    const lulus = item.score >= item.passing
+                    return (
+                      <div key={item.label} style={{ textAlign: "center", background: "#f8fafc", borderRadius: 10, padding: "12px 8px", border: `1.5px solid ${lulus ? "#bbf7d0" : "#fecaca"}` }}>
+                        <div style={{ fontSize: "0.65rem", fontWeight: 600, color: "#64748b", marginBottom: 4 }}>{item.label}</div>
+                        <div style={{ fontSize: "1.4rem", fontWeight: 800, color: lulus ? "#16a34a" : "#dc2626" }}>
+                          {item.score}
+                        </div>
+                        <div style={{ fontSize: "0.6rem", color: "#94a3b8" }}>
+                          PG: {item.passing}
+                        </div>
+                        <div style={{
+                          fontSize: "0.65rem", fontWeight: 700, marginTop: 4,
+                          background: lulus ? "rgba(22,163,74,0.1)" : "rgba(220,38,38,0.1)",
+                          color: lulus ? "#16a34a" : "#dc2626",
+                          borderRadius: 999, padding: "2px 8px", display: "inline-block",
+                        }}>
+                          {lulus ? "✅ Lulus" : "❌ Tidak Lulus"}
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+                <div style={{ textAlign: "center", marginTop: 14, padding: "10px", background: "linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%)", borderRadius: 10 }}>
+                  <span style={{ fontSize: "0.75rem", color: "#64748b" }}>Total: </span>
+                  <span style={{ fontSize: "1.3rem", fontWeight: 800, color: "#0f172a" }}>{lastScores.total}</span>
+                  <span style={{ fontSize: "0.7rem", color: "#64748b", marginLeft: 6 }}>
+                    / Passing: 285 {lastScores.total >= 285 ? "✅" : "❌"}
+                  </span>
+                </div>
+              </>
+            ) : (
+              <div style={{ textAlign: "center", padding: "40px 20px", color: "#94a3b8", fontSize: "0.85rem" }}>
+                Belum ada hasil Paket TO
+              </div>
+            )}
+          </div>
+
+          {/* Grafik Perkembangan */}
+          {scoreHistory.length > 1 && (
+            <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #e2e8f0", padding: "20px 22px", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
+              <h3 style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f172a", marginBottom: 16 }}>
+                📈 Perkembangan Skor
+              </h3>
+              <div style={{ display: "flex", alignItems: "flex-end", gap: 12, height: 140, padding: "0 8px" }}>
+                {scoreHistory.map((entry, i) => {
+                  const maxScore = 600
+                  const heightPercent = Math.min(100, Math.round((entry.total / maxScore) * 100))
+                  return (
+                    <div key={i} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
+                      <span style={{ fontSize: "0.7rem", fontWeight: 700, color: "#172554" }}>{entry.total}</span>
+                      <div style={{ width: "100%", background: "linear-gradient(180deg, #fbbf24 0%, #172554 100%)", borderRadius: "6px 6px 0 0", height: `${heightPercent}%`, minHeight: 4 }} />
+                      <span style={{ fontSize: "0.6rem", color: "#94a3b8" }}>{entry.date}</span>
+                    </div>
+                  )
+                })}
+              </div>
+              <div style={{ marginTop: 10, textAlign: "center", fontSize: "0.7rem", color: "#64748b" }}>
+                {scoreHistory.length} tryout terakhir
+              </div>
+            </div>
+          )}
+
+          {/* Leaderboard Mini */}
+          {leaderboardMini.top3.length > 0 && (
+            <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #e2e8f0", padding: "20px 22px", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
+              <h3 style={{ fontSize: "0.85rem", fontWeight: 700, color: "#0f172a", marginBottom: 16, display: "flex", alignItems: "center", gap: 6 }}>
+                🏆 Top Performa
+              </h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {leaderboardMini.top3.map((entry, i) => {
+                  const medals = ["🥇", "🥈", "🥉"]
+                  return (
+                    <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 10px", borderRadius: 8, background: i === 0 ? "rgba(251,191,36,0.08)" : "#f8fafc" }}>
+                      <span style={{ fontSize: "1.2rem" }}>{medals[i]}</span>
+                      <span style={{ flex: 1, fontSize: "0.8rem", fontWeight: 600, color: "#334155" }}>
+                        {entry.user_id?.slice(0, 8)}***
+                      </span>
+                      <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "#172554" }}>{entry.total}</span>
+                    </div>
+                  )
+                })}
+                {leaderboardMini.userRank && (
+                  <div style={{ marginTop: 6, padding: "8px 10px", borderRadius: 8, background: "rgba(23,37,84,0.04)", border: "1px solid rgba(23,37,84,0.15)", display: "flex", alignItems: "center", gap: 10 }}>
+                    <span style={{ fontSize: "0.8rem" }}>📍</span>
+                    <span style={{ flex: 1, fontSize: "0.8rem", fontWeight: 600, color: "#172554" }}>Posisi Anda</span>
+                    <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "#172554" }}>
+                      #{leaderboardMini.userRank} dari {leaderboardMini.totalParticipants}
+                    </span>
+                  </div>
+                )}
+                {!leaderboardMini.userRank && (
+                  <div style={{ marginTop: 6, padding: "8px 10px", borderRadius: 8, background: "#f8fafc", textAlign: "center", fontSize: "0.75rem", color: "#94a3b8" }}>
+                    Selesaikan tryout untuk melihat peringkat
+                  </div>
+                )}
+              </div>
+              <Link
+                href="/leaderboard/global"
+                style={{ display: "block", textAlign: "center", marginTop: 12, fontSize: "0.75rem", color: "#172554", fontWeight: 600, textDecoration: "none" }}
+              >
+                Lihat leaderboard lengkap →
+              </Link>
+            </div>
+          )}
+      </div>
+
+      {/* ================================================================ */}
+      {/* AKHIR BAGIAN BARU                                                  */}
+      {/* ================================================================ */}
+
       {/* Stats */}
       <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16, marginBottom: 32 }}>
         {[
-          { label: "Tryout Selesai", value: results.length, color: "#172554" },
-          { label: "Rata-rata Skor", value: results.length > 0 ? avgScore : "—", color: "#16a34a" },
+          { label: "Tryout Selesai", value: paketToResults.length, color: "#172554" },
+          { label: "Rata-rata Skor", value: paketToResults.length > 0 ? avgScore : "—", color: "#16a34a" },
           { label: "TO Dimiliki", value: userTryouts.length, color: "#d97706" },
           { label: "Ranking Nasional", value: rank ? `#${rank}` : "—", color: "#7c3aed" },
         ].map((stat) => (
