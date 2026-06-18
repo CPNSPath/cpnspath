@@ -1,159 +1,184 @@
-"use client";
+"use client"
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import DashboardLayout from "@/components/DashboardLayout";
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
+import DashboardLayout from "@/components/DashboardLayout"
 
-export default function TIUResultPage() {
-  const router = useRouter();
-  const [result, setResult] = useState(null);
-  const [filter, setFilter] = useState("all"); // all, wrong, empty
+const PASSING_GRADE = 80
+const SUBTEST_COLOR = "#8b5cf6"
+
+export default function TIUResult() {
+  const router = useRouter()
+  const [data, setData] = useState(null)
+  const [filter, setFilter] = useState("all")
 
   useEffect(() => {
-    const saved = localStorage.getItem("free-trial-tiu_result");
-    if (!saved) {
-      router.replace("/tryout/tiu");
-      return;
-    }
-    setResult(JSON.parse(saved));
-  }, [router]);
+    const saved = localStorage.getItem("tiu_result")
+    if (saved) setData(JSON.parse(saved))
+  }, [])
 
-  if (!result) {
+  if (!data) {
     return (
       <DashboardLayout>
-        <div className="flex justify-center items-center min-h-[60vh]">
-          <div className="text-center">Memuat hasil...</div>
-        </div>
+        <div style={{ textAlign: "center", padding: 80, color: "#64748b" }}>Memuat hasil...</div>
       </DashboardLayout>
-    );
+    )
   }
 
-  const { score, correct, wrong, empty, total, answers, questions } = result;
-  const passingGrade = 80;
-  const lulus = score >= passingGrade;
+  const lulus = data.score >= PASSING_GRADE
+  const persen = Math.min(100, Math.round((data.score / (data.total * 5)) * 100))
 
-  // Membuat review items
-  const reviewItems = questions.map((q, i) => {
-    const userAns = answers[i];
-    const isEmpty = userAns === undefined || userAns === null;
-    const isCorrect = !isEmpty && userAns === q.answer;
-    return { i, q, userAns, isEmpty, status: isEmpty ? "empty" : isCorrect ? "correct" : "wrong" };
-  });
+  // Filter questions
+  const filtered = data.questions.map((q, i) => ({ q, i })).filter(({ q, i }) => {
+    const ans = data.answers[i]
+    if (filter === "wrong") return ans !== undefined && ans !== q.answer
+    if (filter === "empty") return ans === undefined
+    return true
+  })
 
-  const wrongCount = reviewItems.filter((r) => r.status === "wrong").length;
-  const emptyCount = reviewItems.filter((r) => r.status === "empty").length;
-
-  const filtered = reviewItems.filter((r) => {
-    if (filter === "wrong") return r.status === "wrong";
-    if (filter === "empty") return r.status === "empty";
-    return true;
-  });
+  const filterCounts = {
+    all: data.questions.length,
+    wrong: data.questions.filter((q, i) => data.answers[i] !== undefined && data.answers[i] !== q.answer).length,
+    empty: data.questions.filter((q, i) => data.answers[i] === undefined).length,
+  }
 
   return (
     <DashboardLayout>
-      <div className="max-w-5xl mx-auto py-8 px-4">
-        <div className="mb-6">
-          <Link
-            href="/tryout/tiu"
-            className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-navy mb-2"
-          >
-            ← Kembali ke Tryout TIU
-          </Link>
-          <h1 className="text-2xl font-bold text-navy">Hasil Free Trial TIU</h1>
-          <p className="text-gray-500">{lulus ? "Selamat! Anda memenuhi passing grade." : "Belum mencapai passing grade, tetap semangat!"}</p>
-        </div>
+      {/* Back link */}
+      <Link href="/tryout/free-trial" style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "4px 14px", borderRadius: 999, background: "#f1f5f9", color: "#475569", fontSize: "0.75rem", fontWeight: 500, marginBottom: 16, textDecoration: "none" }}>
+        ← Kembali ke Free Trial
+      </Link>
 
-        {/* Card utama */}
-        <div className={`bg-white rounded-xl border-l-8 shadow-sm p-6 mb-6 ${lulus ? "border-l-green-500" : "border-l-red-500"}`}>
-          <div className="flex justify-between items-center flex-wrap gap-4">
-            <div>
-              <p className="text-sm text-gray-500">Skor TIU</p>
-              <p className="text-5xl font-bold text-navy">{score}</p>
-              <p className="text-sm text-gray-500 mt-1">{correct} benar, {wrong} salah, {empty} kosong</p>
-            </div>
-            <div className={`px-4 py-2 rounded-full text-sm font-bold ${lulus ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
-              {lulus ? "✅ LULUS" : "❌ TIDAK LULUS"}
+      {/* Header card — status + skor */}
+      <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #e2e8f0", overflow: "hidden", marginBottom: 24, boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
+        <div style={{ background: "#172554", padding: "28px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16 }}>
+          <div>
+            <h1 style={{ fontSize: "1.5rem", fontWeight: 700, color: "#fff", marginBottom: 4 }}>Hasil Free Trial TIU</h1>
+            <p style={{ fontSize: "0.85rem", color: "#93c5fd" }}>Tes Intelegensi Umum</p>
+          </div>
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontSize: "2.5rem", fontWeight: 800, color: lulus ? "#4ade80" : "#f87171", lineHeight: 1 }}>{data.score}</div>
+            <div style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.5)", marginTop: 4 }}>Skor Akhir</div>
+            <div style={{ marginTop: 8, display: "inline-block", padding: "4px 14px", borderRadius: 999, background: lulus ? "rgba(74,222,128,0.15)" : "rgba(248,113,113,0.15)", color: lulus ? "#4ade80" : "#f87171", fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em" }}>
+              {lulus ? "✓ LULUS" : "✗ TIDAK LULUS"}
             </div>
           </div>
-          <div className="mt-4 pt-4 border-t border-gray-100 text-sm text-gray-500">
-            Passing grade TIU: {passingGrade}
+        </div>
+      </div>
+
+      {/* Stats cards */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(100px, 1fr))", gap: 12, marginBottom: 24 }}>
+        {[
+          { label: "Skor", value: data.score, color: SUBTEST_COLOR },
+          { label: "Benar", value: data.correct, color: "#16a34a" },
+          { label: "Salah", value: data.wrong, color: "#dc2626" },
+          { label: "Kosong", value: data.empty, color: "#94a3b8" },
+          { label: "Total", value: data.total, color: "#0f172a" },
+          { label: "Passing Grade", value: PASSING_GRADE, color: lulus ? "#16a34a" : "#dc2626" },
+        ].map(item => (
+          <div key={item.label} style={{ background: "#fff", borderRadius: 12, padding: "14px 12px", textAlign: "center", border: "1px solid #e2e8f0" }}>
+            <p style={{ fontSize: "0.65rem", color: "#64748b", marginBottom: 4, textTransform: "uppercase", letterSpacing: "0.06em", fontWeight: 500 }}>{item.label}</p>
+            <p style={{ fontSize: "1.5rem", fontWeight: 800, color: item.color }}>{item.value}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Progress bar */}
+      <div style={{ background: "#fff", borderRadius: 12, padding: "16px 20px", marginBottom: 24, border: "1px solid #e2e8f0" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+          <span style={{ fontSize: "0.8rem", fontWeight: 600, color: "#334155" }}>Pencapaian Skor</span>
+          <span style={{ fontSize: "0.8rem", fontWeight: 700, color: lulus ? "#16a34a" : "#dc2626" }}>{persen}%</span>
+        </div>
+        <div style={{ background: "#f1f5f9", borderRadius: 999, height: 10, overflow: "hidden" }}>
+          <div style={{ height: "100%", borderRadius: 999, background: lulus ? "#22c55e" : "#ef4444", width: `${persen}%`, transition: "width 0.8s ease" }} />
+        </div>
+        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 4 }}>
+          <span style={{ fontSize: "0.7rem", color: "#94a3b8" }}>Passing grade: {PASSING_GRADE}</span>
+        </div>
+      </div>
+
+      {/* Syarat kelulusan */}
+      <div style={{ background: "#fff", borderRadius: 12, padding: "16px 20px", marginBottom: 24, border: "1px solid #e2e8f0" }}>
+        <h3 style={{ fontSize: "0.9rem", fontWeight: 700, color: "#0f172a", marginBottom: 12 }}>Syarat Kelulusan</h3>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <span style={{ width: 24, height: 24, borderRadius: "50%", background: lulus ? "rgba(22,163,74,0.1)" : "rgba(220,38,38,0.1)", color: lulus ? "#16a34a" : "#dc2626", fontSize: "0.75rem", fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center" }}>
+            {lulus ? "✓" : "✗"}
+          </span>
+          <div style={{ flex: 1 }}>
+            <p style={{ fontSize: "0.85rem", fontWeight: 600, color: "#334155" }}>TIU — Minimal {PASSING_GRADE}</p>
+            <p style={{ fontSize: "0.75rem", color: "#94a3b8" }}>Skor kamu: {data.score}</p>
+          </div>
+          <span style={{ fontSize: "0.85rem", fontWeight: 700, color: lulus ? "#16a34a" : "#dc2626" }}>{data.score}/{data.total * 5}</span>
+        </div>
+      </div>
+
+      {/* Review Jawaban */}
+      <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #e2e8f0", overflow: "hidden" }}>
+        <div style={{ padding: "16px 20px", borderBottom: "1px solid #f1f5f9", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
+          <h2 style={{ fontSize: "1rem", fontWeight: 700, color: "#0f172a" }}>Review Jawaban</h2>
+          <div style={{ display: "flex", gap: 6 }}>
+            {[
+              { key: "all", label: "Semua" },
+              { key: "wrong", label: "Salah" },
+              { key: "empty", label: "Kosong" },
+            ].map(f => (
+              <button key={f.key} onClick={() => setFilter(f.key)}
+                style={{ padding: "4px 12px", borderRadius: 999, fontSize: "0.7rem", fontWeight: 600, cursor: "pointer", border: filter === f.key ? `1.5px solid ${SUBTEST_COLOR}` : "1.5px solid #e2e8f0", background: filter === f.key ? SUBTEST_COLOR + "15" : "#fff", color: filter === f.key ? SUBTEST_COLOR : "#64748b" }}
+              >{f.label} ({filterCounts[f.key]})</button>
+            ))}
           </div>
         </div>
 
-        {/* Rincian sederhana */}
-        <div className="bg-white rounded-xl shadow-sm border p-6 mb-6">
-          <h2 className="text-lg font-semibold text-navy mb-4">Ringkasan TIU</h2>
-          <div className="grid grid-cols-3 gap-4 text-center">
-            <div className="bg-green-50 p-3 rounded-lg"><p className="text-2xl font-bold text-green-600">{correct}</p><p className="text-xs text-gray-500">Benar</p></div>
-            <div className="bg-red-50 p-3 rounded-lg"><p className="text-2xl font-bold text-red-600">{wrong}</p><p className="text-xs text-gray-500">Salah</p></div>
-            <div className="bg-gray-100 p-3 rounded-lg"><p className="text-2xl font-bold text-gray-600">{empty}</p><p className="text-xs text-gray-500">Kosong</p></div>
-          </div>
-        </div>
-
-        {/* Review Jawaban dengan filter */}
-        <div className="bg-white rounded-xl shadow-sm border p-6">
-          <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
-            <h2 className="text-lg font-semibold text-navy">📖 Review Jawaban</h2>
-            <div className="flex gap-2">
-              <button onClick={() => setFilter("all")} className={`px-3 py-1 rounded-full text-xs font-semibold ${filter === "all" ? "bg-navy text-white" : "bg-gray-100 text-gray-600"}`}>Semua ({total})</button>
-              <button onClick={() => setFilter("wrong")} className={`px-3 py-1 rounded-full text-xs font-semibold ${filter === "wrong" ? "bg-navy text-white" : "bg-gray-100 text-gray-600"}`}>Salah ({wrongCount})</button>
-              <button onClick={() => setFilter("empty")} className={`px-3 py-1 rounded-full text-xs font-semibold ${filter === "empty" ? "bg-navy text-white" : "bg-gray-100 text-gray-600"}`}>Kosong ({emptyCount})</button>
-            </div>
-          </div>
-
+        <div style={{ padding: "8px 16px" }}>
           {filtered.length === 0 ? (
-            <div className="text-center py-10 text-gray-400">Tidak ada soal yang sesuai filter</div>
-          ) : (
-            <div className="space-y-4">
-              {filtered.map((r) => {
-                const statusBadge = r.status === "correct" ? { text: "✓ Benar", bg: "bg-green-100 text-green-700" } :
-                                    r.status === "wrong" ? { text: "✗ Salah", bg: "bg-red-100 text-red-700" } :
-                                    { text: "○ Kosong", bg: "bg-gray-100 text-gray-500" };
-                return (
-                  <div key={r.i} className="border rounded-lg p-4 bg-gray-50">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="w-7 h-7 rounded-full bg-purple-500 text-white flex items-center justify-center text-sm font-bold">{r.i + 1}</span>
-                      <span className={`text-xs px-2 py-0.5 rounded-full ${statusBadge.bg}`}>{statusBadge.text}</span>
-                    </div>
-                    <p className="font-medium text-gray-800 mb-2">{r.q.question}</p>
-                    <div className="space-y-1 text-sm">
-                      {r.q.options.map((opt, idx) => {
-                        const isUser = r.userAns === idx;
-                        const isCorrect = idx === r.q.answer;
-                        let bg = "bg-white";
-                        let border = "border-gray-200";
-                        let textColor = "text-gray-700";
-                        let label = "";
-                        if (isUser && isCorrect) { bg = "bg-green-50"; border = "border-green-300"; textColor = "text-green-700"; label = "✓ Jawaban Anda (benar)"; }
-                        else if (isUser && !isCorrect) { bg = "bg-red-50"; border = "border-red-300"; textColor = "text-red-700"; label = "✗ Jawaban Anda"; }
-                        else if (isCorrect) { bg = "bg-green-50/30"; border = "border-green-200"; textColor = "text-green-600"; label = "Jawaban benar"; }
-                        return (
-                          <div key={idx} className={`p-2 rounded-lg border ${bg} ${border} flex justify-between items-center`}>
-                            <div><span className="font-mono mr-2">{String.fromCharCode(65+idx)}.</span> {opt}</div>
-                            {label && <span className="text-xs font-semibold">{label}</span>}
-                          </div>
-                        );
-                      })}
-                    </div>
-                    {r.q.explanation && (
-                      <div className="mt-3 p-2 bg-yellow-50 border border-yellow-200 rounded text-xs text-yellow-800">
-                        💡 {r.q.explanation}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+            <div style={{ textAlign: "center", padding: "32px 16px", color: "#94a3b8", fontSize: "0.85rem" }}>
+              Tidak ada soal untuk filter ini.
             </div>
-          )}
-        </div>
+          ) : (
+            filtered.map(({ q, i }) => {
+              const userAnswer = data.answers[i]
+              const correctAnswer = q.answer
+              const isCorrect = userAnswer !== undefined && userAnswer === correctAnswer
+              const isEmpty = userAnswer === undefined
 
-        {/* Tombol aksi */}
-        <div className="mt-6 flex gap-3">
-          <Link href="/tryout/tiu" className="flex-1 text-center border border-gray-300 rounded-lg py-3 text-gray-700 hover:bg-gray-50">← Ulang Tryout TIU</Link>
-          <Link href="/dashboard" className="flex-1 text-center bg-navy text-white rounded-lg py-3 hover:bg-navy/90">Lihat Dashboard</Link>
+              const statusColor = isEmpty ? "#94a3b8" : isCorrect ? "#16a34a" : "#dc2626"
+              const statusBg = isEmpty ? "rgba(148,163,184,0.1)" : isCorrect ? "rgba(22,163,74,0.1)" : "rgba(220,38,38,0.1)"
+              const statusLabel = isEmpty ? "Kosong" : isCorrect ? "Benar" : "Salah"
+
+              return (
+                <details key={i} style={{ borderBottom: "1px solid #f1f5f9" }}>
+                  <summary style={{ cursor: "pointer", listStyle: "none", padding: "14px 8px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                      <span style={{ flexShrink: 0, width: 28, height: 28, borderRadius: "50%", background: statusBg, color: statusColor, fontSize: "0.75rem", fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", border: `1px solid ${statusColor}30` }}>{i + 1}</span>
+                      <p style={{ fontSize: "0.85rem", color: "#0f172a", fontWeight: 500, flex: 1, lineHeight: 1.5 }}>{q.question}</p>
+                      <span style={{ flexShrink: 0, fontSize: "0.65rem", fontWeight: 600, padding: "2px 8px", borderRadius: 999, background: statusBg, color: statusColor, textTransform: "uppercase" }}>{statusLabel}</span>
+                      <span style={{ flexShrink: 0, color: "#94a3b8", fontSize: "0.75rem" }}>▼</span>
+                    </div>
+                  </summary>
+                  <div style={{ padding: "8px 8px 16px 48px", display: "flex", flexDirection: "column", gap: 6 }}>
+                    {q.options.map((opt, idx) => {
+                      const isUser = idx === userAnswer
+                      const isRight = idx === correctAnswer
+                      let bg = "transparent", border = "1px solid #e2e8f0", color = "#64748b", fw = 400
+                      if (isRight) { bg = "rgba(22,163,74,0.08)"; border = "1px solid rgba(22,163,74,0.3)"; color = "#16a34a"; fw = 600 }
+                      if (isUser && !isRight) { bg = "rgba(220,38,38,0.08)"; border = "1px solid rgba(220,38,38,0.3)"; color = "#dc2626"; fw = 600 }
+                      return (
+                        <div key={idx} style={{ padding: "8px 14px", borderRadius: 8, background: bg, border, display: "flex", alignItems: "center", gap: 10 }}>
+                          <span style={{ flexShrink: 0, width: 22, height: 22, borderRadius: "50%", background: isRight ? "#16a34a" : isUser ? "#dc2626" : "#e2e8f0", color: isRight || isUser ? "#fff" : "#64748b", fontSize: "0.7rem", fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center" }}>{String.fromCharCode(65 + idx)}</span>
+                          <span style={{ fontSize: "0.85rem", color, fontWeight: fw }}>{opt}</span>
+                          {isRight && <span style={{ marginLeft: "auto", fontSize: "0.65rem", color: "#16a34a", fontWeight: 700 }}>✓ Benar</span>}
+                          {isUser && !isRight && <span style={{ marginLeft: "auto", fontSize: "0.65rem", color: "#dc2626", fontWeight: 700 }}>Jawaban Anda</span>}
+                        </div>
+                      )
+                    })}
+                  </div>
+                </details>
+              )
+            })
+          )}
         </div>
       </div>
     </DashboardLayout>
-  );
+  )
 }

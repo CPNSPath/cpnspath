@@ -2,238 +2,216 @@
 
 import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
-import { supabase } from "@/lib/supabase"
 import { saveTryoutResult } from "@/lib/saveResult"
+import { supabase } from "@/lib/supabase"
 
-const EXAM_SLUG = "free-trial-twk"
-const TIMER_KEY = `${EXAM_SLUG}_start_time`
-const ANSWERS_KEY = `${EXAM_SLUG}_answers`
+const shuffledQuestions = [
+  { question: "Pembukaan UUD 1945 dalam kaitannya dengan HAM adalah ...", options: ["Piagam HAM Indonesia", "Sumber HAM Indonesia", "Pedoman pelaksanaan jaminan HAM Indonesia", "Penjelasan pelaksanaan HAM Indonesia", "Rumusan pelaksanaan HAM"], answer: 0 },
+  { question: "Yang menjadi causal final dari Pancasila adalah ...", options: ["Piagam Jakarta", "Bangsa Indonesia", "Warga Negara Indonesia", "BPUPKI", "PPKI"], answer: 0 },
+  { question: "Yang bukan termasuk prinsip dasar negara yang diusulkan oleh Soekarno pada tanggal 1 Juni 1945 adalah ...", options: ["Demokrasi", "Kekeluargaan", "Perikemanusiaan", "Kesejahteraan sosial", "Kebangsaan"], answer: 1 },
+  { question: "Berdasarkan TAP MPRS No. XX/MPRS/1966, Pancasila menempati tempat tertinggi sebagai hukum dasar negara RI, karena Pancasila merupakan ...", options: ["Dokumen historis", "Alat pemersatu bangsa", "Nilai luhur dari nenek moyang", "Landasan perjuangan bangsa", "Dasar negara dan pandangan hidup bangsa Indonesia"], answer: 4 },
+  { question: "Yang diatur oleh hukum dasar negara adalah ...", options: ["Susunan organisasi suatu negara", "Membatasi tugas dan wewenang badan-badan negara", "Menjaga/mengatur hubungan vertikal antara badan-badan negara", "Menjaga/mengatur hubungan horizontal antar badan-badan negara", "Semua jawaban benar"], answer: 4 },
+  { question: "Yang bukan merupakan dampak/akibat dari Dekrit Presiden 5 Juli 1959 adalah ...", options: ["Konstituante dibubarkan", "UUD tidak berlaku", "Kembali ke UUD 1945", "Dibentuk DPRS", "Dibentuk DPAS"], answer: 3 },
+  { question: "Yang bukan merupakan alat-alat perlengkapan MPR adalah ...", options: ["Pimpinan MPR", "Badan pekerja MPR", "Pembantu MPR", "Komisi MPR", "Panitia Ad Hoc MPR"], answer: 2 },
+  { question: "Menteri-menteri negara adalah pembantu presiden. Hal tersebut diatur dalam UUD 1945, yaitu ...", options: ["Pasal 18", "Pasal 19", "Pasal 17", "Pasal 16", "Pasal 15"], answer: 2 },
+  { question: "Berkenaan dengan perubahan isi dari UUD 1945 sebenarnya telah diatur oleh TAP MPR No. IV/MPR/1983 tentang ...", options: ["Interpelasi", "Budget", "Referendum", "Mosi tidak percaya", "Angket"], answer: 2 },
+  { question: "Penyebab utama menyerahnya Jepang kepada Sekutu adalah ...", options: ["Jepang tidak mendapat dukungan rakyat Indonesia", "Jepang kehabisan bala tentara", "Kaisar Jepang tidak lagi menginginkan perang", "Pemimpin Jepang banyak gugur", "Kota Hiroshima dan Nagasaki dibom atom oleh Amerika Serikat"], answer: 4 },
+  { question: "Sehari setelah proklamasi, PPKI mengadakan sidang pertama, hasil sidang tersebut adalah ...", options: ["Mengesahkan UUD menjadi UUD 1945", "Menetapkan Soekarno dan Hatta sebagai presiden dan wakil presiden", "Presiden sementara dibantu Komite Nasional", "Dibentuknya DPR dan MPR", "A,B, dan C benar"], answer: 4 },
+  { question: "Buku Max Havelaar dikarang oleh ...", options: ["Van den Bosch", "Douwes Dekker", "Raffles", "Daendels", "J.P. Coen"], answer: 1 },
+  { question: "Alasan dikeluarkannya Deklarasi Djuanda adalah ...", options: ["Mempertahankan NKRI", "Menciptakan kawasan damai dalam gagasan Wawasan Nusantara", "Melindungi kekayaan negara Indonesia", "Memberikan kenyamanan pemerintah untuk menindak pelanggaran laut", "Melindungi wilayah kepulauan RI"], answer: 2 },
+  { question: "Untuk mendapatkan keadilan pertama bagi rakyat adalah pada tingkat pengadilan negeri, sedangkan Pengadilan Tinggi dan Mahkamah Agung berfungsi sebagai ...", options: ["Peradilan banding dan kasasi", "Peradilan istimewa", "Peradilan KKN", "Peradilan perkara berat", "Peradilan khusus"], answer: 0 },
+  { question: "Mahkamah Agung mempunyai hak untuk menguji terhadap peraturan perundangan yang berlaku, kecuali ...", options: ["Peraturan Pemerintah", "Keputusan Presiden", "Keputusan Menteri", "Peraturan Daerah", "Undang-undang buatan DPR"], answer: 3 },
+  { question: "Dalam dinamika ketatanegaraan Indonesia berlangsung yang tidak pernah mengalami perubahan adalah ...", options: ["Bentuk negara", "Bentuk pemerintahan", "Corak pemerintahan", "Lembaga negara", "Sistem demokrasi"], answer: 4 },
+  { question: "Sistem pemerintahan kabinet presidensil ditandai oleh ...", options: ["Kepala negara seorang presiden", "Presiden merupakan kepala pemerintahan", "Kedudukan kabinet sejajar dengan parlemen", "Presiden memegang kekuasaan tertinggi", "Adanya wakil presiden"], answer: 1 },
+  { question: "Ada bermacam istilah demokrasi, demokrasi yang menonjolkan kebebasan individu adalah ...", options: ["Demokrasi langsung", "Demokrasi tidak langsung", "Demokrasi terpimpin", "Demokrasi liberal", "Demokrasi Pancasila"], answer: 3 },
+  { question: "Hukum administrasi negara merupakan bagian dari hukum tata negara dalam arti luas, karena hukum administrasi negara adalah ...", options: ["Sekumpulan peraturan hukum yang mengikat badan negara", "Peraturan pelanggaran pegawai negeri", "Peraturan pemberhentian pegawai negeri", "Peraturan pengangkatan pegawai negeri", "Peraturan mengenai tugas pegawai negeri"], answer: 0 },
+  { question: "Proses pembuatan ketetapan MPR tahap II adalah ...", options: ["Pembahasan rapat paripurna Majelis", "Pembahasan keputusan rapat paripurna Majelis", "Pembahasan oleh Badan Pekerja Majelis", "Pembahasan komisi/panitia Ad Hoc", "Pengambilan keputusan rapat paripurna"], answer: 2 },
+  { question: "Karena berhasil mengalahkan Portugis, Fatahillah mengganti nama Sunda Kelapa menjadi ...", options: ["Batavia", "Jakarta", "Jayakarta", "Betawi", "Jawa Barat"], answer: 2 },
+  { question: "Agama Islam di Indonesia berkembang di daerah pesisir Sumatra dan Jawa karena ...", options: ["Pesisir udaranya sejuk", "Daerah pesisir padat penduduk", "Disebarkan melalui perdagangan laut", "Penduduk pesisir masih bodoh", "Merupakan pusat kerajaan"], answer: 2 },
+  { question: "Konferensi Meja Bundar diselenggarakan di kota ...", options: ["Amsterdam", "Den Haag", "Belgium", "Kolombo", "New York"], answer: 1 },
+  { question: "Finalis Tujuh Keajaiban Dunia berikut yang berasal dari negara Spanyol adalah ...", options: ["Machu Picchu", "Acropolis", "Stonehenge", "Alhambra", "Timbuktu"], answer: 3 },
+  { question: "Yang bukan merupakan negara bagian Amerika Serikat adalah ...", options: ["Idaho", "Wyoming", "Roskilde", "Delaware", "Colorado"], answer: 2 },
+  { question: "Lagu daerah Potong Bebek Angsa berasal dari provinsi ...", options: ["Nusa Tenggara Barat", "Nusa Tenggara Timur", "Maluku", "Papua", "Kalimantan Barat"], answer: 1 },
+  { question: "Perang Dunia I berakhir pada tahun ...", options: ["1914", "1916", "1918", "1921", "1924"], answer: 2 },
+  { question: "PBI adalah organisasi nasional untuk olahraga ...", options: ["Bowling", "Bridge", "Bulu tangkis", "Baseball", "Berkuda"], answer: 0 },
+  { question: "Kerajaan Sriwijaya terkenal sebagai kerajaan maritim karena ...", options: ["Mempunyai armada laut kuat", "Mengadakan hubungan dagang", "Menjadi pusat perdagangan Asia Tenggara", "Letak persimpangan perdagangan", "Memiliki raja berkuasa"], answer: 0 },
+  { question: "Tujuan diselenggarakannya Konferensi Asia Afrika di antaranya ...", options: ["Ikut mengawasi perdamaian dunia", "Mempererat persatuan Asia", "Mempersatukan kerja sama Asia", "Mempererat persatuan dan mengawasi perdamaian dunia", "Meredakan ketegangan blok Barat dan Timur"], answer: 2 },
+  { question: "Setelah Perang Dunia II berakhir muncul dua kekuatan yaitu Blok Barat dan Blok Timur. Blok Barat dipimpin oleh ...", options: ["Inggris", "Perancis", "Amerika Serikat", "Kanada", "Belanda"], answer: 2 },
+  { question: "Sebagian naskah kuno dari Provinsi Lampung diketahui tersimpan di lembaga luar negeri. Unsur what pada teks tersebut adalah ...", options: ["Keprihatinan terhadap naskah kuno Lampung", "Museum Negeri Lampung menyimpan naskah kuno", "Naskah kuno Lampung sebagian tersimpan di luar negeri", "Naskah kuno Lampung memakai bahasa kuno", "Penyesalan karena naskah kuno Lampung ada di luar negeri"], answer: 2 },
+  { question: "Kalimat berikut ini adalah baku, kecuali ...", options: ["Berdasarkan data Pemprov Lampung naskah kuno tersebar di Belanda Denmark Inggris dan Jerman", "Di Leiden setidaknya ada 5 naskah kuno", "Anggaran pengadaan koleksi baru benda bersejarah di museum hanya Rp 40-70 juta setahun", "Penambahan koleksi benda bersejarah di museum negeri Lampung terkendala dana", "Ia mencontohkan suatu ketika pernah membeli uang kuno eks Karasidenan Lampung"], answer: 2 },
+  { question: "Akar tanaman bakau melengkung besar-besar. Kata reduplikasi yang bermakna sama adalah ...", options: ["Program KB membatasi jumlah anak-anak dalam keluarga", "Lulusan Perguruan Tinggi dalam negeri tidak kalah pintar", "Aku tidak menerima telepon malam-malam", "Pada jam istirahat kami makan-makan", "Bila ada uang adik kecil itu berbelanja"], answer: 1 },
+  { question: "Penulisan nama dan gelar yang benar adalah ...", options: ["Sutinah Pertiwi, S.E", "Moh Indrawan Setyo Hadi M.Pd", "Hj Rusti Saringsih", "Dr Laila Sari Devi", "Rusti Hadiningrat, S.S"], answer: 3 },
+]
+
+const SUBTEST_COLOR = "#3b82f6"
 
 export default function TWKExam() {
   const router = useRouter()
-  const [questions, setQuestions] = useState([])
-  const [loading, setLoading] = useState(true)
   const [current, setCurrent] = useState(0)
   const [answers, setAnswers] = useState({})
   const [doubts, setDoubts] = useState({})
   const [time, setTime] = useState(null)
   const [checking, setChecking] = useState(true)
   const submittedRef = useRef(false)
+  const answersRef = useRef({})
+
+  useEffect(() => { answersRef.current = answers }, [answers])
 
   useEffect(() => {
-    async function init() {
+    async function checkAlreadyDone() {
       const { data: { user } } = await supabase.auth.getUser()
-      if (!user) return router.replace("/login?redirect=/tryout/twk/exam")
-      
-      const { data: existing } = await supabase
-        .from("results")
-        .select("id")
-        .eq("user_id", user.id)
-        .eq("tryout_slug", EXAM_SLUG)
-        .maybeSingle()
-      if (existing) return router.replace("/tryout/twk/result")
+      if (!user) { router.replace("/login?redirect=/tryout/twk"); return }
+      const { data } = await supabase.from("results").select("id").eq("user_id", user.id).eq("tryout_slug", "free-trial-twk").maybeSingle()
+      if (data) { router.replace("/tryout/twk/result"); return }
 
-      const { data: soal } = await supabase
-        .from("questions")
-        .select("question, option_a, option_b, option_c, option_d, option_e, correct_answer")
-        .eq("tryout_slug", "skd-to-1")
-        .eq("subtest", "twk")
-        .order("question_number")
-
-      if (!soal || soal.length === 0) {
-        alert("Soal TWK tidak tersedia")
-        router.replace("/tryout/twk")
-        return
+      const timerKey = "twk_start_time"
+      let startTime = parseInt(localStorage.getItem(timerKey))
+      if (!startTime || isNaN(startTime)) {
+        startTime = Date.now()
+        localStorage.setItem(timerKey, startTime.toString())
       }
-
-      const mapped = soal.map(q => ({
-        question: q.question,
-        options: [q.option_a, q.option_b, q.option_c, q.option_d, q.option_e],
-        answer: ["A","B","C","D","E"].indexOf(q.correct_answer)
-      }))
-      setQuestions(mapped)
-
-      // Timer persistence
-      let start = parseInt(localStorage.getItem(TIMER_KEY))
-      if (!start || isNaN(start)) {
-        start = Date.now()
-        localStorage.setItem(TIMER_KEY, start.toString())
-      }
-      const elapsed = Math.floor((Date.now() - start) / 1000)
-      const remaining = 30 * 60 - elapsed
-      if (remaining <= 0) {
-        setTime(0)
-        setChecking(false)
-        setLoading(false)
-        return
-      }
+      const elapsed = Math.floor((Date.now() - startTime) / 1000)
+      const remaining = (30 * 60) - elapsed
+      if (remaining <= 0) { setTime(0); setChecking(false); return }
       setTime(remaining)
       setChecking(false)
-      setLoading(false)
-
-      const saved = localStorage.getItem(ANSWERS_KEY)
-      if (saved) setAnswers(JSON.parse(saved))
     }
-    init()
+    checkAlreadyDone()
   }, [])
 
   useEffect(() => {
-    if (!loading && questions.length) {
-      localStorage.setItem(ANSWERS_KEY, JSON.stringify(answers))
-    }
-  }, [answers, loading, questions.length])
+    try { const saved = localStorage.getItem("twk_answers"); if (saved) setAnswers(JSON.parse(saved)) }
+    catch (err) { localStorage.removeItem("twk_answers") }
+  }, [])
+
+  useEffect(() => { localStorage.setItem("twk_answers", JSON.stringify(answers)) }, [answers])
 
   useEffect(() => {
-    if (checking || loading || time === null) return
+    if (checking || time === null) return
     const timer = setInterval(() => {
-      setTime(prev => {
-        if (prev <= 1) {
-          clearInterval(timer)
-          submitExam(true)
-          return 0
-        }
-        return prev - 1
-      })
+      setTime(prev => { if (prev <= 1) { clearInterval(timer); submitExam(true); return 0 } return prev - 1 })
     }, 1000)
     return () => clearInterval(timer)
-  }, [checking, loading, time])
+  }, [checking, time !== null])
 
-  // Anti back button
   useEffect(() => {
     if (checking) return
-    window.history.pushState({}, "")
-    const handlePop = () => {
-      if (!submittedRef.current) {
-        if (confirm("Keluar akan mensubmit ujian. Yakin?")) submitExam(true)
-      }
+    window.history.pushState({ examLock: true }, "")
+    function handlePopState(e) {
+      if (submittedRef.current) return
+      const confirmLeave = window.confirm("⚠️ Jika Anda keluar, ujian akan langsung disubmit dan tidak bisa diulang.\n\nYakin ingin keluar?")
+      if (confirmLeave) { submitExam(true) } else { window.history.pushState({ examLock: true }, "") }
     }
-    window.addEventListener("popstate", handlePop)
-    return () => window.removeEventListener("popstate", handlePop)
+    window.addEventListener("popstate", handlePopState)
+    return () => window.removeEventListener("popstate", handlePopState)
   }, [checking])
 
-  // Anti refresh/close tab
   useEffect(() => {
     if (checking) return
-    const handleBefore = (e) => {
-      if (!submittedRef.current) {
-        e.preventDefault()
-        e.returnValue = ""
-      }
-    }
-    window.addEventListener("beforeunload", handleBefore)
-    return () => window.removeEventListener("beforeunload", handleBefore)
+    function handleBeforeUnload(e) { if (submittedRef.current) return; e.preventDefault(); e.returnValue = "Jika Anda keluar, ujian akan otomatis diselesaikan. Yakin?"; return e.returnValue }
+    window.addEventListener("beforeunload", handleBeforeUnload)
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload)
   }, [checking])
+
+  function formatTime() { if (time === null) return "--:--"; const m = Math.floor(time / 60); const s = time % 60; return m + ":" + (s < 10 ? "0" + s : s) }
+  function selectAnswer(i) { setAnswers({ ...answers, [current]: i }) }
+  function toggleDoubt() { setDoubts({ ...doubts, [current]: !doubts[current] }) }
 
   async function submitExam(force = false) {
     if (submittedRef.current) return
-    if (!force && !confirm("Submit ujian?")) return
+    if (!force) { if (!confirm("Apakah Anda yakin ingin mengakhiri ujian?")) return }
     submittedRef.current = true
-
+    const currentAnswers = answersRef.current
     let score = 0, correct = 0, wrong = 0, empty = 0
-    questions.forEach((q, i) => {
-      const ans = answers[i]
-      if (ans === undefined) empty++
-      else if (ans === q.answer) { score += 5; correct++ }
-      else wrong++
-    })
-
-    localStorage.setItem(`${EXAM_SLUG}_result`, JSON.stringify({
-      score, correct, wrong, empty,
-      total: questions.length,
-      answers,
-      questions: questions.map(q => ({ ...q, explanation: null }))
-    }))
-
-    await saveTryoutResult({
-      toSlug: EXAM_SLUG,
-      score, correct, wrong,
-      twk: score, tiu: null, tkp: null,
-      lulus_twk: score >= 65, lulus_tiu: null, lulus_tkp: null
-    })
-
-    localStorage.removeItem(TIMER_KEY)
+    shuffledQuestions.forEach((q, i) => { if (currentAnswers[i] === undefined) { empty++ } else if (currentAnswers[i] === q.answer) { score += 5; correct++ } else { wrong++ } })
+    const resultData = { score, correct, wrong, empty, total: shuffledQuestions.length, answers: currentAnswers, questions: shuffledQuestions }
+    localStorage.setItem("twk_result", JSON.stringify(resultData))
+    await saveTryoutResult({ toSlug: "free-trial-twk", score, correct, wrong, twk: score, tiu: null, tkp: null, lulus_twk: score >= 65, lulus_tiu: null, lulus_tkp: null })
+    localStorage.removeItem("twk_answers")
+    localStorage.removeItem("twk_start_time")
     router.push("/tryout/twk/result")
   }
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center">Memuat soal...</div>
-  if (!questions.length) return <div className="min-h-screen flex items-center justify-center">Soal tidak tersedia</div>
-
   const answeredCount = Object.keys(answers).length
-  const emptyCount = questions.length - answeredCount
-  const progress = Math.round((answeredCount / questions.length) * 100)
+  const doubtCount = Object.keys(doubts).length
+  const emptyCount = shuffledQuestions.length - answeredCount
+  const progressPercent = Math.round((answeredCount / shuffledQuestions.length) * 100)
 
-  const formatTime = () => {
-    if (time === null) return "--:--"
-    const m = Math.floor(time / 60)
-    const s = time % 60
-    return `${m}:${s < 10 ? "0" + s : s}`
+  if (checking) {
+    return (<div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#F8FAFC", flexDirection: "column", gap: 16 }}><div style={{ width: 40, height: 40, border: "4px solid #e2e8f0", borderTop: "4px solid #172554", borderRadius: "50%", animation: "spin 0.8s linear infinite" }} /><p style={{ color: "#64748b", fontSize: "0.9rem" }}>Memeriksa akses...</p><style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style></div>)
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-row h-screen overflow-hidden">
-      {/* Kiri: Soal */}
-      <div className="flex-1 overflow-auto p-6">
-        <div className="bg-white rounded-xl border p-6 mb-4">
-          <div className="flex justify-between items-center mb-4">
-            <div className="bg-navy text-white px-3 py-1 rounded-full text-xs">Free Trial</div>
-            <div className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs">TWK - Soal {current + 1}</div>
-            <div className={`px-3 py-1 rounded-full text-xs font-bold ${time <= 300 ? "bg-red-100 text-red-700" : "bg-gray-100 text-gray-700"}`}>⏱ {formatTime()}</div>
+    <div className="exam-wrap" style={{ minHeight: "100vh", background: "#F8FAFC", display: "flex", flexDirection: "row", height: "100vh", overflow: "hidden" }}>
+      <div className="exam-question" style={{ flex: 1, display: "flex", flexDirection: "column", background: "#F8FAFC", overflowY: "auto", minWidth: 0 }}>
+        <div style={{ background: "#fff", borderBottom: "1px solid #e2e8f0", padding: "12px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 10 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div style={{ background: "#172554", color: "#fff", borderRadius: 8, padding: "5px 12px", fontSize: "0.78rem", fontWeight: 700 }}>Free Trial</div>
+            <div style={{ background: SUBTEST_COLOR + "20", color: SUBTEST_COLOR, borderRadius: 8, padding: "5px 12px", fontSize: "0.78rem", fontWeight: 700 }}>TWK — Soal {current + 1}</div>
+            {doubts[current] && <span style={{ background: "rgba(234,179,8,0.15)", color: "#ca8a04", borderRadius: 999, padding: "4px 10px", fontSize: "0.7rem", fontWeight: 600 }}>⚠ Ragu</span>}
           </div>
-          <div className="mb-4">
-            <div className="flex justify-between text-xs"><span>TWK</span><span>{answeredCount}/{questions.length}</span></div>
-            <div className="h-2 bg-gray-200 rounded-full mt-1"><div className="h-full bg-blue-500 rounded-full" style={{ width: `${progress}%` }} /></div>
+          <div style={{ background: time !== null && time <= 300 ? "rgba(220,38,38,0.1)" : "rgba(23,37,84,0.08)", borderRadius: 8, padding: "6px 14px", display: "flex", alignItems: "center", gap: 6 }}>
+            <span style={{ fontSize: "0.75rem", color: time !== null && time <= 300 ? "#dc2626" : "#475569" }}>⏱</span>
+            <span style={{ fontSize: "1rem", fontWeight: 700, color: time !== null && time <= 300 ? "#dc2626" : "#172554", fontVariantNumeric: "tabular-nums" }}>{formatTime()}</span>
           </div>
-          <div className="mb-6">
-            <div className="flex gap-3 mb-4">
-              <span className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center">{current + 1}</span>
-              <p className="text-gray-800">{questions[current].question}</p>
+        </div>
+        <div style={{ background: "#fff", padding: "10px 24px", borderBottom: "1px solid #f1f5f9" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3 }}><span style={{ fontSize: "0.65rem", fontWeight: 700, color: SUBTEST_COLOR }}>TWK</span><span style={{ fontSize: "0.65rem", color: "#94a3b8" }}>{answeredCount}/{shuffledQuestions.length}</span></div>
+          <div style={{ background: "#e2e8f0", borderRadius: 999, height: 5, overflow: "hidden" }}><div style={{ height: "100%", background: SUBTEST_COLOR, borderRadius: 999, width: `${progressPercent}%`, transition: "width 0.3s" }} /></div>
+        </div>
+        <div style={{ flex: 1, padding: "24px 32px" }}>
+          <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #e2e8f0", padding: "28px", marginBottom: 20, boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
+            <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 20 }}>
+              <span style={{ flexShrink: 0, width: 32, height: 32, borderRadius: "50%", background: SUBTEST_COLOR, color: "#fff", fontSize: "0.8rem", fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center" }}>{current + 1}</span>
+              <p style={{ fontSize: "1rem", color: "#0f172a", lineHeight: 1.7, fontWeight: 500, flex: 1, paddingTop: 4 }}>{shuffledQuestions[current].question}</p>
             </div>
-            <div className="space-y-2">
-              {questions[current].options.map((opt, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setAnswers({ ...answers, [current]: idx })}
-                  className={`w-full text-left p-3 rounded-lg border ${answers[current] === idx ? "border-blue-500 bg-blue-50 text-blue-700" : "border-gray-200 hover:border-blue-300"}`}
-                >
-                  <span className="inline-block w-6 font-bold">{String.fromCharCode(65 + idx)}.</span> {opt}
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {shuffledQuestions[current].options.map((opt, i) => (
+                <button key={i} onClick={() => selectAnswer(i)} style={{ width: "100%", textAlign: "left", padding: "13px 18px", borderRadius: 10, border: answers[current] === i ? `2px solid ${SUBTEST_COLOR}` : "1.5px solid #e2e8f0", background: answers[current] === i ? SUBTEST_COLOR : "#fff", color: answers[current] === i ? "#fff" : "#334155", fontSize: "0.9rem", fontWeight: answers[current] === i ? 600 : 400, cursor: "pointer", transition: "all 0.15s", display: "flex", alignItems: "center", gap: 12 }}
+                  onMouseEnter={e => { if (answers[current] !== i) { e.currentTarget.style.borderColor = SUBTEST_COLOR; e.currentTarget.style.background = "#f8fafc" } }}
+                  onMouseLeave={e => { if (answers[current] !== i) { e.currentTarget.style.borderColor = "#e2e8f0"; e.currentTarget.style.background = "#fff" } }}>
+                  <span style={{ flexShrink: 0, width: 26, height: 26, borderRadius: "50%", background: answers[current] === i ? "rgba(255,255,255,0.2)" : "#f1f5f9", color: answers[current] === i ? "#fff" : "#64748b", fontSize: "0.75rem", fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center" }}>{String.fromCharCode(65 + i)}</span>{opt}
                 </button>
               ))}
             </div>
           </div>
-          <div className="flex gap-2">
-            <button onClick={() => setCurrent(c => Math.max(0, c - 1))} className="px-4 py-2 border rounded-lg">← Prev</button>
-            <button onClick={() => setCurrent(c => Math.min(questions.length - 1, c + 1))} className="px-4 py-2 bg-navy text-white rounded-lg">Next →</button>
-            <button onClick={() => setDoubts({ ...doubts, [current]: !doubts[current] })} className={`px-4 py-2 border rounded-lg ${doubts[current] ? "bg-yellow-100 border-yellow-400" : "bg-white"}`}>⚠ Ragu</button>
-            <button onClick={() => submitExam(false)} className="ml-auto px-6 py-2 bg-yellow-400 text-yellow-900 font-bold rounded-lg">Submit</button>
+          <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+            <button onClick={() => setCurrent(c => Math.max(0, c - 1))} style={{ padding: "10px 20px", borderRadius: 10, border: "1.5px solid #e2e8f0", background: "#fff", color: "#334155", fontSize: "0.875rem", fontWeight: 500, cursor: "pointer" }}>← Previous</button>
+            <button onClick={() => setCurrent(c => Math.min(shuffledQuestions.length - 1, c + 1))} style={{ padding: "10px 20px", borderRadius: 10, border: "1.5px solid #172554", background: "#172554", color: "#fff", fontSize: "0.875rem", fontWeight: 500, cursor: "pointer" }}>Next →</button>
+            <button onClick={toggleDoubt} style={{ padding: "10px 20px", borderRadius: 10, border: `1.5px solid ${doubts[current] ? "#ca8a04" : "#e2e8f0"}`, background: doubts[current] ? "rgba(234,179,8,0.1)" : "#fff", color: doubts[current] ? "#ca8a04" : "#64748b", fontSize: "0.875rem", fontWeight: 500, cursor: "pointer" }}>⚠ Ragu-ragu</button>
+            <button onClick={() => submitExam(false)} style={{ padding: "10px 24px", borderRadius: 10, border: "1.5px solid #fbbf24", background: "#fbbf24", color: "#78350f", fontSize: "0.875rem", fontWeight: 700, cursor: "pointer", marginLeft: "auto" }}>Submit Ujian</button>
           </div>
         </div>
       </div>
-
-      {/* Kanan: Sidebar */}
-      <div className="w-80 bg-white border-l p-4 overflow-auto">
-        <div className="text-center p-3 bg-gray-50 rounded-lg mb-4">
-          <p className="text-sm">Waktu Tersisa</p>
-          <p className="text-3xl font-bold">{formatTime()}</p>
+      <div className="exam-sidebar" style={{ width: "280px", flexShrink: 0, background: "#fff", borderLeft: "1px solid #e2e8f0", display: "flex", flexDirection: "column", padding: "20px", overflowY: "auto" }}>
+        <div style={{ background: time !== null && time <= 300 ? "rgba(220,38,38,0.06)" : "#f8fafc", border: `1px solid ${time !== null && time <= 300 ? "rgba(220,38,38,0.2)" : "#e2e8f0"}`, borderRadius: 12, padding: "14px", marginBottom: 14, textAlign: "center" }}>
+          <p style={{ fontSize: "0.65rem", color: "#64748b", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4, fontWeight: 500 }}>Waktu Tersisa</p>
+          <p style={{ fontSize: "1.75rem", fontWeight: 800, color: time !== null && time <= 300 ? "#dc2626" : "#172554", fontVariantNumeric: "tabular-nums" }}>{formatTime()}</p>
         </div>
-        <div className="grid grid-cols-3 gap-2 mb-4 text-center">
-          <div className="p-2 bg-green-50 rounded"><p className="font-bold text-green-600">{answeredCount}</p><p className="text-xs">Dijawab</p></div>
-          <div className="p-2 bg-yellow-50 rounded"><p className="font-bold text-yellow-600">{Object.keys(doubts).length}</p><p className="text-xs">Ragu</p></div>
-          <div className="p-2 bg-gray-100 rounded"><p className="font-bold text-gray-600">{emptyCount}</p><p className="text-xs">Kosong</p></div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6, marginBottom: 16 }}>
+          {[{ l: "Dijawab", v: answeredCount, c: "#16a34a" }, { l: "Ragu", v: doubtCount, c: "#ca8a04" }, { l: "Kosong", v: emptyCount, c: "#94a3b8" }].map(s => (
+            <div key={s.l} style={{ background: `${s.c}14`, borderRadius: 8, padding: "8px 4px", textAlign: "center" }}><p style={{ fontSize: "0.6rem", color: s.c, fontWeight: 600, textTransform: "uppercase", marginBottom: 2 }}>{s.l}</p><p style={{ fontSize: "1.1rem", fontWeight: 800, color: s.c }}>{s.v}</p></div>
+          ))}
         </div>
-        <div className="grid grid-cols-5 gap-1">
-          {questions.map((_, i) => {
-            let bg = "bg-gray-100", text = "text-gray-600"
-            if (i === current) { bg = "bg-blue-500"; text = "text-white" }
-            else if (answers[i] !== undefined) { bg = "bg-green-100"; text = "text-green-700" }
-            else if (doubts[i]) { bg = "bg-yellow-100"; text = "text-yellow-700" }
-            return (
-              <button key={i} onClick={() => setCurrent(i)} className={`w-8 h-8 rounded text-sm font-bold ${bg} ${text}`}>
-                {i + 1}
-              </button>
-            )
-          })}
+        <div style={{ marginBottom: 14 }}>
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, color: SUBTEST_COLOR, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8, paddingBottom: 6, borderBottom: `1px solid ${SUBTEST_COLOR}30` }}>TWK</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 4 }}>
+            {shuffledQuestions.map((q, i) => {
+              let bg = "#f1f5f9", color = "#64748b", border = "1px solid #e2e8f0"
+              if (i === current) { bg = SUBTEST_COLOR; color = "#fff"; border = `1px solid ${SUBTEST_COLOR}` }
+              else if (doubts[i]) { bg = "rgba(234,179,8,0.15)"; color = "#ca8a04"; border = "1px solid rgba(234,179,8,0.3)" }
+              else if (answers[i] != null) { bg = SUBTEST_COLOR + "20"; color = SUBTEST_COLOR; border = `1px solid ${SUBTEST_COLOR}50` }
+              return <button key={i} onClick={() => setCurrent(i)} style={{ background: bg, color, border, borderRadius: 5, padding: "5px 2px", fontSize: "0.65rem", fontWeight: 700, cursor: "pointer" }}>{i + 1}</button>
+            })}
+          </div>
+        </div>
+        <div style={{ marginTop: 8, display: "flex", flexDirection: "column", gap: 4 }}>
+          {[{ label: "Soal aktif", bg: SUBTEST_COLOR, color: SUBTEST_COLOR },{ label: "Sudah dijawab", bg: SUBTEST_COLOR + "20", color: SUBTEST_COLOR },{ label: "Ragu-ragu", bg: "rgba(234,179,8,0.15)", color: "#ca8a04" },{ label: "Belum dijawab", bg: "#f1f5f9", color: "#94a3b8" }].map(item => (
+            <div key={item.label} style={{ display: "flex", alignItems: "center", gap: 6 }}><div style={{ width: 10, height: 10, borderRadius: 2, background: item.bg, border: `1px solid ${item.color}40`, flexShrink: 0 }} /><span style={{ fontSize: "0.65rem", color: "#64748b" }}>{item.label}</span></div>
+          ))}
         </div>
       </div>
+      <style>{`@media (max-width: 768px) { .exam-wrap { flex-direction: column !important; height: auto !important; overflow: visible !important; min-height: 100vh; } .exam-question { overflow-y: visible !important; height: auto !important; } .exam-sidebar { width: 100% !important; border-left: none !important; border-top: 1px solid #e2e8f0 !important; } }`}</style>
     </div>
   )
 }
